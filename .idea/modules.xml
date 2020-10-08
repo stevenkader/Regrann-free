@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ProjectModuleManager">
+    <modules>
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/Regrann1_V-Latest.iml" filepath="$PROJECT_DIR$/.idea/modules/Regrann1_V-Latest.iml" group="Regrann1_V-Latest" />
+      <module fileurl="file://$PROJECT_DIR$/nativetemplates/nativetemplates.iml" filepath="$PROJECT_DIR$/nativetemplates/nativetemplates.iml" group="Regrann1 V-Latest/nativetemplates" />
+      <module fileurl="file://$PROJECT_DIR$/regrann/regrann.iml" filepath="$PROJECT_DIR$/regrann/regrann.iml" group="Regrann1 V-Latest/regrann" />
+      <module fileurl="file://$PROJECT_DIR$/utils/utils.iml" filepath="$PROJECT_DIR$/utils/utils.iml" group="Regrann1 V-Latest/utils" />
+    </modules>
+  </component>
+</project>
