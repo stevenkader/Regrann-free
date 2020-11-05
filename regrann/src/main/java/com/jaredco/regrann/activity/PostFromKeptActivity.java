@@ -61,16 +61,13 @@ public class PostFromKeptActivity extends Activity implements OnClickListener, O
     AlertDialog rateRequestDialog;
 
 
-    private String uriStr, mTinyUrl = null;
-    private Context serviceCtx;
+    private String uriStr;
+    private final String mTinyUrl = null;
     static String url, title, author;
     File tempVideoFile, tempFile, tmpVideoFile;
     boolean isVideo = false, photoReady = false, optionHasBeenClicked = false, isJPEG = false, autopost, autosave, supressToast = false;
     String tempFileFullPathName, tempVideoName = "temp/tmpvideo.mp4", tempFileName, selectedImagePath = null, regrannPictureFolder, internalPath;
     int count, buttonWidth;
-
-    private int isScheduled;
-    private long scheduledTime;
 
     // The request code must be 0 or greater.
     @Override
@@ -84,15 +81,13 @@ public class PostFromKeptActivity extends Activity implements OnClickListener, O
         try {
             if (action != null) {
 
-                if (action.equals("com.jaredco.action.fromkept"))
-
-                {
+                if (action.equals("com.jaredco.action.fromkept")) {
                     tempFileFullPathName = intent.getStringExtra("photo");
                     author = intent.getStringExtra("author");
                     title = intent.getStringExtra("title");
                     tempVideoName = intent.getStringExtra("videoURL");
-                    isScheduled = intent.getIntExtra("isScheduled", 0);
-                    scheduledTime = intent.getLongExtra("scheduledTime", 0);
+                    int isScheduled = intent.getIntExtra("isScheduled", 0);
+                    long scheduledTime = intent.getLongExtra("scheduledTime", 0);
                     if (tempVideoName != null && tempVideoName.equals("") == false)
                         isVideo = true;
 
@@ -135,7 +130,7 @@ public class PostFromKeptActivity extends Activity implements OnClickListener, O
 
 
             photoReady = false;
-            serviceCtx = this;
+            Context serviceCtx = this;
             SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(_this.getApplication().getApplicationContext());
 
 

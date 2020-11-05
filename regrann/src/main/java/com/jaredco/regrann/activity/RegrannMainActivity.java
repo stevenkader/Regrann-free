@@ -66,8 +66,6 @@ public class RegrannMainActivity extends AppCompatActivity {
 
     PendingIntent pendingIntent;
     private SimpleCursorAdapter dataAdapter;
-    // public static InstaAPI instaAPI;
-    private FirebaseAnalytics mFirebaseAnalytics;
     public static String caption_prefix = "Reposted";
 
     boolean firstRun, olderUser;
@@ -212,11 +210,13 @@ public class RegrannMainActivity extends AppCompatActivity {
                 }
             }
 
-        }catch (Exception e){}
+        } catch (Exception e) {
+        }
 
         noAds = preferences.getBoolean("removeAds", false);
 
-        mFirebaseAnalytics = FirebaseAnalytics.getInstance(this);
+        // public static InstaAPI instaAPI;
+        FirebaseAnalytics mFirebaseAnalytics = FirebaseAnalytics.getInstance(this);
 
 
         try {
@@ -601,14 +601,7 @@ public class RegrannMainActivity extends AppCompatActivity {
                             }
 
                         }
-                        else
-                        {
-                            SharedPreferences.Editor editor;
-                            editor = preferences.edit();
-                         //   editor.putBoolean("removeAds", false);
 
-                         //   editor.commit();
-                        }
 
                     }
                 } catch (Exception e) {
@@ -909,7 +902,7 @@ public class RegrannMainActivity extends AppCompatActivity {
                         i = new Intent(_this, ShareActivity.class);
 
                         if ( text.contains("vm.tiktok")) {
-                            i.putExtra("tiktok", true);
+                            //   i.putExtra("tiktok", true);
                         }
                         else
                             text = text.substring(text.indexOf("https://www.instagram"));

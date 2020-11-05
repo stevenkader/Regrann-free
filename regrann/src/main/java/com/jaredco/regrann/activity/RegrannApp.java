@@ -24,10 +24,9 @@ import java.util.Arrays;
 public class RegrannApp extends Application {
 //    public class RegrannApp extends Application  {
 
-
+    private static AppOpenManager appOpenManager;
     // The following line should be changed to include the correct property id.
 
-    private int bannerPlacementId = -1;
     private static FirebaseAnalytics mFirebaseAnalytics;
     public static RegrannApp _this;
     public static boolean admobReady = false ;
@@ -95,6 +94,7 @@ public class RegrannApp extends Application {
     public void onCreate() {
         super.onCreate();
 
+        Log.d("app5", "In Regrann App - onCreate");
 
         RequestConfiguration requestConfiguration
                 = new RequestConfiguration.Builder()
@@ -109,16 +109,18 @@ public class RegrannApp extends Application {
             public void onInitializationComplete(InitializationStatus initializationStatus) {
             }
         });
-/**
-        JSONObject consentObject = new JSONObject();
-        try {
-            consentObject.put(InMobiSdk.IM_GDPR_CONSENT_AVAILABLE, true);
-            consentObject.put("gdpr", "1");
-        } catch (JSONException exception) {
-            exception.printStackTrace();
-        }
 
-        InMobiConsent.updateGDPRConsent(consentObject);
+        appOpenManager = new AppOpenManager(this);
+/**
+ JSONObject consentObject = new JSONObject();
+ try {
+ consentObject.put(InMobiSdk.IM_GDPR_CONSENT_AVAILABLE, true);
+ consentObject.put("gdpr", "1");
+ } catch (JSONException exception) {
+ exception.printStackTrace();
+ }
+
+ InMobiConsent.updateGDPRConsent(consentObject);
 **/
         mFirebaseAnalytics = FirebaseAnalytics.getInstance(this);
 
@@ -197,7 +199,8 @@ public class RegrannApp extends Application {
 
 
        public int getBannerPlacementId() {
-        return bannerPlacementId;
-    }
+           int bannerPlacementId = -1;
+           return bannerPlacementId;
+       }
 
 }

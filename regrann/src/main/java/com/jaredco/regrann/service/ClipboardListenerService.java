@@ -34,7 +34,6 @@ public class ClipboardListenerService extends Service {
     private static final String TAG = "ClipboardListenerService";
     private FileObserver fileObserver;
     private String imgDirPath;
-    private static Handler restartServiceHandler;
     public static final String MY_SERVICE = "com.jaredco.regrann.service.ClipboardListenerService";
     private ClipboardManager cliboardManager;
     String currentApp = "";
@@ -185,7 +184,8 @@ public class ClipboardListenerService extends Service {
         restartIntent.putExtra("ALARM_RESTART_SERVICE_DIED", true);
         final AlarmManager alarmMgr = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
         Log.d("tag", "starting handler...");
-        restartServiceHandler = new Handler() {
+        // Create a pending intent
+        Handler restartServiceHandler = new Handler() {
             @Override
             public void handleMessage(Message msg) {
                 // Create a pending intent

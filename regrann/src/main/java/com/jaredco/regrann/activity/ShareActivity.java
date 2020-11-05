@@ -1,5 +1,6 @@
 package com.jaredco.regrann.activity;
 
+
 import android.Manifest;
 import android.app.AlertDialog;
 import android.app.Dialog;
@@ -36,6 +37,7 @@ import android.os.Bundle;
 import android.os.Environment;
 import android.os.Handler;
 import android.preference.PreferenceManager;
+import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.Display;
 import android.view.Gravity;
@@ -53,9 +55,7 @@ import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
-import android.widget.RatingBar;
 import android.widget.SeekBar;
-import android.widget.SeekBar.OnSeekBarChangeListener;
 import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.VideoView;
@@ -80,25 +80,15 @@ import com.bumptech.glide.load.resource.bitmap.CenterCrop;
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners;
 import com.bumptech.glide.request.FutureTarget;
 import com.bumptech.glide.request.RequestOptions;
-import com.daimajia.slider.library.Animations.DescriptionAnimation;
-import com.daimajia.slider.library.SliderLayout;
-import com.daimajia.slider.library.SliderTypes.BaseSliderView;
-import com.daimajia.slider.library.SliderTypes.TextSliderView;
-import com.daimajia.slider.library.Tricks.ViewPagerEx;
 import com.google.android.gms.ads.AdListener;
-import com.google.android.gms.ads.AdLoader;
 import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.AdSize;
 import com.google.android.gms.ads.AdView;
 import com.google.android.gms.ads.InterstitialAd;
 import com.google.android.gms.ads.formats.UnifiedNativeAd;
-import com.google.android.gms.ads.formats.UnifiedNativeAdView;
 import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.OnFailureListener;
-import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.analytics.FirebaseAnalytics;
-import com.google.firebase.firestore.DocumentReference;
-import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.remoteconfig.FirebaseRemoteConfig;
 import com.google.firebase.remoteconfig.FirebaseRemoteConfigSettings;
 import com.jaredco.regrann.BuildConfig;
@@ -106,10 +96,12 @@ import com.jaredco.regrann.R;
 import com.jaredco.regrann.model.InstaItem;
 import com.jaredco.regrann.sqlite.KeptListAdapter;
 import com.jaredco.regrann.util.Util;
-import com.ogury.ed.OguryThumbnailAd;
-import com.ogury.ed.OguryThumbnailAdCallback;
+import com.potyvideo.slider.library.Animations.DescriptionAnimation;
+import com.potyvideo.slider.library.SliderLayout;
+import com.potyvideo.slider.library.SliderTypes.BaseSliderView;
+import com.potyvideo.slider.library.SliderTypes.TextSliderView;
+import com.potyvideo.slider.library.Tricks.ViewPagerEx;
 
-import org.apache.commons.io.FileUtils;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
@@ -126,80 +118,64 @@ import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
-import java.net.URLConnection;
 import java.nio.channels.FileChannel;
 import java.nio.file.Files;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Calendar;
-import java.util.Comparator;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.Objects;
 import java.util.Random;
 import java.util.concurrent.ExecutionException;
 
 import io.presage.Presage;
-import io.presage.common.AdConfig;
+import ly.img.android.pesdk.PhotoEditorSettingsList;
+import ly.img.android.pesdk.assets.filter.basic.FilterPackBasic;
+import ly.img.android.pesdk.assets.font.basic.FontPackBasic;
+import ly.img.android.pesdk.assets.frame.basic.FramePackBasic;
+import ly.img.android.pesdk.assets.overlay.basic.OverlayPackBasic;
+import ly.img.android.pesdk.assets.sticker.emoticons.StickerPackEmoticons;
+import ly.img.android.pesdk.assets.sticker.shapes.StickerPackShapes;
+import ly.img.android.pesdk.backend.model.EditorSDKResult;
+import ly.img.android.pesdk.backend.model.state.LoadSettings;
+import ly.img.android.pesdk.backend.model.state.PhotoEditorSaveSettings;
+import ly.img.android.pesdk.ui.activity.EditorBuilder;
+import ly.img.android.pesdk.ui.model.state.UiConfigFilter;
+import ly.img.android.pesdk.ui.model.state.UiConfigFrame;
+import ly.img.android.pesdk.ui.model.state.UiConfigOverlay;
+import ly.img.android.pesdk.ui.model.state.UiConfigSticker;
+import ly.img.android.pesdk.ui.model.state.UiConfigText;
 
 import static com.jaredco.regrann.R.id.slider;
 import static java.lang.Thread.sleep;
 
-//import com.dragonmobile.sdk.api.Dragon;
 
-
-//import com.aviary.android.feather.sdk.AviaryIntent;
-
-//import com.google.android.gms.plus.PlusOneButton;
-
-
-/*****
- *
- private void onInviteClicked() {
- Intent intent = new AppInviteInvitation.IntentBuilder(getString(R.string.invitation_title))
- .setMessage(getString(R.string.invitation_message))
- .setDeepLink(Uri.parse(getString(R.string.invitation_deep_link)))
- .setCustomImage(Uri.parse(getString(R.string.invitation_custom_image)))
- .setCallToActionText(getString(R.string.invitation_cta))
- .build();
- startActivityForResult(intent, REQUEST_INVITE);
- }
-
- @Override protected void onActivityResult(int requestCode, int resultCode, Intent data) {
- super.onActivityResult(requestCode, resultCode, data);
- Log.d(TAG, "onActivityResult: requestCode=" + requestCode + ", resultCode=" + resultCode);
-
- if (requestCode == REQUEST_INVITE) {
- if (resultCode == RESULT_OK) {
- // Get the invitation IDs of all sent messages
- String[] ids = AppInviteInvitation.getInvitationIds(resultCode, data);
- for (String id : ids) {
- Log.d(TAG, "onActivityResult: sent invitation " + id);
- }
- } else {
- // Sending failed or it was canceled, show failure message to the user
- // ...
- }
- }
- }
- **/
-
-
-/**
- * import com.revmob.RevMob;
- * import com.revmob.RevMobAdsListener;
- **/
-public class ShareActivity extends AppCompatActivity implements BaseSliderView.OnSliderClickListener, ViewPagerEx.OnPageChangeListener, OnClickListener, OnSeekBarChangeListener, OnCompletionListener, OnPreparedListener {
+public class ShareActivity extends AppCompatActivity implements BaseSliderView.OnSliderClickListener, ViewPagerEx.OnPageChangeListener, OnClickListener, OnCompletionListener, OnPreparedListener {
     int buttonWidth;
-    private ImageView postlater, btnCurrentToFeed, btnCurrentToStory, btnInstagramstories, scheduleBtn, settings, btnEmail, btndownloadphoto, btnTweet, btnFacebook, btnSMS, btnSetting, btnInviteFriends, btnInstagram, btnShare;
+    private ImageView postlater;
+    private ImageView btnCurrentToFeed;
+    private ImageView btnCurrentToStory;
+    private ImageView btnInstagramstories;
+    private ImageView settings;
+    private ImageView btnEmail;
+    private ImageView btndownloadphoto;
+    private ImageView btnTweet;
+    private ImageView btnFacebook;
+    private ImageView btnSMS;
+    private ImageView btnSetting;
+    private ImageView btnInviteFriends;
+    private ImageView btnInstagram;
+    private ImageView btnShare;
     private ImageView btnShareAppFB, videoIcon, btnShareAppTW, btnShareAppGooglePlus;
     private SeekBar seekBarOpacity;
     private String uriStr;
     private ConstraintLayout mainUI;
     ImageView previewImage;
 
+    private AdView adBannerView;
+    private FrameLayout adContainerView;
+
+    boolean readyToHideSpinner = false;
     boolean btnStoriesClicked = false;
     boolean instagramLoggedIn = false;
     boolean is_private = false;
@@ -207,10 +183,9 @@ public class ShareActivity extends AppCompatActivity implements BaseSliderView.O
     String currentURL = "";
     static String[] fnames = new String[30];
     Uri uri;
-    private String instagram_activity = "com.instagram.share.common.ShareHandlerActivity";
+    private final String instagram_activity = "com.instagram.share.common.ShareHandlerActivity";
     boolean tiktokLink = false;
 
-    private DownloadManager downloadManager;
     private long refid;
     private Uri Download_Uri;
 
@@ -222,15 +197,12 @@ public class ShareActivity extends AppCompatActivity implements BaseSliderView.O
 
     boolean shouldLoadAds = true;
 
-    private String app_api_key = "OGY-EF265F412C32";
-
     VideoView videoPlayer;
 
     private LinearLayout screen_ui;
     SkuDetails skuDetailsRemoveAds = null;
     ProgressDialog pdmulti;
 
-    private int smallBannerPlacmentId = -1;
     private static final String BASE_64_ENCODED_PUBLIC_KEY = "MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEA4eVlDAKokhC8AZEdsUsKkFJSvsX+d+J8zclWZ25ADxZYOjE+syRGRZo/dBnt5q5YgC4TmyDdF6UFqZ09mlFvwkpU03X+AJP7JadT2bz1jwELBrjsHVlpOFFMwzXrmmBScGybllC+9BBHbnZQDCTRa81GKTdMDSoV/9ez+fdmYy8uCYEOMJ0bCx1eRA3wHMKWiOx5RKoCqBn8PnNOH6JbuXSZOWc762Pkz1tUr2cSuuW7RotgnsMT02jvyALLVcCDiq+yVoRmHrPQCSgcm3Olwc5WjkBoAQMsvy9hn/dyL8a3MtUY0HBI8tN7VJ/r9yhs2JiXCf3jcmd80qF51XJyoQIDAQAB";
 
     private static final String TAG = ShareActivity.class.getName();
@@ -242,7 +214,7 @@ public class ShareActivity extends AppCompatActivity implements BaseSliderView.O
     long photoDownloadID = 0;
     long videoDownloadID = 0;
     int sdkVersion;
-    private AdView mAdView;
+
     boolean supressToast = false;
     static ShareActivity _this;
     public static final int ACTION_SMS_SEND = 0;
@@ -252,7 +224,7 @@ public class ShareActivity extends AppCompatActivity implements BaseSliderView.O
     public static final int MEDIA_VIDEO = 2;
 
     private ProgressBar spinner;
-    private String mTinyUrl = null;
+    private final String mTinyUrl = null;
     JSONObject jsonInstagramDetails;
     static String url, title, author;
     String internalPath;
@@ -266,6 +238,8 @@ public class ShareActivity extends AppCompatActivity implements BaseSliderView.O
     private TextView t;
     private String profile_pic_url;
     private Bitmap originalBitmapBeforeNoCrop;
+    DownloadManager downloadManager;
+    int PESDK_RESULT = 10023;
 
     SharedPreferences sharedPref;
     private String caption_suffix = "";
@@ -279,14 +253,13 @@ public class ShareActivity extends AppCompatActivity implements BaseSliderView.O
     boolean isJPEG = false;
     boolean isQuickKeep = false;
 
-    int numOfMultiVideos = 0;
 
     static String tempFileName;
     String tempVideoName = "temp/tmpvideo.mp4";
     File tempVideoFile;
-    String tempFileFullPathName, tempVideoFullPathName = "";
+    String tempFileFullPathName, regrannDownloadfolder, tempVideoFullPathName = "";
     String regrannPictureFolder = null;
-    String regrannMultiPostFolder = null;
+    String regrannMultiPostFolder, regrannMultiPostPictureFolder;
     int count, count2;
 
     AlertDialog rateRequestDialog, msgDialog;
@@ -301,6 +274,7 @@ public class ShareActivity extends AppCompatActivity implements BaseSliderView.O
     String videoURL;
     SharedPreferences preferences;
 
+    LinearLayout vButtons;
     private InterstitialAd mInterstitialAd;
 
     Random rand = new Random();
@@ -309,24 +283,22 @@ public class ShareActivity extends AppCompatActivity implements BaseSliderView.O
 
     boolean QuickSaveShare = false;
 
-    private FirebaseAnalytics mFirebaseAnalytics;
     // The request code must be 0 or greater.
     private static final int PLUS_ONE_REQUEST_CODE = 0;
 
-    private Intent shareIntent = null;
-    private boolean sendToInstagram = false;
-
-    private int showAdProbability = 0;
+    private final int showAdProbability = 0;
     private boolean showInterstitial;
-    private boolean showNativeAd = true;
-    private boolean showNimmbleBanner = true;
+    private final boolean showNativeAd = true;
+    private final boolean showNimmbleBanner = true;
     private boolean noAds = false;
-    AdView adView;
+
+
     private boolean instagramBtnClicked = false;
 
 
     private static final String ADMOB_AD_UNIT_ID = "ca-app-pub-8534786486141147/7602271271";
 
+    File lastDownloadedFile;
 
     private UnifiedNativeAd nativeAd;
     boolean billingReady = false;
@@ -396,16 +368,10 @@ public class ShareActivity extends AppCompatActivity implements BaseSliderView.O
         final List<String> permissionsList = new ArrayList<String>();
         if (!addPermission(permissionsList, Manifest.permission.WRITE_EXTERNAL_STORAGE))
             permissionsNeeded.add("Read SMS");
-        //    if (!addPermission(permissionsList, Manifest.permission.RECEIVE_SMS))
-        //       permissionsNeeded.add("Read SMS");
-        //   if (!addPermission(permissionsList, android.Manifest.permission.READ_SMS))
-        //      permissionsNeeded.add("Read SMS");
 
 
         if (permissionsNeeded.size() > 0) {
 
-            //     Intent test = new Intent(this, CheckPermissions.class);
-            //    startActivity(test);
 
             Intent i;
 
@@ -578,20 +544,9 @@ public class ShareActivity extends AppCompatActivity implements BaseSliderView.O
 
         _this = this;
 
-        //   System.setProperty("http.keepAlive", "false");
 
         numMultVideos = 0;
 
-/**
- Intent myService = new Intent(RegrannApp._this, ClipboardListenerService.class);
- if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
- ContextCompat.startForegroundService(_this, myService);
- } else {
- _this.startService(myService);
- }
- **/
-
-        //   setupBilling();
 
         sharedPref = this.getPreferences(Context.MODE_PRIVATE);
 
@@ -600,10 +555,12 @@ public class ShareActivity extends AppCompatActivity implements BaseSliderView.O
         isVine = getIntent().getBooleanExtra("vine", false);
 
         tiktokLink = getIntent().getBooleanExtra("tiktok", false);
+
+
         noAds = preferences.getBoolean("removeAds", false);
 
         if (BuildConfig.DEBUG) {
-            //       noAds = false;
+            //   noAds = false;
         }
 
 
@@ -614,13 +571,10 @@ public class ShareActivity extends AppCompatActivity implements BaseSliderView.O
 
             RegrannApp.sendEvent("sc_paiduser");
         } else {
+            String app_api_key = "OGY-EF265F412C32";
             Presage.getInstance().start(app_api_key, this);
         }
 
-        //   AppGrowDataMonetizationSDKFactory.getSDK().init(ShareActivity.this, ShareActivity.this);
-
-
-        //Dragon.engage(this);
 
         downloadManager = (DownloadManager) getSystemService(Context.DOWNLOAD_SERVICE);
 
@@ -628,10 +582,7 @@ public class ShareActivity extends AppCompatActivity implements BaseSliderView.O
                 new IntentFilter(DownloadManager.ACTION_DOWNLOAD_COMPLETE));
 
 
-        mFirebaseAnalytics = FirebaseAnalytics.getInstance(this);
-
-        // Get Remote Config instance.
-        // [START get_remote_config_instance]
+        FirebaseAnalytics mFirebaseAnalytics = FirebaseAnalytics.getInstance(this);
 
 
         try {
@@ -679,23 +630,10 @@ public class ShareActivity extends AppCompatActivity implements BaseSliderView.O
         }
 
 
-        // [END get_remote_config_instance]
-
-        // Create Remote Config Setting to enable developer mode.
-        // Fetching configs from the server is normally limited to 5 requests per hour.
-        // Enabling developer mode allows many more requests to be made per hour, so developers
-        // can test different config values during development.
-        // [START enable_dev_mode]
-
-        numOfMultiVideos = 0;
-
-
         _this = this;
 
 
         updateScreenOn = false;
-        // String refreshedToken = FirebaseInstanceId.getInstance().getToken();
-        // Log.d(TAG, "Refreshed firebase token: " + refreshedToken);
 
 
         List<String> permissionsNeeded = new ArrayList<String>();
@@ -778,40 +716,77 @@ public class ShareActivity extends AppCompatActivity implements BaseSliderView.O
             @Override
             public void run() {
                 try {
-                    deleteOldFiles("temp");
+                    //     deleteOldFiles("temp");
                 } catch (Exception e) {
                 }
             }
         });
         thread.start();
 
+
         // Get the directory for the user's public pictures directory.
-        File file = new File(Environment.getExternalStorageDirectory(), "temp");
+        File file = new File(Environment.getExternalStorageDirectory(), Environment.DIRECTORY_PICTURES + Util.RootDirectoryPhoto);
 
         if (!file.mkdirs()) {
             Log.e("error", "Directory not created");
         }
 
+
+        // Get the directory for the user's public pictures directory.
+        File file2 = new File(Environment.getExternalStorageDirectory(), Environment.DIRECTORY_DOWNLOADS + Util.RootDirectoryPhoto);
+
+        if (!file2.mkdirs()) {
+            Log.e("error", "Directory not created");
+        }
+
         try {
 
-
-            File output = new File(file.getPath(), ".nomedia");
+            File output = new File(file2.getPath(), ".nomedia");
             boolean fileCreated = output.createNewFile();
         } catch (Exception e) {
         }
 
         tempFileName = "temp_regrann_" + System.currentTimeMillis() + ".jpg";
-        tempVideoName = "/temp/temp_regrann_" + System.currentTimeMillis() + ".mp4";
+        tempVideoName = "temp_regrann_" + System.currentTimeMillis() + ".mp4";
 
-        tempFileFullPathName = file.toString() + File.separator + tempFileName;
+        tempFileFullPathName = file2.toString() + File.separator + tempFileName;
 
-        regrannPictureFolder = getAlbumStorageDir("Regrann").getAbsolutePath();
+        regrannPictureFolder = new File(Environment.getExternalStorageDirectory(), Environment.DIRECTORY_PICTURES + Util.RootDirectoryPhoto).getAbsolutePath();
 
-        regrannMultiPostFolder = getAlbumStorageDir("Regrann - Multi Post").getAbsolutePath();
+
+        regrannDownloadfolder = new File(Environment.getExternalStorageDirectory(), Environment.DIRECTORY_DOWNLOADS + Util.RootDirectoryPhoto).getAbsolutePath();
+
+        regrannMultiPostFolder = new File(Environment.getExternalStorageDirectory(), Environment.DIRECTORY_DOWNLOADS + Util.RootDirectoryMultiPhoto).getAbsolutePath();
+
+        regrannMultiPostPictureFolder = new File(Environment.getExternalStorageDirectory(), Environment.DIRECTORY_PICTURES + Util.RootDirectoryMultiPhoto).getAbsolutePath();
+
 
         try {
             // Clear the multipost folder
+
             File dir = new File(regrannMultiPostFolder);
+            if (dir.isDirectory()) {
+                String[] children = dir.list();
+                for (int i = 0; i < children.length; i++) {
+                    try {
+                        File toDelete = new File(dir, children[i]);
+                        //  RegrannApp._this.getApplicationContext().getContentResolver().delete(Uri.fromFile(toDelete), null, null);
+                        toDelete.delete();
+
+                        //    _this.sendBroadcast(new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE, Uri.fromFile(toDelete)));
+
+                    } catch (Exception e) {
+                        int i4 = 1;
+                    }
+
+
+                }
+
+            }
+
+
+            dir = new File(Environment.getExternalStorageDirectory(), Environment.DIRECTORY_PICTURES +
+                    Util.RootDirectoryMultiPhoto);
             if (dir.isDirectory()) {
                 String[] children = dir.list();
                 for (int i = 0; i < children.length; i++) {
@@ -826,11 +801,6 @@ public class ShareActivity extends AppCompatActivity implements BaseSliderView.O
                         int i4 = 1;
                     }
 
-
-                    //  getContentResolver().delete(
-                    // MediaStore.Images.Media.EXTERNAL_CONTENT_URI,
-                    //MediaStore.Images.Media.DATA + "='"
-                    //      + new File(dir, children[i]).getPath() + "'", null);
 
                 }
 
@@ -873,12 +843,6 @@ public class ShareActivity extends AppCompatActivity implements BaseSliderView.O
         }
 
 
-        // shareIntent.putExtra("fromExtension", true);
-        //shareIntent.putExtra("tempFileName", tempFileFullPathName);
-
-        //   shareIntent.putExtra("mediaType", mediaType);/
-
-
         if (getIntent().getBooleanExtra("fromExtension", false)) {
 
 
@@ -888,7 +852,7 @@ public class ShareActivity extends AppCompatActivity implements BaseSliderView.O
         }
 
 
-        inputMediaType = getIntent().getIntExtra("mediaType", 0);
+        inputMediaType = 0;
         inputFileName = getIntent().getStringExtra("fileName");
         QuickSaveShare = getIntent().getBooleanExtra("quicksave", false);
 
@@ -939,306 +903,13 @@ public class ShareActivity extends AppCompatActivity implements BaseSliderView.O
 
         if (isQuickPost || ((inputMediaType == 0) && (isAutoSave || isQuickKeep))) {
 
-
-            String title = null;
-
-
-            if (1 == 1 || noAds) {
-                setContentView(R.layout.activity_autosave2);
-                Toolbar myToolbar = findViewById(R.id.my_toolbar);
-
-
-                setSupportActionBar(myToolbar);
-                getSupportActionBar().setTitle("Regrann");
-
-                startAutoSaveMultiProgress();
-                //   Toast toast = Toast.makeText(ShareActivity.this, "Regrann is processing...please wait until completed!", Toast.LENGTH_LONG);
-                //  toast.setGravity(Gravity.CENTER_VERTICAL, 0, 0);
-
-                // toast.show();
-            } else {
-
-
-                if (isAutoSave) {
-
-                    showInterstitial = true;
-
-                    setContentView(R.layout.activity_autosave);
-
-                    initAdinCube();
-
-                    Toolbar myToolbar = findViewById(R.id.my_toolbar);
-
-
-                    setSupportActionBar(myToolbar);
-                    getSupportActionBar().setTitle("Regrann Quick Save");
-
-
-                    spinner = findViewById(R.id.loading_bar);
-                    findViewById(R.id.upgradeBtn).setVisibility(View.INVISIBLE);
-                    findViewById(R.id.backBtn).setVisibility(View.INVISIBLE);
-
-                    //   mAdView = findViewById(R.id.rect_ad_view);
-
-
-                    //    AdRequest adRequest = new AdRequest.Builder().
-                    //           addTestDevice("B1D20D0F336796629655D59351F179F8").addTestDevice("03B8364E84BB1446DA5C8FDFA9A4E356").build();
-                    //   mAdView.loadAd(adRequest);
-
-
-                }
-            }
-
-
-            //     if (isQuickPost)
-            //   setContentView(R.layout.activity_quickpost);
-
-
-            // if (isQuickKeep)
-            // setContentView(R.layout.activity_quickkeep);
-
-
-            //      spinner = (ProgressBar) findViewById(R.id.progressBar1);
-            //    spinner.setVisibility(View.VISIBLE);
-
-
-            //     settings = (ImageView) findViewById(R.id.settingsView);
-            //    settings.setOnClickListener(this);
+            initQuickActionScreen();
 
 
         } else {
 
 
-            int numSessions = preferences.getInt("count_sessions", 0);
-            if (numSessions < 4)
-                noAds = true;
-
-            //    if (BuildConfig.DEBUG)
-            //      noAds = false;
-
-
-            setContentView(R.layout.activity_share_main);
-
-
-            Toolbar myToolbar = findViewById(R.id.my_toolbar);
-            setSupportActionBar(myToolbar);
-
-
-            long prevAdShown = preferences.getLong("instagramAdShownTime", 0);
-
-            long diff = (System.currentTimeMillis() - prevAdShown) / 1000 / 60;
-            Log.d("app5", "DIFF save Button :" + diff);
-
-
-            showInterstitial = !noAds;
-
-            //      if (BuildConfig.DEBUG)
-            //         showInterstitial = true ;
-
-            if (showInterstitial) {
-                initAdinCube();
-                //   findViewById(R.id.fl_adplaceholder).setVisibility(View.VISIBLE);
-                //  refreshAd();
-            } else {
-                mAdView = findViewById(R.id.adView);
-                mAdView.setVisibility(View.GONE);
-            }
-
-            //else
-            //  findViewById(R.id.fl_adplaceholder).setVisibility(View.GONE);
-
-
-            smallBannerPlacmentId = ((RegrannApp) getApplication()).getBannerPlacementId();
-
-
-            spinner = findViewById(R.id.loading_bar);
-            spinner.setVisibility(View.VISIBLE);
-
-            /**
-
-             try {
-
-             webView = findViewById(R.id.newsView);
-
-             if (noAds) {
-             webView.setVisibility(View.GONE);
-
-
-             } else {
-             //   webView.setVisibility(View.VISIBLE);
-
-
-             try {
-             webView.getSettings().setJavaScriptEnabled(true);
-             } catch (Exception e7) {
-             }
-
-
-             webView.clearCache(true);
-
-             webView.setOnTouchListener(new View.OnTouchListener() {
-
-            @Override public boolean onTouch(View arg0, MotionEvent event) {
-            // TODO Auto-generated method stub
-            return (event.getAction() == MotionEvent.ACTION_MOVE);
-            }
-
-            });
-
-
-             webView.setWebViewClient(new WebViewClient() {
-             public boolean shouldOverrideUrlLoading(WebView viewx, String urlx) {
-
-             Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(urlx));
-             startActivity(browserIntent);
-
-
-             return true;
-             }
-             });
-
-             webView.setVerticalScrollBarEnabled(false);
-             webView.setHorizontalScrollBarEnabled(false);
-
-             String versionName = "";
-             try {
-             versionName = ShareActivity.this.getPackageManager()
-             .getPackageInfo(ShareActivity.this.getPackageName(), 0).versionName;
-
-             } catch (Exception e5) {
-             }
-
-
-             if (noAds == false)
-             webView.loadUrl("http://r.regrann.com/news.html?ver=" + versionName + "&OS=" + android.os.Build.VERSION.SDK_INT);
-             else
-             webView.loadUrl("http://r.regrann.com/news-noads.html?ver=" + versionName + "&OS=" + android.os.Build.VERSION.SDK_INT);
-             }
-             } catch (Exception e) {
-
-             RegrannApp.sendEvent("WebView_Error", "", "");
-             }
-             **/
-
-            //---------------------
-            // Code for using webview instagram for private photos
-
-            launchedLogin = false;
-
-
-            launchedLogin = false;
-/**
-
- class JsObject {
-@JavascriptInterface public String toString() {
-return "injectedObject";
-}
-}
-
- webViewInsta = findViewById(R.id.browser);
-
- webViewInsta.setVisibility(View.INVISIBLE);
- webViewInsta.getSettings().setJavaScriptEnabled(true);
-
- webViewInsta.getSettings().setJavaScriptCanOpenWindowsAutomatically(true);
- webViewInsta.addJavascriptInterface(new JsObject(), "HtmlViewer");
- webViewInsta.getSettings().setDomStorageEnabled(true);
- webViewInsta.getSettings().setDatabaseEnabled(true);
- webViewInsta.getSettings().setAllowFileAccess(true);
- webViewInsta.getSettings().setAppCacheEnabled(true);
- webViewInsta.addJavascriptInterface(new WebViewJavaScriptInterface(this), "HTMLOUT");
-
-
- webViewInsta.setWebViewClient(new WebViewClient() {
- public void onPageFinished(WebView view, String url) {
- webViewInsta.loadUrl("javascript:window.HTMLOUT.processHTML('<html>'+document.getElementsByTagName('html')[0].innerHTML+'</html>');");
-
- }
- });
- **/
-
-            //---------------------
-
-            caption_suffix = "";
-
-
-            SharedPreferences.Editor editor = preferences.edit();
-
-            editor.putInt("count_sessions", numSessions + 1);
-
-            editor.apply();
-
-
-            sharedPref = this.getPreferences(Context.MODE_PRIVATE);
-
-
-            mainUI = findViewById(R.id.UI_Layout);
-            mainUI.setVisibility(View.VISIBLE);
-
-
-            previewImage = findViewById(R.id.previewImage);
-            previewImage.setImageDrawable(null);
-
-             previewImage.setVisibility(View.GONE);
-
-            btnInstagram = findViewById(R.id.instagrambtn);
-            btnInstagram.setOnClickListener(this);
-
-
-            btnInstagramstories = findViewById(R.id.instagramstoriesbtn);
-            btnInstagramstories.setOnClickListener(this);
-
-
-            videoIcon = findViewById(R.id.videoicon);
-            videoIcon.setVisibility(View.GONE);
-
-            btnShare = findViewById(R.id.sharebtn);
-            btnShare.setOnClickListener(this);
-
-            postlater = findViewById(R.id.postlater);
-            postlater.setOnClickListener(this);
-
-            btnCurrentToFeed = findViewById(R.id.currentToFeed);
-            btnCurrentToFeed.setOnClickListener(this);
-
-            //     btnCurrentToStory = findViewById(R.id.currentToStory);
-            //   btnCurrentToStory.setOnClickListener(this);
-
-
-            scheduleBtn = findViewById(R.id.scheduleBtn);
-            scheduleBtn.setOnClickListener(this);
-
-
-            btnShare = findViewById(R.id.sharebtn);
-            btnShare.setOnClickListener(this);
-
-
-            btndownloadphoto = findViewById(R.id.downloadphoto);
-            btndownloadphoto.setOnClickListener(this);
-
-            mDemoSlider = findViewById(slider);
-
-            mDemoSlider.setVisibility(View.GONE);
-
-            mDemoSlider.setPresetTransformer(SliderLayout.Transformer.Stack);
-            mDemoSlider.setPresetIndicator(SliderLayout.PresetIndicators.Center_Bottom);
-            mDemoSlider.setCustomAnimation(new DescriptionAnimation());
-            mDemoSlider.setDuration(4000);
-            mDemoSlider.addOnPageChangeListener(this);
-
-
-            Display display = getWindowManager().getDefaultDisplay();
-            Point size = new Point();
-            display.getSize(size);
-            int width = size.x;
-            int height = size.y;
-
-
-            if (inputMediaType != 0) {
-                isQuickPost = true;
-
-            }
-
+            initMainScreen();
 
         }
 
@@ -1253,60 +924,26 @@ return "injectedObject";
             try {
 
                 title = "";
-                if (inputMediaType != 0) {
-
-                    if (Util.isKeepCaption(_this) == false)
-                        title = "@Regrann no-crop...";
-                    tempFileName = inputFileName;
-                    if (inputMediaType == 1)
-                        tempFileFullPathName = tempFileName;
-
-                    //   tempVideoFullPathName = tempFileName ;
-
-                    tempFile = new File(tempFileFullPathName);
 
 
-                    processPhotoImage();
+                tempFile = new File(tempFileFullPathName);
 
+                final Intent iv = getIntent();
 
+                if (getIntent().getBooleanExtra("fromExtension", false) == false) {
+                    Log.d("mediaURL", iv.getStringExtra("mediaUrl"));
+                    String url = iv.getStringExtra("mediaUrl");
+                    // String result = GET (t);
+                    if (tiktokLink)
+                        FetchDownloadUrlService.startFetchDownloadUrlService(_this, url);
+
+                    else
+                        startProcessURL(url);
                 } else {
 
-                    tempFile = new File(tempFileFullPathName);
-                    // Thread thread = new Thread(new Runnable() {
-                    // @Override
-                    // public void run() {
-
-
-                    final Intent iv = getIntent();
-
-                    // isJPEG = (iv.getStringExtra("isJPEG").compareTo("yes") == 0);
-
-                    // if (iv.getStringExtra("isJPEG").compareTo("no") == 0) {
-                    //    new RetrieveFeedTask().execute();
-
-                    try {
-
-
-                        if (getIntent().getBooleanExtra("fromExtension", false) == false) {
-                            Log.d("mediaURL", iv.getStringExtra("mediaUrl"));
-                            String url = iv.getStringExtra("mediaUrl");
-                            // String result = GET (t);
-                            if (tiktokLink)
-                                FetchDownloadUrlService.startFetchDownloadUrlService(_this, url);
-
-                            else
-                                startProcessURL(url);
-                        } else {
-
-                            handleImageFromExtension();
-                        }
-
-                    } catch (Exception e) {
-                        showErrorToast("#1 - " + e.getMessage(), getString(R.string.porblemfindingphoto), true);
-
-                    }
+                    handleImageFromExtension();
                 }
-                // }
+
 
             } catch (Exception e) {
                 showErrorToast("#2 - " + e.getMessage(), getString(R.string.therewasproblem), true);
@@ -1318,7 +955,179 @@ return "injectedObject";
     }
 
 
-    private BroadcastReceiver downloadCompleteReceiver = new BroadcastReceiver() {
+    private void initQuickActionScreen() {
+        String title = null;
+
+
+        if (1 == 1 || noAds) {
+            setContentView(R.layout.activity_autosave2);
+
+            Toolbar myToolbar = findViewById(R.id.my_toolbar);
+
+            spinner = findViewById(R.id.loading_bar2);
+            spinner.setVisibility(View.VISIBLE);
+            setSupportActionBar(myToolbar);
+            getSupportActionBar().setTitle("Regrann");
+
+            startAutoSaveMultiProgress();
+            //   Toast toast = Toast.makeText(ShareActivity.this, "Regrann is processing...please wait until completed!", Toast.LENGTH_LONG);
+            //  toast.setGravity(Gravity.CENTER_VERTICAL, 0, 0);
+
+            // toast.show();
+        } else {
+
+
+            if (isAutoSave || isQuickPost || isQuickKeep) {
+
+                showInterstitial = true;
+
+                setContentView(R.layout.activity_autosave);
+
+                Toolbar myToolbar = findViewById(R.id.my_toolbar);
+
+
+                setSupportActionBar(myToolbar);
+                getSupportActionBar().setTitle("Regrann Quick Save");
+
+
+                spinner = findViewById(R.id.loading_bar);
+                findViewById(R.id.upgradeBtn).setVisibility(View.INVISIBLE);
+                findViewById(R.id.backBtn).setVisibility(View.INVISIBLE);
+
+
+            }
+        }
+
+    }
+
+    private void initMainScreen() {
+
+        int numSessions = preferences.getInt("count_sessions", 0);
+        if (numSessions < 4)
+            noAds = true;
+
+        //    if (BuildConfig.DEBUG)
+        //      noAds = false;
+
+
+        setContentView(R.layout.activity_share_main);
+
+
+        Toolbar myToolbar = findViewById(R.id.my_toolbar);
+        setSupportActionBar(myToolbar);
+
+
+        long prevAdShown = preferences.getLong("instagramAdShownTime", 0);
+
+
+        showInterstitial = !noAds;
+
+        //      if (BuildConfig.DEBUG)
+        //         showInterstitial = true ;
+
+        if (showInterstitial) {
+            initAdinCube();
+            AddBannerAd(findViewById(R.id.adFrameLayout));
+            //   findViewById(R.id.fl_adplaceholder).setVisibility(View.VISIBLE);
+            //  refreshAd();
+        }
+
+
+        int smallBannerPlacmentId = ((RegrannApp) getApplication()).getBannerPlacementId();
+
+
+        spinner = findViewById(R.id.loading_bar);
+        spinner.setVisibility(View.VISIBLE);
+
+
+        launchedLogin = false;
+
+
+        launchedLogin = false;
+
+
+        caption_suffix = "";
+
+
+        SharedPreferences.Editor editor = preferences.edit();
+
+        editor.putInt("count_sessions", numSessions + 1);
+
+        editor.apply();
+
+
+        sharedPref = this.getPreferences(Context.MODE_PRIVATE);
+
+
+        mainUI = findViewById(R.id.UI_Layout);
+        mainUI.setVisibility(View.VISIBLE);
+
+        vButtons = findViewById(R.id.buttons);
+        vButtons.setVisibility(View.INVISIBLE);
+
+
+        previewImage = findViewById(R.id.previewImage);
+        previewImage.setImageDrawable(null);
+
+        previewImage.setVisibility(View.GONE);
+
+        btnInstagram = findViewById(R.id.instagrambtn);
+        btnInstagram.setOnClickListener(this);
+
+
+        btnInstagramstories = findViewById(R.id.instagramstoriesbtn);
+        btnInstagramstories.setOnClickListener(this);
+
+
+        videoIcon = findViewById(R.id.videoicon);
+        videoIcon.setVisibility(View.GONE);
+
+        btnShare = findViewById(R.id.sharebtn);
+        btnShare.setOnClickListener(this);
+
+        postlater = findViewById(R.id.postlater);
+        postlater.setOnClickListener(this);
+
+        btnCurrentToFeed = findViewById(R.id.currentToFeed);
+        btnCurrentToFeed.setOnClickListener(this);
+
+
+        ImageView scheduleBtn = findViewById(R.id.scheduleBtn);
+        scheduleBtn.setOnClickListener(this);
+
+
+        btnShare = findViewById(R.id.sharebtn);
+        btnShare.setOnClickListener(this);
+
+
+        btndownloadphoto = findViewById(R.id.downloadphoto);
+        btndownloadphoto.setOnClickListener(this);
+
+        mDemoSlider = findViewById(slider);
+
+        mDemoSlider.setVisibility(View.GONE);
+
+        mDemoSlider.setPresetTransformer(SliderLayout.Transformer.Stack);
+        mDemoSlider.setPresetIndicator(SliderLayout.PresetIndicators.Center_Bottom);
+        mDemoSlider.setCustomAnimation(new DescriptionAnimation());
+        mDemoSlider.setDuration(4000);
+        mDemoSlider.addOnPageChangeListener(this);
+
+
+        Display display = getWindowManager().getDefaultDisplay();
+        Point size = new Point();
+        display.getSize(size);
+        int width = size.x;
+        int height = size.y;
+
+
+        if (inputMediaType != 0) {
+            isQuickPost = true;
+
+        }
+    }
+
+    private final BroadcastReceiver downloadCompleteReceiver = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
             if (intent != null && intent.getAction() != null) {
@@ -1381,15 +1190,12 @@ return "injectedObject";
     };
 
 
-    private TiktokPost tiktokPost;
-
-
-    private BroadcastReceiver myDownloadLinkReceiver = new BroadcastReceiver() {
+    private final BroadcastReceiver myDownloadLinkReceiver = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
 
 
-            tiktokPost = intent.getParcelableExtra("data");
+            TiktokPost tiktokPost = intent.getParcelableExtra("data");
             if (tiktokPost != null && tiktokPost.getDownloadUrl() != null) {
                 if (spinner != null)
                     spinner.setVisibility(View.GONE);
@@ -1554,86 +1360,77 @@ return "injectedObject";
 
 
                 boolean show_midrect = preferences.getBoolean("show_midrect", true);
-                mAdView = findViewById(R.id.adView);
+
                 if (1 == 2 && isAutoSave == false && show_midrect) {
 
 
-                    AdRequest adRequest = new AdRequest.Builder().addTestDevice(" U").addTestDevice("03B8364E84BB1446DA5C8FDFA9A4E356").build();
-                    mAdView.loadAd(adRequest);
-                } else if (isAutoSave == false)
-                    mAdView.setVisibility(View.GONE);
-
-
-                try {
-
-
-                    AdConfig adConfig = new AdConfig("d966f410-ef78-0137-14e5-0242ac120003");
-                    final OguryThumbnailAd floatingAd = new OguryThumbnailAd(ShareActivity.this, adConfig);
-                    floatingAd.load(250, 140);
-
-
-                    Display display = getWindowManager().getDefaultDisplay();
-                    Point size = new Point();
-                    display.getSize(size);
-                    int width = size.x / 2;
-                    int height = size.y;
-
-                    Log.d("ogury", "" + width + "  :  " + height);
-
-                    floatingAd.setCallback(new OguryThumbnailAdCallback() {
-                        @Override
-                        public void onAdNotLoaded() {
-                            Log.i("Ogury", "on ad not loaded");
-                        }
-
-                        @Override
-                        public void onAdLoaded() {
-                            Log.i("Ogury", "on ad loaded");
-                            if (floatingAd.isLoaded()) {
-
-
-                                Display display = getWindowManager().getDefaultDisplay();
-                                Point size = new Point();
-                                display.getSize(size);
-                                int width = size.x / 2;
-                                int height = size.y;
-
-                                Log.d("ogury", "" + width + "  :  " + height);
-
-
-                                floatingAd.show(ShareActivity.this, 20, 450);
-                            }
-                        }
-
-                        @Override
-                        public void onAdNotAvailable() {
-                            Log.i("Ogury", "on ad not available");
-                        }
-
-                        @Override
-                        public void onAdAvailable() {
-                            Log.i("Ogury", "on ad available");
-                        }
-
-                        @Override
-                        public void onAdError(int code) {
-                            Log.i("Ogury", "on ad error " + code);
-
-                        }
-
-                        @Override
-                        public void onAdClosed() {
-                            Log.i("Ogury", "on ad closed");
-                        }
-
-                        @Override
-                        public void onAdDisplayed() {
-                            Log.i("Ogury", "on ad displayed");
-                        }
-                    });
-
-                } catch (Exception e3) {
                 }
+
+/**
+ try {
+
+
+ AdConfig adConfig = new AdConfig("d966f410-ef78-0137-14e5-0242ac120003");
+ final OguryThumbnailAd floatingAd = new OguryThumbnailAd(ShareActivity.this, adConfig);
+ floatingAd.load(250, 140);
+
+
+ Display display = getWindowManager().getDefaultDisplay();
+ Point size = new Point();
+ display.getSize(size);
+ int width = size.x / 2;
+ int height = size.y;
+
+ Log.d("ogury", "" + width + "  :  " + height);
+
+ floatingAd.setCallback(new OguryThumbnailAdCallback() {
+@Override public void onAdNotLoaded() {
+Log.i("Ogury", "on ad not loaded");
+}
+
+@Override public void onAdLoaded() {
+Log.i("Ogury", "on ad loaded");
+if (floatingAd.isLoaded()) {
+
+
+Display display = getWindowManager().getDefaultDisplay();
+Point size = new Point();
+display.getSize(size);
+int width = size.x / 2;
+int height = size.y;
+
+Log.d("ogury", "" + width + "  :  " + height);
+
+
+floatingAd.show(ShareActivity.this, 20, 450);
+}
+}
+
+@Override public void onAdNotAvailable() {
+Log.i("Ogury", "on ad not available");
+}
+
+@Override public void onAdAvailable() {
+Log.i("Ogury", "on ad available");
+}
+
+@Override public void onAdError(int code) {
+Log.i("Ogury", "on ad error " + code);
+
+}
+
+@Override public void onAdClosed() {
+Log.i("Ogury", "on ad closed");
+}
+
+@Override public void onAdDisplayed() {
+Log.i("Ogury", "on ad displayed");
+}
+});
+
+ } catch (Exception e3) {
+ }
+ **/
 
                 mInterstitialAd.loadAd(new AdRequest.Builder().build());
 
@@ -1720,10 +1517,6 @@ return "injectedObject";
 
         //   IronSource.onResume(this);
 
-        if (mAdView != null) {
-            mAdView.resume();
-        }
-
         /**
          if (autoSaving == false) {
          try {
@@ -1765,40 +1558,68 @@ return "injectedObject";
 
         try {
             Log.d("app5", "in scanmultipostfolder");
-            if (regrannMultiPostFolder != null) {
 
-                File dir = new File(regrannMultiPostFolder);
-                if (dir.isDirectory()) {
-                    String[] children = dir.list();
-                    final File[] sortedFileName = dir.listFiles();
-                    Arrays.sort(sortedFileName, new Comparator<File>() {
-                        @Override
-                        public int compare(File object1, File object2) {
-                            return object1.getName().compareTo(object2.getName());
+
+            //     Thread thread = new Thread(new Runnable() {
+            //       @Override
+            //     public void run() {
+            try {
+                if (regrannMultiPostFolder != null) {
+
+                    File dir = new File(regrannMultiPostFolder);
+                    if (dir.isDirectory()) {
+                        String[] children = dir.list();
+                        //     final File[] sortedFileName = dir.listFiles();
+                        //    Arrays.sort(sortedFileName, new Comparator<File>() {
+                        //       @Override
+                        //      public int compare(File object1, File object2) {
+                        //         return object1.getName().compareTo(object2.getName());
+                        //    }
+                        //  });
+
+                        File toDir = new File(Environment.getExternalStorageDirectory(), Environment.DIRECTORY_PICTURES +
+                                Util.RootDirectoryMultiPhoto);
+
+                        if (toDir == null || !toDir.mkdirs()) {
+                            Log.e("app5", "Directory not created");
                         }
-                    });
 
 
+                        for (int i = 0; i < children.length; i++) {
+                            try {
 
-                    for (int i = sortedFileName.length - 1 ; i >= 0 ; i--) {
-                        try {
-                            sleep(100) ;
-                            File toScan = new File(dir, children[i]);
-                            MediaScannerConnection.scanFile(getApplicationContext(), new String[]{toScan.toString()}, null, null);
+                                if (children[i].contains("nomedia") == false) {
+                                    Log.d("app5", children[i]);
 
-                            Date lastModDate = new Date(toScan.lastModified());
-                            Log.d("app5", "scanning : " + i + ":     " + toScan.toString() + "   " +  lastModDate.toString());
+                                    File toScan = new File(dir, children[i]);
 
-                            //  RegrannApp._this.getApplicationContext().getContentResolver().delete(Uri.fromFile(toDelete), null, null);
+                                    File destination = new File(Environment.getExternalStorageDirectory(), Environment.DIRECTORY_PICTURES +
+                                            Util.RootDirectoryMultiPhoto + children[i]);
+                                    try {
+                                        copy(toScan, destination);
+                                    } catch (IOException e) {
+                                        e.printStackTrace();
+                                    }
 
 
-                        } catch (Exception e) {
-                            int i4 = 1;
+                                    MediaScannerConnection.scanFile(getApplicationContext(), new String[]{destination.toString()}, null, null);
+                                }
+
+
+                            } catch (Exception e) {
+                                int i4 = 1;
+                            }
+
                         }
 
                     }
                 }
+            } catch (Exception e) {
             }
+            //       }
+            //  });
+            // thread.start();
+
         } catch (Exception e) {
         }
 
@@ -1836,40 +1657,6 @@ return "injectedObject";
 
     }
 
-
-    private void addWatermarkToVideo() {
-/**
-
- Videowatermark videoProcessing2 = new Videowatermark(this, bundle2.getString("source"), bundle2.getString("destination"), bundle2.getString(C.BUNDLE_WATERMARK), new OnVideoProcessingListener() {
- public void onComplete() {
- ShareActivity.this.runOnUiThread(new Runnable() {
- public void run() {
-
- }
- });
- }
-
- public void onError(final String str) {
- ShareActivity.this.runOnUiThread(new Runnable() {
- public void run() {
- try {
-
- } catch (Exception unused) {
- }
- }
- });
- }
-
- public void onProgressUpdate(final int i) {
- ShareActivity.this.runOnUiThread(new Runnable() {
- public void run() {
-
- }
- });
- }
- });
- **/
-    }
 
     private void showMultiDialog() {
 
@@ -2108,13 +1895,58 @@ return "injectedObject";
 
         photoReady = true;
 
-        if (spinner != null)
+        if (spinner != null) {
+            Log.d("app5", "remove spinner  1917");
             spinner.setVisibility(View.GONE);
+        }
 
 
         mainUI.setVisibility(View.VISIBLE);
 
 
+    }
+
+
+    private void loadBanner() {
+        // Create an ad request. Check your logcat output for the hashed device ID
+        // to get test ads on a physical device, e.g.,
+        // "Use AdRequest.Builder.addTestDevice("ABCDE0123") to get test ads on this
+        // device."
+        AdRequest adRequest =
+                new AdRequest.Builder().addTestDevice(AdRequest.DEVICE_ID_EMULATOR).addTestDevice("03B8364E84BB1446DA5C8FDFA9A4E356").build();
+
+        AdSize adSize = getAdSize();
+        // Step 4 - Set the adaptive ad size on the ad view.
+        adBannerView.setAdSize(adSize);
+
+
+        // Step 5 - Start loading the ad in the background.
+        adBannerView.loadAd(adRequest);
+    }
+
+    private AdSize getAdSize() {
+        // Step 2 - Determine the screen width (less decorations) to use for the ad width.
+        Display display = getWindowManager().getDefaultDisplay();
+        DisplayMetrics outMetrics = new DisplayMetrics();
+        display.getMetrics(outMetrics);
+
+        float widthPixels = outMetrics.widthPixels;
+        float density = outMetrics.density;
+
+        int adWidth = (int) (widthPixels / density);
+
+        // Step 3 - Get adaptive ad size and return for setting on the ad view.
+        return AdSize.getCurrentOrientationAnchoredAdaptiveBannerAdSize(this, adWidth);
+    }
+
+
+    private void AddBannerAd(FrameLayout frameContainer) {
+        adContainerView = frameContainer;
+        // Step 1 - Create an AdView and set the ad unit ID on it.
+        adBannerView = new AdView(this);
+        adBannerView.setAdUnitId("ca-app-pub-8534786486141147/4655316331");
+        adContainerView.addView(adBannerView);
+        loadBanner();
     }
 
     private void showPasteDialog(final Intent intent) {
@@ -2194,45 +2026,35 @@ return "injectedObject";
                             shareIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_NO_ANIMATION);
 
 
-                            if (inputMediaType == 0) {
-                                String caption = Util.prepareCaption(title, author, caption_suffix, _this.getApplication().getApplicationContext(), tiktokLink);
+                            String caption = Util.prepareCaption(title, author, caption_suffix, _this.getApplication().getApplicationContext(), tiktokLink);
 
-                                shareIntent.putExtra(Intent.EXTRA_TEXT, caption);
-
-
-                                ClipboardManager clipboard = (ClipboardManager) getSystemService(CLIPBOARD_SERVICE);
-                                ClipData clip = ClipData.newPlainText("Post caption", caption);
-                                Objects.requireNonNull(clipboard).setPrimaryClip(clip);
-
-                            } else {
-                                String caption = "";
-                                if (Util.isKeepCaption(_this) == false)
-                                    caption = "@regrann no-crop:";
+                            shareIntent.putExtra(Intent.EXTRA_TEXT, caption);
 
 
-                                shareIntent.putExtra(Intent.EXTRA_TEXT, caption);
-
-
-                                ClipboardManager clipboard = (ClipboardManager) getSystemService(CLIPBOARD_SERVICE);
-                                ClipData clip = ClipData.newPlainText("Post caption", caption);
-                                Objects.requireNonNull(clipboard).setPrimaryClip(clip);
-
-
-                            }
+                            ClipboardManager clipboard = (ClipboardManager) getSystemService(CLIPBOARD_SERVICE);
+                            ClipData clip = ClipData.newPlainText("Post caption", caption);
+                            Objects.requireNonNull(clipboard).setPrimaryClip(clip);
 
 
                             if (isVideo) {
                                 shareIntent.setType("video/*");
-                                shareIntent.putExtra(Intent.EXTRA_STREAM, Uri.fromFile(tempVideoFile));
+                                File t = new File(Util.getTempVideoFilePath());
+                                shareIntent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
+                                Uri uri = Uri.fromFile(t);
+                                _this.grantUriPermission(
+                                        "com.instagram.android", uri, Intent.FLAG_GRANT_READ_URI_PERMISSION);
+
+                                shareIntent.putExtra(Intent.EXTRA_STREAM, uri);
                             } else {
-                                shareIntent.putExtra(Intent.EXTRA_STREAM, Uri.fromFile(tempFile));
+                                Log.d("app5", "tempfile :  " + tempFile.toString());
+                                Uri uri = Uri.fromFile(tempFile);
 
-                                shareIntent.setType("image/*");
+                                _this.grantUriPermission(
+                                        "com.instagram.android", uri, Intent.FLAG_GRANT_READ_URI_PERMISSION);
+                                shareIntent.putExtra(Intent.EXTRA_STREAM, uri);
+
+                                shareIntent.setType("image/jpeg");
                             }
-
-                            //     shareIntent.setFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
-                            //       shareIntent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION | Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-
 
                             int numWarnings = preferences.getInt("captionWarning", 0);
 
@@ -2585,139 +2407,62 @@ return "injectedObject";
      * Creates a request for a new native ad based on the boolean parameters and calls the
      * corresponding "populate" method when one is successfully returned.
      */
-    private void refreshAd() {
-        //   refresh.setEnabled(false);
-
-
-        // if ( 1 == 1)
-        //   return ;
-//  ca-app-pub-3940256099942544/2247696110
-
-        AdLoader.Builder builder;
-
-        if (BuildConfig.DEBUG) {
-            builder = new AdLoader.Builder(this, "/6499/example/native");
-
-        } else {
-            builder = new AdLoader.Builder(this, "ca-app-pub-8534786486141147/9421739461");
-        }
-
-
-        builder.forUnifiedNativeAd(new UnifiedNativeAd.OnUnifiedNativeAdLoadedListener() {
-            // OnUnifiedNativeAdLoadedListener implementation.
-            @Override
-            public void onUnifiedNativeAdLoaded(UnifiedNativeAd unifiedNativeAd) {
-                // You must call destroy on old ads when you are done with them,
-                // otherwise you will have a memory leak.
-                if (nativeAd != null) {
-                    nativeAd.destroy();
-                }
-                nativeAd = unifiedNativeAd;
-                FrameLayout frameLayout =
-                        findViewById(R.id.fl_adplaceholder);
-
-                UnifiedNativeAdView adView = (UnifiedNativeAdView) getLayoutInflater()
-                        .inflate(R.layout.ad_unified, null);
-                populateUnifiedNativeAdView(unifiedNativeAd, adView);
-                frameLayout.removeAllViews();
-                frameLayout.addView(adView);
-            }
-
-        });
-
-
-        AdLoader adLoader = builder.withAdListener(new AdListener() {
-            @Override
-            public void onAdFailedToLoad(int errorCode) {
-
-
-            }
-        }).build();
-
-        adLoader.loadAd(new AdRequest.Builder().addTestDevice("B1D20D0F336796629655D59351F179F8").addTestDevice("03B8364E84BB1446DA5C8FDFA9A4E356").build());
-
-
-    }
-
 
     /**
-     * Populates a {@link UnifiedNativeAdView} object with data from a given
-     * {@link UnifiedNativeAd}.
+     * private void refreshAd() {
+     * //   refresh.setEnabled(false);
+     * <p>
+     * <p>
+     * // if ( 1 == 1)
+     * //   return ;
+     * //  ca-app-pub-3940256099942544/2247696110
+     * <p>
+     * AdLoader.Builder builder;
+     * <p>
+     * if (BuildConfig.DEBUG) {
+     * builder = new AdLoader.Builder(this, "/6499/example/native");
+     * <p>
+     * } else {
+     * builder = new AdLoader.Builder(this, "ca-app-pub-8534786486141147/9421739461");
+     * }
+     * <p>
+     * <p>
+     * builder.forUnifiedNativeAd(new UnifiedNativeAd.OnUnifiedNativeAdLoadedListener() {
+     * // OnUnifiedNativeAdLoadedListener implementation.
      *
-     * @param nativeAd the object containing the ad's assets
-     * @param adView   the view to be populated
-     */
-    private void populateUnifiedNativeAdView(UnifiedNativeAd nativeAd, UnifiedNativeAdView
-            adView) {
-        // Set the media view. Media content will be automatically populated in the media view once
-        // adView.setNativeAd() is called.
-        //  MediaView mediaView = adView.findViewById(R.id.ad_media);
-        //  adView.setMediaView(mediaView);
+     * @Override public void onUnifiedNativeAdLoaded(UnifiedNativeAd unifiedNativeAd) {
+     * // You must call destroy on old ads when you are done with them,
+     * // otherwise you will have a memory leak.
+     * if (nativeAd != null) {
+     * nativeAd.destroy();
+     * }
+     * nativeAd = unifiedNativeAd;
+     * FrameLayout frameLayout =
+     * findViewById(R.id.fl_adplaceholder);
+     * <p>
+     * UnifiedNativeAdView adView = (UnifiedNativeAdView) getLayoutInflater()
+     * .inflate(R.layout.ad_unified, null);
+     * populateUnifiedNativeAdView(unifiedNativeAd, adView);
+     * frameLayout.removeAllViews();
+     * frameLayout.addView(adView);
+     * }
+     * <p>
+     * });
+     * <p>
+     * <p>
+     * AdLoader adLoader = builder.withAdListener(new AdListener() {
+     * @Override public void onAdFailedToLoad(int errorCode) {
+     * <p>
+     * <p>
+     * }
+     * }).build();
+     * <p>
+     * adLoader.loadAd(new AdRequest.Builder().addTestDevice("B1D20D0F336796629655D59351F179F8").addTestDevice("03B8364E84BB1446DA5C8FDFA9A4E356").build());
+     * <p>
+     * <p>
+     * }
+     **/
 
-        // Set other ad assets.
-        try {
-            adView.setHeadlineView(adView.findViewById(R.id.ad_headline2));
-            adView.setBodyView(adView.findViewById(R.id.ad_body2));
-            adView.setCallToActionView(adView.findViewById(R.id.ad_call_to_action));
-            adView.setIconView(adView.findViewById(R.id.ad_app_icon));
-            //   adView.setPriceView(adView.findViewById(R.id.ad_price));
-            adView.setStarRatingView(adView.findViewById(R.id.ad_stars));
-            //   adView.setStoreView(adView.findViewById(R.id.ad_store));
-            adView.setAdvertiserView(adView.findViewById(R.id.ad_advertiser));
-
-            // The headline is guaranteed to be in every UnifiedNativeAd.
-            ((TextView) adView.getHeadlineView()).setText(nativeAd.getHeadline());
-            adView.getHeadlineView().setVisibility(View.VISIBLE);
-
-            // These assets aren't guaranteed to be in every UnifiedNativeAd, so it's important to
-            // check before trying to display them.
-            if (nativeAd.getBody() == null) {
-                adView.getBodyView().setVisibility(View.GONE);
-            } else {
-                adView.getBodyView().setVisibility(View.VISIBLE);
-                ((TextView) adView.getBodyView()).setText(nativeAd.getBody());
-            }
-
-            if (nativeAd.getCallToAction() == null) {
-                adView.getCallToActionView().setVisibility(View.INVISIBLE);
-            } else {
-                adView.getCallToActionView().setVisibility(View.VISIBLE);
-                ((Button) adView.getCallToActionView()).setText(nativeAd.getCallToAction());
-            }
-
-            if (nativeAd.getIcon() == null) {
-                adView.getIconView().setVisibility(View.GONE);
-            } else {
-                ((ImageView) adView.getIconView()).setImageDrawable(
-                        nativeAd.getIcon().getDrawable());
-                adView.getIconView().setVisibility(View.VISIBLE);
-            }
-
-
-            if (nativeAd.getStarRating() == null) {
-                adView.getStarRatingView().setVisibility(View.GONE);
-            } else {
-                ((RatingBar) adView.getStarRatingView())
-                        .setRating(nativeAd.getStarRating().floatValue());
-                adView.getStarRatingView().setVisibility(View.VISIBLE);
-            }
-
-            if (nativeAd.getAdvertiser() == null) {
-                adView.getAdvertiserView().setVisibility(View.GONE);
-            } else {
-                ((TextView) adView.getAdvertiserView()).setText(nativeAd.getAdvertiser());
-                adView.getAdvertiserView().setVisibility(View.VISIBLE);
-            }
-
-            // This method tells the Google Mobile Ads SDK that you have finished populating your
-            // native ad view with this native ad. The SDK will populate the adView's MediaView
-            // with the media content from this native ad.
-            adView.setNativeAd(nativeAd);
-        } catch (Exception e) {
-        }
-
-
-    }
 
 
     @Override
@@ -2730,18 +2475,6 @@ return "injectedObject";
         }
 
 
-        if (nativeAd != null) {
-            nativeAd.destroy();
-        }
-
-        if (mAdView != null) {
-            mAdView.destroy();
-        }
-
-
-        if (adView != null) {
-            adView.destroy();
-        }
 
 
         super.onDestroy();
@@ -2760,11 +2493,6 @@ return "injectedObject";
 
     private void startProcessURL(String url) {
 
-        String jsonRes = "";
-        JSONObject json = null;
-
-
-        currentURL = url;
 
         GET(url);
 
@@ -2789,9 +2517,13 @@ return "injectedObject";
                         if (result.compareTo("multi") == 0) {
                             photoReady = true;
 
+
                             if (isAutoSave | isQuickPost | isQuickKeep) {
                                 removeProgressDialog();
-                                //    copyAllMultiToSave();
+
+                                if (isAutoSave)
+                                    copyAllMultiToSave();
+
                                 showMultiDialog();
 
 
@@ -2799,8 +2531,8 @@ return "injectedObject";
 
                             }
 
-                            if (spinner != null)
-                                spinner.setVisibility(View.GONE);
+                            //   if (spinner != null)
+                            //     spinner.setVisibility(View.GONE);
 
                             if (previewImage != null) {
                                 previewImage.setVisibility(View.GONE);
@@ -2845,10 +2577,9 @@ return "injectedObject";
 
                                     if (!isVideo) {
 
-                                        KeptListAdapter db = KeptListAdapter.getInstance(_this);
 
+                                        copyPostLaterToPictureFolder();
 
-                                        db.addItem(new InstaItem(title, tempFileFullPathName, tempVideoFullPathName, author));
 
                                         clearClipboard();
 
@@ -2886,10 +2617,25 @@ return "injectedObject";
 
                                     //  final Drawable drawable = Drawable.createFromPath(path);
                                     previewImage.setImageBitmap(Util.decodeFile(new File(path)));
-                                    if (Build.VERSION.SDK_INT > Build.VERSION_CODES.P) {
-                                        findViewById(R.id.useShareLink).setVisibility(View.VISIBLE);
+
+                                    if (isVideo == false) {
+                                        findViewById(R.id.btnEditor).setVisibility(View.VISIBLE);
+                                    }
+
+
+                                    mainUI.setVisibility(View.VISIBLE);
+
+
+                                    if (spinner != null) {
+                                        Log.d("app5", "remove spinner 2697");
+                                        spinner.setVisibility(View.GONE);
 
                                     }
+
+                                    previewImage.setVisibility(View.VISIBLE);
+
+                                    checkForRatingRequest();
+
 
                                     if (isVideo) {
                                         LoadVideo();
@@ -2897,49 +2643,6 @@ return "injectedObject";
                                     }
 
                                     photoReady = true;
-
-
-                                    //  diff = 8 ;
-                                    if (showInterstitial) {
-
-
-
-
-                                                        runOnUiThread(new Runnable() {
-                                                            public void run() {
-                                                                try {
-
-                                                                    mainUI.setVisibility(View.VISIBLE);
-
-
-
-                                                                    if (spinner != null) {
-
-                                                                        spinner.setVisibility(View.GONE);
-
-                                                                    }
-
-                                                                    previewImage.setVisibility(View.VISIBLE);
-
-                                                                    checkForRatingRequest();
-                                                                } catch (Exception e) {
-                                                                }
-                                                            }
-                                                        });
-
-
-
-                                    } else {
-                                        if (spinner != null) {
-
-                                            spinner.setVisibility(View.GONE);
-
-                                        }
-
-                                        mainUI.setVisibility(View.VISIBLE);
-                                        previewImage.setVisibility(View.VISIBLE);
-                                        checkForRatingRequest();
-                                    }
 
 
                                 }
@@ -2964,8 +2667,6 @@ return "injectedObject";
 
         }
 
-        //    if (spinner != null)
-        //     spinner.setVisibility(View.GONE);
 
     }
 
@@ -3049,35 +2750,8 @@ return "injectedObject";
         } catch (Exception e3) {
 
 
-            // [START initialize_database_ref]
-            FirebaseFirestore db = FirebaseFirestore.getInstance();
-            // [END initialize_database_ref]
-
-// Create a new user with a first and last name
-            Map<String, Object> error = new HashMap<>();
-            error.put("message", e3.getMessage());
-            error.put("HTML", jsonRes.toString());
-            error.put("url", currentURL);
-
-
-// Add a new document with a generated ID
-            db.collection("errors")
-                    .add(error)
-                    .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
-                        @Override
-                        public void onSuccess(DocumentReference documentReference) {
-                            Log.d(TAG, "DocumentSnapshot added with ID: " + documentReference.getId());
-                        }
-                    })
-                    .addOnFailureListener(new OnFailureListener() {
-                        @Override
-                        public void onFailure(@NonNull Exception e) {
-                            Log.w(TAG, "Error adding document", e);
-                        }
-                    });
             showErrorToast("Problem", "There seems to be a problem.  Please try again later.", true);
 
-            //   return "error";
 
         }
 
@@ -3085,24 +2759,46 @@ return "injectedObject";
         if (json != null)
             if (json.isNull("edge_sidecar_to_children") == false) {
                 try {
-                    isMulti = true;
 
+                    // Get the directory for the user's public pictures directory.
+                    File file = new File(Environment.getExternalStorageDirectory(), Environment.DIRECTORY_DOWNLOADS + Util.RootDirectoryMultiPhoto);
+
+                    if (!file.mkdirs()) {
+                        Log.e("error", "Directory not created");
+                    }
+
+                    try {
+
+                        File output = new File(file.getPath(), ".nomedia");
+                        boolean fileCreated = output.createNewFile();
+                    } catch (Exception e) {
+                    }
+
+                    // Get the directory for the user's public pictures directory.
+                    file = new File(Environment.getExternalStorageDirectory(), Environment.DIRECTORY_PICTURES + Util.RootDirectoryMultiPhoto);
+
+                    if (!file.mkdirs()) {
+                        Log.e("error", "Directory not created");
+                    }
+
+                    isMulti = true;
+                    final Long currTime = System.currentTimeMillis();
 
                     final JSONArray pics = json.getJSONObject("edge_sidecar_to_children").getJSONArray("edges");
 
-                    final Long currTime = System.currentTimeMillis();
-                    runOnUiThread(new Runnable() {
-                        public void run() {
-                            try {
-                                boolean isScreen = true;
 
-                                if (isQuickPost || isAutoSave || isQuickKeep) {
-                                    isScreen = false;
-                                }
-                                if (isScreen) {
+                    try {
+                        boolean isScreen = true;
+
+                        if (isQuickPost || isAutoSave || isQuickKeep) {
+                            isScreen = false;
+                        }
+                        if (isScreen) {
+                            runOnUiThread(new Runnable() {
+                                public void run() {
 
                                     btnShare.setVisibility(View.GONE);
-                                    spinner.setVisibility(View.GONE);
+
 
                                     postlater.setVisibility(View.INVISIBLE);
 
@@ -3113,62 +2809,76 @@ return "injectedObject";
 
 
                                     previewImage.setVisibility(View.GONE);
-                                    mDemoSlider.setVisibility(View.VISIBLE);
-                                    mDemoSlider.setPresetIndicator(SliderLayout.PresetIndicators.Center_Bottom);
 
+                                    mDemoSlider.setPresetIndicator(SliderLayout.PresetIndicators.Center_Bottom);
+                                    mDemoSlider.setVisibility(View.VISIBLE);
 
                                 }
+                            });
 
 
-                                String folder = regrannMultiPostFolder;
+                        }
 
 
-                                for (int i = 0; i < pics.length(); i++) {
-                                    TextSliderView sliderView = new TextSliderView(_this);
-
-                                    if (isScreen)
-                                        sliderView.image(pics.getJSONObject(i).getJSONObject("node").getString("display_url"));
+                        String folder = regrannMultiPostFolder;
 
 
-                                    String fname = "";
-
-                                    if (pics.getJSONObject(i).getJSONObject("node").getString("is_video").equals("true")) {
-                                        if (isScreen)
-                                            sliderView.description("Video #" + (i + 1));
-
-                                        fname = folder + File.separator + author + "-" + currTime + i + ".mp4";
-
-                                    } else {
-                                        if (isScreen)
-                                            sliderView.description("Photo #" + (i + 1));
-
-                                        fname = folder + File.separator + author + "-" + currTime + i + ".jpg";
-
-                                    }
-                                    Log.d("app5", " fname  = " + fname);
-                                    if (isScreen) {
-                                        sliderView.bundle(new Bundle());
-                                        sliderView.getBundle()
-                                                .putString("url", pics.getJSONObject(i).getJSONObject("node").getString("display_url"));
-                                        sliderView.getBundle()
-                                                .putString("fname", fname);
-                                        sliderView.getBundle()
-                                                .putString("is_video", pics.getJSONObject(i).getJSONObject("node").getString("is_video"));
+                        for (int i = 0; i < pics.length(); i++) {
 
 
-                                        sliderView.setScaleType(BaseSliderView.ScaleType.CenterInside);
+                            TextSliderView sliderView = new TextSliderView(_this);
 
 
+                            if (isScreen) {
+                                Log.d("app5", "Setting image to slideview # " + i + " :   " + pics.getJSONObject(i).getJSONObject("node").getString("display_url"));
+                                sliderView.image(pics.getJSONObject(i).getJSONObject("node").getString("display_url"));
+
+                            }
+
+
+                            String fname = "";
+
+                            if (pics.getJSONObject(i).getJSONObject("node").getString("is_video").equals("true")) {
+                                if (isScreen)
+                                    sliderView.description("Video #" + (i + 1));
+
+                                fname = author + "-" + currTime + i + ".mp4";
+
+                            } else {
+                                if (isScreen)
+                                    sliderView.description("Photo #" + (i + 1));
+
+                                fname = folder + File.separator + author + "-" + currTime + i + ".jpg";
+
+                            }
+                            Log.d("app5", " fname  = " + fname);
+                            if (isScreen) {
+                                sliderView.bundle(new Bundle());
+                                sliderView.getBundle()
+                                        .putString("url", pics.getJSONObject(i).getJSONObject("node").getString("display_url"));
+                                sliderView.getBundle()
+                                        .putString("fname", fname);
+                                sliderView.getBundle()
+                                        .putString("is_video", pics.getJSONObject(i).getJSONObject("node").getString("is_video"));
+
+
+                                sliderView.setScaleType(BaseSliderView.ScaleType.CenterInside);
+
+                                runOnUiThread(new Runnable() {
+                                    public void run() {
                                         mDemoSlider.addSlider(sliderView);
                                     }
-
-
-                                }
-                            } catch (Exception e) {
-                                int i9 = 43;
+                                });
                             }
+
+
                         }
-                    });
+                    } catch (Exception e) {
+                        int i9 = 43;
+                    }
+
+
+                    boolean downloadingStarted = false;
 
                     // final int index = i;
                     //  final File tmpFile = new File(fname);
@@ -3185,40 +2895,62 @@ return "injectedObject";
 
                         String fname;
 
-                        //   sleep (2000);
-                        for (int i = pics.length() - 1; i >= 0; i--) {
-                            //  sleep(30);
+                        readyToHideSpinner = false;
+
+
+                        for (int i = 0; i < pics.length(); i++) {
+
+
                             Log.d("app5", "in loop " + i);
 
 
                             if (pics.getJSONObject(i).getJSONObject("node").getString("is_video").equals("true")) {
 
-                                fname = folder + File.separator + author + "-" + currTime + (pics.length() - i - 1) + ".mp4";
+                                fname = author + "-" + currTime + i + ".mp4";
 
                             } else {
 
-                                fname = folder + File.separator + author + "-" + currTime + (pics.length() - i - 1) + ".jpg";
+                                fname = author + "-" + currTime + i + ".jpg";
 
                             }
 
-                            Log.d("app5", " fnames " + i + "   " + fname);
-                            final File tmpFile = new File(fname);
+
+                            Log.d("app5", " fnames " + i + "   " + fname + "   " + currTime);
+
+
                             if (pics.getJSONObject(i).getJSONObject("node").getString("is_video") == "false") {
 
-                                downloadImage(pics.getJSONObject(i).getJSONObject("node").getString("display_url"), tmpFile);
+
+                                downloadImage(pics.getJSONObject(i).getJSONObject("node").getString("display_url"), fname);
                             } else {
 
-
-                                numOfMultiVideos++;
-
-                                LoadMultiVideo(pics.getJSONObject(i).getJSONObject("node").getString("video_url"), tmpFile);
+                                downloadingStarted = true;
+                                LoadMultiVideo2(pics.getJSONObject(i).getJSONObject("node").getString("video_url"), fname);
 
 
                             }
+
+
                         }
                     } catch (Exception e) {
                     }
 
+                    if ((readyToHideSpinner && downloadingStarted) || downloadingStarted == false) {
+
+                        runOnUiThread(new Runnable() {
+                            public void run() {
+                                Log.d("app5", "remove spinner 3032");
+                                spinner.setVisibility(View.GONE);
+                                showBottomButtons();
+
+                            }
+                        });
+
+
+                    }
+
+
+                    readyToHideSpinner = true;
 
                     RegrannApp.sendEvent("sc_multiphoto");
 
@@ -3266,6 +2998,10 @@ return "injectedObject";
 
 
             // write the bytes in file
+
+            lastDownloadedFile = tempFile;
+
+
             FileOutputStream fo = new FileOutputStream(tempFile);
             fo.write(bytes.toByteArray());
 
@@ -3273,7 +3009,7 @@ return "injectedObject";
             fo.close();
 
 
-            if (isVideo) {
+            if (1 == 2 && isVideo) {
                 RegrannApp.sendEvent("sc_video");
 
                 if (preferences.getBoolean("watermark_checkbox", false) ||
@@ -3290,6 +3026,8 @@ return "injectedObject";
 
                 RegrannApp.sendEvent("sc_photo");
 
+            showBottomButtons();
+
 
         } catch (
                 Exception e) {
@@ -3304,78 +3042,117 @@ return "injectedObject";
     }
 
 
-    private void downloadImage(String url, final File tmpfile) {
+    private void showBottomButtons() {
+
+
+        runOnUiThread(new Runnable() {
+            public void run() {
+                try {
+                    if (vButtons != null)
+                        vButtons.setVisibility(View.VISIBLE);
+                } catch (Exception e) {
+                }
+
+            }
+        });
+    }
+
+
+    private class AsyncTaskDownloadMedia extends AsyncTask<String, String, String> {
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+
+        }
+
+        @Override
+        protected String doInBackground(String... strings) {
+            try {
+
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+            return "";
+        }
+
+        @Override
+        protected void onPostExecute(String b) {
+            super.onPostExecute(b);
+
+        }
+    }
+
+
+    private void downloadImage(String url, final String fname) {
+        File tmpFile = new File(Environment.getExternalStorageDirectory(), Environment.DIRECTORY_DOWNLOADS + Util.RootDirectoryMultiPhoto + fname);
+
         try {
             //    URL imageurl = new URL(url);
 
-            Log.d("app5", "Downloading : " + url);
 
-            FutureTarget<Bitmap> futureBitmap = Glide.with(RegrannApp._this)
-                    .asBitmap()
-                    .load(url)
-                    .submit();
+            Util.startDownloadMulti(url, "", _this, fname, isAutoSave);
 
-            if (futureBitmap == null) {
+            /**
+             Log.d("app5", "Downloading : " + url);
 
-                showErrorToast("#72 - ", "There was a problem downloading the photo.  Please try again.", true);
-                return;
-            }
+             FutureTarget<Bitmap> futureBitmap = Glide.with(RegrannApp._this)
+             .asBitmap()
+             .load(url)
+             .submit();
 
-            try {
-                originalBitmapBeforeNoCrop = futureBitmap.get();
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            } catch (ExecutionException e) {
-                e.printStackTrace();
-            }
+             if (futureBitmap == null) {
 
-            ByteArrayOutputStream bytes = new ByteArrayOutputStream();
+             showErrorToast("#72 - ", "There was a problem downloading the photo.  Please try again.", true);
+             return;
+             }
 
-            try {
+             try {
+             originalBitmapBeforeNoCrop = futureBitmap.get();
+             } catch (InterruptedException e) {
+             e.printStackTrace();
+             } catch (ExecutionException e) {
+             e.printStackTrace();
+             }
 
-                // originalBitmapBeforeNoCrop = resource;
-                Bitmap bitmap = originalBitmapBeforeNoCrop;
+             ByteArrayOutputStream bytes = new ByteArrayOutputStream();
 
+             try {
 
-                if (preferences.getBoolean("watermark_checkbox", false) ||
-                        preferences.getBoolean("custom_watermark", false)) {
-                    Point p = new Point(10, bitmap.getHeight() - 10);
-                    int textSize = 20;
-                    if (bitmap.getHeight() > 640)
-                        textSize = 50;
-                    bitmap = mark(bitmap, author, p, Color.YELLOW, 180, textSize, false);
-                }
+             // originalBitmapBeforeNoCrop = resource;
+             Bitmap bitmap = originalBitmapBeforeNoCrop;
 
 
-                bitmap.compress(Bitmap.CompressFormat.JPEG, 99, bytes);
-
-            } catch (Exception e) {
-                RegrannApp.sendEvent("sc_bitmap null");
-
-                showErrorToast("#72 - ", "There was a problem downloading the photo.  Please try again.", true);
-                return;
-            }
-
-            // no crop if not square ??
-
-            try {
-                // write the bytes in file
-                FileOutputStream fo = new FileOutputStream(tmpfile);
-                fo.write(bytes.toByteArray());
-
-                // remember close de FileOutput
-                fo.close();
-            } catch (Exception e) {
-            }
+             if (preferences.getBoolean("watermark_checkbox", false) ||
+             preferences.getBoolean("custom_watermark", false)) {
+             Point p = new Point(10, bitmap.getHeight() - 10);
+             int textSize = 20;
+             if (bitmap.getHeight() > 640)
+             textSize = 50;
+             bitmap = mark(bitmap, author, p, Color.YELLOW, 180, textSize, false);
+             }
 
 
+             bitmap.compress(Bitmap.CompressFormat.JPEG, 99, bytes);
 
-            //   MediaStore.Images.Media.insertImage( RegrannApp._this.getApplicationContext().getContentResolver(), tmpfile.getPath().toString(),
-            //         tmpfile.getName(), "Regrann MultiPost");
+             } catch (Exception e) {
+             RegrannApp.sendEvent("sc_bitmap null");
 
+             showErrorToast("#72 - ", "There was a problem downloading the photo.  Please try again.", true);
+             return;
+             }
 
-            //   originalBitmapBeforeNoCrop = BitmapFactory.decodeStream(imageurl.openConnection().getInputStream());
+             // no crop if not square ??
 
+             try {
+             // write the bytes in file
+             FileOutputStream fo = new FileOutputStream(tmpFile);
+             fo.write(bytes.toByteArray());
+
+             // remember close de FileOutput
+             fo.close();
+             } catch (Exception e) {
+             }
+             **/
 
 
         } catch (OutOfMemoryError e) {
@@ -3396,10 +3173,7 @@ return "injectedObject";
 
         class MyJavaScriptInterface {
 
-            private Context ctx;
-
             MyJavaScriptInterface(Context ctx) {
-                this.ctx = ctx;
             }
 
             @JavascriptInterface
@@ -3420,7 +3194,7 @@ return "injectedObject";
 
                             processJSON(json);
                         } catch (Exception e) {
-                            showErrorToast("shortcode_media error: ", "There was a probilem : " + e.getMessage().toString(), true);
+                            showErrorToast("shortcode_media error: ", "There was a probilem : " + e.getMessage(), true);
                         }
                     } else {
                         processJSON("private");
@@ -3526,6 +3300,33 @@ return "injectedObject";
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 
         super.onActivityResult(requestCode, resultCode, data);
+
+        if (resultCode == RESULT_OK && requestCode == PESDK_RESULT) {
+            // Editor has saved an Image.
+            EditorSDKResult res = new EditorSDKResult(data);
+
+            // This adds the result and source image to Android's gallery
+            //  data.notifyGallery(EditorSDKResult.UPDATE_RESULT & EditorSDKResult.UPDATE_SOURCE);
+
+            Log.i("PESDK", "Source image is located here " + res.getSourceUri());
+            Log.i("PESDK", "Result image is located here " + res.getResultUri());
+
+            // TODO: Do something with the result image
+
+            try {
+
+                RegrannApp.sendEvent("sc_edit_photo_complete", "", "");
+                Uri mImageUri = res.getResultUri();
+
+
+                previewImage.setImageBitmap(Util.decodeFile(new File(mImageUri != null ? mImageUri.getPath() : null)));
+
+
+            } catch (Exception e) {
+            }
+        }
+
+
         if (resultCode == RESULT_OK) {
             switch (requestCode) {
 
@@ -3568,6 +3369,13 @@ return "injectedObject";
     }
 
 
+    public void OnClickEditPhoto(View v) {
+        RegrannApp.sendEvent("sc_edit_photo", "", "");
+        openEditor(Uri.fromFile(tempFile));
+
+
+    }
+
     public void onClickBackToInstagram(View v) {
         RegrannApp.sendEvent("qs_back_to_instagram", "", "");
         finish();
@@ -3587,9 +3395,15 @@ return "injectedObject";
         }
 
         try {
+
             removeProgressDialog();
-            scanRegrannFolder();
+
+
             scanMultiPostFolder();
+
+
+            scanRegrannFolder();
+
 
             if (webViewInsta != null)
                 webViewInsta.destroy();
@@ -3607,16 +3421,6 @@ return "injectedObject";
         unregisterReceiver(downloadCompleteReceiver);
 
 
-        //     IronSource.onPause(this);
-
-        if (mAdView != null) {
-            mAdView.pause();
-        }
-
-
-        if (adView != null) {
-            adView.pause();
-        }
 
 
     }
@@ -3680,8 +3484,11 @@ return "injectedObject";
                 }
 
 
-                if (spinner != null)
+                if (spinner != null) {
+                    Log.d("app5", "remove spinner 3589");
+
                     spinner.setVisibility(View.GONE);
+                }
                 photoReady = true;
             }
 
@@ -3778,8 +3585,10 @@ return "injectedObject";
                     if (updateScreenOn == true)
                         return;
 
-                    if (spinner != null)
+                    if (spinner != null) {
+                        Log.d("app5", "remove spinner 3687");
                         spinner.setVisibility(View.GONE);
+                    }
 
                     AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(ShareActivity.this);
 
@@ -3803,6 +3612,37 @@ return "injectedObject";
             }
         });
 
+    }
+
+
+    private void LoadMultiVideo2(final String videoURL, final String fname) {
+        String ThisUrl = videoURL;
+
+
+        loadingMultiVideo = true;
+
+        runOnUiThread(new Runnable() {
+            public void run() {
+                try {
+                    if (numMultVideos == 0)
+                        startProgressDialog();
+
+
+                    numMultVideos += 1;
+                } catch (Exception e4) {
+                }
+            }
+        });
+
+
+        String str3 = "";
+        try {
+            long DownloadId = Util.startDownloadMulti(videoURL, str3, _this, fname, isAutoSave);
+        } catch (Exception e) {
+            Log.d("app5", e.getMessage());
+        }
+
+        isVideo = false;
     }
 
 
@@ -3897,7 +3737,7 @@ return "injectedObject";
                                 ucon = (HttpURLConnection) url.openConnection();
 
                             } catch (IOException e2) {
-                             //  sendEvent("E11_" + e2.getMessage(), "", "");
+                                //  sendEvent("E11_" + e2.getMessage(), "", "");
                                 showErrorToast("#11 - " + e2.getMessage(), getString(R.string.problemfindingvideo), true);
 
                                 e2.printStackTrace();
@@ -3916,7 +3756,7 @@ return "injectedObject";
                                 e1.printStackTrace();
                             }
                             assert is != null;
-                            BufferedInputStream inStream = new BufferedInputStream(is != null ? is : null, 1024 * 5);
+                            BufferedInputStream inStream = new BufferedInputStream(is, 1024 * 5);
                             FileOutputStream outStream = null;
                             try {
                                 outStream = new FileOutputStream(tmpFile.getPath());
@@ -3936,7 +3776,7 @@ return "injectedObject";
                                     outStream.write(buff, 0, len);
                                 }
                             } catch (IOException e) {
-                           //     sendEvent("E12_" + e.getMessage(), "", "");
+                                //     sendEvent("E12_" + e.getMessage(), "", "");
                                 showErrorToast("#12 - " + e.getMessage(), getString(R.string.problemfindingvideo), true);
 
                                 e.printStackTrace();
@@ -3956,7 +3796,7 @@ return "injectedObject";
 
 
                         } catch (Exception e) {
-                        //    sendEvent("E13_" + e.getMessage(), "", "");
+                            //    sendEvent("E13_" + e.getMessage(), "", "");
                             showErrorToast("#13 - " + e.getMessage(), getString(R.string.problemfindingvideo), true);
 
                         }
@@ -3971,13 +3811,13 @@ return "injectedObject";
                         if (numMultVideos == 0)
                             startProgressDialog();
 
-                        numMultVideos++ ;
+                        numMultVideos++;
 
                         try {
                             runOnUiThread(new Runnable() {
                                 public void run() {
                                     try {
-                               //         pd[0] = ProgressDialog.show(ShareActivity.this, _this.getString(R.string.progress_dialog_msg), _this.getString(R.string.downloadingVideo), true, false);
+                                        //         pd[0] = ProgressDialog.show(ShareActivity.this, _this.getString(R.string.progress_dialog_msg), _this.getString(R.string.downloadingVideo), true, false);
                                     } catch (Exception e4) {
                                     }
                                 }
@@ -3992,8 +3832,6 @@ return "injectedObject";
                     @Override
                     protected void onPostExecute(Void result) {
                         try {
-
-
 
 
                             runOnUiThread(new Runnable() {
@@ -4020,7 +3858,7 @@ return "injectedObject";
                             });
 
 
-                         //   scanMultiPostFolder();
+                            //   scanMultiPostFolder();
 
 
                         } catch (Exception e) {
@@ -4052,218 +3890,231 @@ return "injectedObject";
         if (noAds && isAutoSave)
             return;
         else
-            pd = ProgressDialog.show(ShareActivity.this, _this.getString(R.string.progress_dialog_msg), _this.getString(R.string.downloadingVideo), true, true);
+
+            runOnUiThread(new Runnable() {
+                public void run() {
+                    pd = ProgressDialog.show(ShareActivity.this, _this.getString(R.string.progress_dialog_msg), _this.getString(R.string.downloadingVideo), true, true);
+
+
+                }
+            });
 
 
     }
 
     private void removeProgressDialog() {
+        runOnUiThread(new Runnable() {
+            public void run() {
+                try {
+                    if (pd != null) {
+                        if (pd.isShowing()) {
 
 
-        try {
-            if (pd != null) {
-                if (pd.isShowing()) {
+                            pd.dismiss();
+                            pd = null;
 
 
-
-                                pd.dismiss();
-                                pd = null;
-
-
-
-
-
+                        }
+                    }
+                } catch (Exception e) {
                 }
+
             }
-        } catch (Exception e) {
-        }
+        });
 
 
     }
 
+    /**
+     * private void LoadVideo() {
+     * <p>
+     * try {
+     * if (videoURL != null) {
+     * loadingMultiVideo = false;
+     * <p>
+     * <p>
+     * AsyncTask<Void, Void, Void> videoLoader = new AsyncTask<Void, Void, Void>() {
+     *
+     * @Override protected Void doInBackground(Void... params) {
+     * try {
+     * <p>
+     * if (!isNetworkAvailable()) {
+     * showErrorToast("", _this.getString(R.string.noInternet), true);
+     * return null;
+     * <p>
+     * }
+     * <p>
+     * <p>
+     * final int TIMEOUT_CONNECTION = 5000;// 5sec
+     * final int TIMEOUT_SOCKET = 30000;// 30sec
+     * <p>
+     * URL url = null;
+     * try {
+     * url = new URL(videoURL);
+     * } catch (MalformedURLException e3) {
+     * e3.printStackTrace();
+     * }
+     * long startTime = System.currentTimeMillis();
+     * Log.i("info", "image download beginning: " + videoURL);
+     * <p>
+     * // Open a connection to that URL.
+     * URLConnection ucon = null;
+     * try {
+     * ucon = url != null ? url.openConnection() : null;
+     * } catch (IOException e2) {
+     * showErrorToast("#11 - " + e2.getMessage(), getString(R.string.problemfindingvideo), true);
+     * <p>
+     * e2.printStackTrace();
+     * }
+     * <p>
+     * assert ucon != null;
+     * ucon.setReadTimeout(TIMEOUT_CONNECTION);
+     * ucon.setConnectTimeout(TIMEOUT_SOCKET);
+     * <p>
+     * InputStream is = null;
+     * try {
+     * is = ucon.getInputStream();
+     * } catch (IOException e1) { // TODO
+     * // Auto-generated
+     * // catch block
+     * e1.printStackTrace();
+     * }
+     * assert is != null;
+     * BufferedInputStream inStream = new BufferedInputStream(is, 1024 * 5);
+     * FileOutputStream outStream = null;
+     * try {
+     * outStream = new FileOutputStream(Environment.getExternalStorageDirectory() + tempVideoName);
+     * <p>
+     * } catch (FileNotFoundException e) {
+     * e.printStackTrace();
+     * }
+     * byte[] buff = new byte[5 * 1024];
+     * <p>
+     * // Read bytes (and store them) until there is
+     * // nothing // more to //
+     * <p>
+     * int len;
+     * try {
+     * while ((len = inStream.read(buff)) != -1) {
+     * assert outStream != null;
+     * outStream.write(buff, 0, len);
+     * }
+     * } catch (IOException e) {
+     * <p>
+     * showErrorToast("#10 - " + e.getMessage(), getString(R.string.problemfindingvideo), true);
+     * <p>
+     * e.printStackTrace();
+     * }
+     * <p>
+     * // clean up
+     * try {
+     * assert outStream != null;
+     * outStream.flush();
+     * outStream.close();
+     * inStream.close();
+     * } catch (IOException e) {
+     * e.printStackTrace();
+     * }
+     * <p>
+     * tempVideoFile = new File(Environment.getExternalStorageDirectory() + tempVideoName);
+     * <p>
+     * tempVideoFullPathName = tempVideoFile.getPath();
+     * <p>
+     * <p>
+     * // isVideo = true;
+     * <p>
+     * try {
+     * if (rateRequestDialog != null) {
+     * if (rateRequestDialog.isShowing()) {
+     * rateRequestDialog.dismiss();
+     * }
+     * }
+     * <p>
+     * <p>
+     * } catch (Exception e) {
+     * }
+     * <p>
+     * } catch (Exception e) {
+     * showErrorToast("#12 - " + e.getMessage(), getString(R.string.problemfindingvideo), true);
+     * isVideo = false;
+     * }
+     * <p>
+     * return null;
+     * }
+     * <p>
+     * //show progress in onPre
+     * @Override protected void onPreExecute() {
+     * try {
+     * <p>
+     * pd = ProgressDialog.show(ShareActivity.this, _this.getString(R.string.progress_dialog_msg), _this.getString(R.string.downloadingVideo), true, true);
+     * } catch (Exception e) {
+     * // TODO Auto-generated catch block
+     * e.printStackTrace();
+     * }
+     * <p>
+     * }
+     * @Override protected void onPostExecute(Void result) {
+     * try {
+     * <p>
+     * removeProgressDialog();
+     * <p>
+     * if (isAutoSave) {
+     * copyTempToSave();
+     * finish();
+     * }
+     * <p>
+     * if (isQuickPost) {
+     * if (isVideo) {
+     * <p>
+     * quickPostSendToInstagram();
+     * <p>
+     * }
+     * }
+     * <p>
+     * if (isQuickKeep) {
+     * <p>
+     * KeptListAdapter db = KeptListAdapter.getInstance(_this);
+     * clearClipboard();
+     * <p>
+     * db.addItem(new InstaItem(title, tempFileFullPathName, tempVideoFullPathName, author));
+     * <p>
+     * Toast toast = Toast.makeText(ShareActivity.this, R.string.postlaterconfirmtoast, Toast.LENGTH_LONG);
+     * toast.setGravity(Gravity.CENTER_VERTICAL, 0, 0);
+     * <p>
+     * toast.show();
+     * finish();
+     * <p>
+     * }
+     * <p>
+     * } catch (Exception e) {
+     * }
+     * <p>
+     * }
+     * };
+     * <p>
+     * <p>
+     * // }
+     * // });
+     * <p>
+     * videoLoader.execute((Void[]) null);
+     * <p>
+     * }
+     * } catch (Exception e) {
+     * }
+     * <p>
+     * }
+     **/
 
     private void LoadVideo() {
+        String ThisUrl = this.videoURL;
 
+        String str3 = "";
         try {
-            if (videoURL != null) {
-                loadingMultiVideo = false;
-
-
-                AsyncTask<Void, Void, Void> videoLoader = new AsyncTask<Void, Void, Void>() {
-
-                    @Override
-                    protected Void doInBackground(Void... params) {
-                        try {
-
-                            if (!isNetworkAvailable()) {
-                                showErrorToast("", _this.getString(R.string.noInternet), true);
-                                return null;
-
-                            }
-
-
-                            final int TIMEOUT_CONNECTION = 5000;// 5sec
-                            final int TIMEOUT_SOCKET = 30000;// 30sec
-
-                            URL url = null;
-                            try {
-                                url = new URL(videoURL);
-                            } catch (MalformedURLException e3) {
-                                e3.printStackTrace();
-                            }
-                            long startTime = System.currentTimeMillis();
-                            Log.i("info", "image download beginning: " + videoURL);
-
-                            // Open a connection to that URL.
-                            URLConnection ucon = null;
-                            try {
-                                ucon = url != null ? url.openConnection() : null;
-                            } catch (IOException e2) {
-                                showErrorToast("#11 - " + e2.getMessage(), getString(R.string.problemfindingvideo), true);
-
-                                e2.printStackTrace();
-                            }
-
-                            assert ucon != null;
-                            ucon.setReadTimeout(TIMEOUT_CONNECTION);
-                            ucon.setConnectTimeout(TIMEOUT_SOCKET);
-
-                            InputStream is = null;
-                            try {
-                                is = ucon.getInputStream();
-                            } catch (IOException e1) { // TODO
-                                // Auto-generated
-                                // catch block
-                                e1.printStackTrace();
-                            }
-                            assert is != null;
-                            BufferedInputStream inStream = new BufferedInputStream(is != null ? is : null, 1024 * 5);
-                            FileOutputStream outStream = null;
-                            try {
-                                outStream = new FileOutputStream(Environment.getExternalStorageDirectory() + tempVideoName);
-
-                            } catch (FileNotFoundException e) {
-                                e.printStackTrace();
-                            }
-                            byte[] buff = new byte[5 * 1024];
-
-                            // Read bytes (and store them) until there is
-                            // nothing // more to //
-
-                            int len;
-                            try {
-                                while ((len = inStream.read(buff)) != -1) {
-                                    assert outStream != null;
-                                    outStream.write(buff, 0, len);
-                                }
-                            } catch (IOException e) {
-
-                                showErrorToast("#10 - " + e.getMessage(), getString(R.string.problemfindingvideo), true);
-
-                                e.printStackTrace();
-                            }
-
-                            // clean up
-                            try {
-                                assert outStream != null;
-                                outStream.flush();
-                                outStream.close();
-                                inStream.close();
-                            } catch (IOException e) {
-                                e.printStackTrace();
-                            }
-
-                            tempVideoFile = new File(Environment.getExternalStorageDirectory() + tempVideoName);
-
-                            tempVideoFullPathName = tempVideoFile.getPath();
-
-
-                            // isVideo = true;
-
-                            try {
-                                if (rateRequestDialog != null) {
-                                    if (rateRequestDialog.isShowing()) {
-                                        rateRequestDialog.dismiss();
-                                    }
-                                }
-
-
-                            } catch (Exception e) {
-                            }
-
-                        } catch (Exception e) {
-                            showErrorToast("#12 - " + e.getMessage(), getString(R.string.problemfindingvideo), true);
-                            isVideo = false;
-                        }
-
-                        return null;
-                    }
-
-                    //show progress in onPre
-                    @Override
-                    protected void onPreExecute() {
-                        try {
-
-                            pd = ProgressDialog.show(ShareActivity.this, _this.getString(R.string.progress_dialog_msg), _this.getString(R.string.downloadingVideo), true, true);
-                        } catch (Exception e) {
-                            // TODO Auto-generated catch block
-                            e.printStackTrace();
-                        }
-
-                    }
-
-                    @Override
-                    protected void onPostExecute(Void result) {
-                        try {
-
-                            removeProgressDialog();
-
-                            if (isAutoSave) {
-                                copyTempToSave();
-                                finish();
-                            }
-
-                            if (isQuickPost) {
-                                if (isVideo) {
-
-                                    quickPostSendToInstagram();
-
-                                }
-                            }
-
-                            if (isQuickKeep) {
-
-                                KeptListAdapter db = KeptListAdapter.getInstance(_this);
-                                clearClipboard();
-
-                                db.addItem(new InstaItem(title, tempFileFullPathName, tempVideoFullPathName, author));
-
-                                Toast toast = Toast.makeText(ShareActivity.this, R.string.postlaterconfirmtoast, Toast.LENGTH_LONG);
-                                toast.setGravity(Gravity.CENTER_VERTICAL, 0, 0);
-
-                                toast.show();
-                                finish();
-
-                            }
-
-                        } catch (Exception e) {
-                        }
-
-                    }
-                };
-
-
-                // }
-                // });
-
-                videoLoader.execute((Void[]) null);
-
-            }
+            long DownloadId = Util.startDownload(ThisUrl, str3, _this, tempVideoName);
         } catch (Exception e) {
+            Log.d("app5", e.getMessage());
         }
-
     }
-
 
     /**
      * private void LoadVideo() {
@@ -4350,22 +4201,25 @@ return "injectedObject";
 
                             if (numMultVideos == 0 && pd != null) {
 
+
+                                if (readyToHideSpinner) {
+                                    Log.d("app5", "remove spinner 4308");
+                                    spinner.setVisibility(View.GONE);
+                                    showBottomButtons();
+                                }
+
                                 removeProgressDialog();
-                                //   scanMultiPostFolder();
-                                // scanRegrannFolder();
+
 
                             }
                         } catch (Exception e4) {
                         }
 
-                        if (isAutoSave) {
-                            //      numOfMultiVideos--;
-                            //       copyAllMultiToSave();
 
-
-                        }
-
-                        return;
+                        long downloadId = intent.getLongExtra(
+                                DownloadManager.EXTRA_DOWNLOAD_ID, 0);
+                        System.out.println("download id=" + downloadId);
+                        CheckDwnloadStatus(downloadId);
                     }
 
                 });
@@ -4373,34 +4227,15 @@ return "injectedObject";
 
             } else {
 
-
-                long referenceId = intent.getLongExtra(DownloadManager.EXTRA_DOWNLOAD_ID, -1);
-
-
-                removeProgressDialog();
-
-                //      scanMultiPostFolder();
-                scanRegrannFolder();
-
-                if (isAutoSave) {
-                    copyTempToSave();
-                    //   finish();
-                }
-
-                if (isQuickPost) {
-                    if (isVideo) {
-
-                        quickPostSendToInstagram();
-
-                    }
-                }
-
                 if (isQuickKeep) {
+                    if (isVideo)
+                        removeProgressDialog();
 
-                    KeptListAdapter db = KeptListAdapter.getInstance(_this);
+
                     clearClipboard();
 
-                    db.addItem(new InstaItem(title, tempFileFullPathName, tempVideoFullPathName, author));
+                    copyPostLaterToPictureFolder();
+
 
                     Toast toast = Toast.makeText(ShareActivity.this, R.string.postlaterconfirmtoastvideo, Toast.LENGTH_LONG);
                     toast.setGravity(Gravity.CENTER_VERTICAL, 0, 0);
@@ -4411,9 +4246,129 @@ return "injectedObject";
                 }
 
 
+                if (isVideo == false) {
+                    return;
+
+                }
+
+
+                if (isVideo) {
+                    long referenceId = intent.getLongExtra(DownloadManager.EXTRA_DOWNLOAD_ID, -1);
+
+
+                    removeProgressDialog();
+
+                    scanRegrannFolder();
+
+                    if (isAutoSave) {
+                        copyTempToSave();
+                        //   finish();
+                    }
+
+                    if (isQuickPost) {
+                        if (isVideo) {
+
+                            quickPostSendToInstagram();
+
+                        }
+                    }
+
+
+                }
+
+
             }
         }
     };
+
+
+    private void CheckDwnloadStatus(long id) {
+
+        // TODO Auto-generated method stub
+        DownloadManager.Query query = new DownloadManager.Query();
+
+        query.setFilterById(id);
+        Cursor cursor = downloadManager.query(query);
+        if (cursor.moveToFirst()) {
+            int columnIndex = cursor
+                    .getColumnIndex(DownloadManager.COLUMN_STATUS);
+            int status = cursor.getInt(columnIndex);
+            int columnReason = cursor
+                    .getColumnIndex(DownloadManager.COLUMN_REASON);
+            int reason = cursor.getInt(columnReason);
+
+            switch (status) {
+                case DownloadManager.STATUS_FAILED:
+                    String failedReason = "";
+                    switch (reason) {
+                        case DownloadManager.ERROR_CANNOT_RESUME:
+                            failedReason = "ERROR_CANNOT_RESUME";
+                            break;
+                        case DownloadManager.ERROR_DEVICE_NOT_FOUND:
+                            failedReason = "ERROR_DEVICE_NOT_FOUND";
+                            break;
+                        case DownloadManager.ERROR_FILE_ALREADY_EXISTS:
+                            failedReason = "ERROR_FILE_ALREADY_EXISTS";
+                            break;
+                        case DownloadManager.ERROR_FILE_ERROR:
+                            failedReason = "ERROR_FILE_ERROR";
+                            break;
+                        case DownloadManager.ERROR_HTTP_DATA_ERROR:
+                            failedReason = "ERROR_HTTP_DATA_ERROR";
+                            break;
+                        case DownloadManager.ERROR_INSUFFICIENT_SPACE:
+                            failedReason = "ERROR_INSUFFICIENT_SPACE";
+                            break;
+                        case DownloadManager.ERROR_TOO_MANY_REDIRECTS:
+                            failedReason = "ERROR_TOO_MANY_REDIRECTS";
+                            break;
+                        case DownloadManager.ERROR_UNHANDLED_HTTP_CODE:
+                            failedReason = "ERROR_UNHANDLED_HTTP_CODE";
+                            break;
+                        case DownloadManager.ERROR_UNKNOWN:
+                            failedReason = "ERROR_UNKNOWN";
+                            break;
+                    }
+
+                    //  Toast.makeText(this, "FAILED: " + failedReason,
+                    //        Toast.LENGTH_LONG).show();
+                    break;
+                case DownloadManager.STATUS_PAUSED:
+                    String pausedReason = "";
+
+                    switch (reason) {
+                        case DownloadManager.PAUSED_QUEUED_FOR_WIFI:
+                            pausedReason = "PAUSED_QUEUED_FOR_WIFI";
+                            break;
+                        case DownloadManager.PAUSED_UNKNOWN:
+                            pausedReason = "PAUSED_UNKNOWN";
+                            break;
+                        case DownloadManager.PAUSED_WAITING_FOR_NETWORK:
+                            pausedReason = "PAUSED_WAITING_FOR_NETWORK";
+                            break;
+                        case DownloadManager.PAUSED_WAITING_TO_RETRY:
+                            pausedReason = "PAUSED_WAITING_TO_RETRY";
+                            break;
+                    }
+
+                    //   Toast.makeText(this, "PAUSED: " + pausedReason,
+                    //         Toast.LENGTH_LONG).show();
+                    break;
+                case DownloadManager.STATUS_PENDING:
+                    //    Toast.makeText(this, "PENDING", Toast.LENGTH_LONG).show();
+                    break;
+                case DownloadManager.STATUS_RUNNING:
+                    //   Toast.makeText(this, "RUNNING", Toast.LENGTH_LONG).show();
+                    break;
+                case DownloadManager.STATUS_SUCCESSFUL:
+
+                    //   Toast.makeText(this, "SUCCESSFUL", Toast.LENGTH_LONG).show();
+
+                    break;
+            }
+        }
+
+    }
 
 
     private static String convertInputStreamToString(InputStream inputStream) throws
@@ -4531,6 +4486,7 @@ return "injectedObject";
      * }
      **/
 
+
     private void copyAllMultiToSave() {
 
         clearClipboard();
@@ -4551,14 +4507,16 @@ return "injectedObject";
                 for (int i = 0; i < children.length; i++) {
                     try {
 
-                        File source = new File(dir, children[i]);
+                        if (children[i].contains("nomedia") == false) {
+                            File source = new File(dir, children[i]);
 
 
-                        File destination = new File(regrannPictureFolder + File.separator + author + "-" + children[i]);
-                        try {
-                            copy(source, destination);
-                        } catch (IOException e) {
-                            e.printStackTrace();
+                            File destination = new File(regrannPictureFolder + File.separator + author + "-" + children[i]);
+                            try {
+                                copy(source, destination);
+                            } catch (IOException e) {
+                                e.printStackTrace();
+                            }
                         }
 
                     } catch (Exception e) {
@@ -4583,8 +4541,10 @@ return "injectedObject";
                 Toast toast = Toast.makeText(ShareActivity.this, "Saving multi-post complete.", Toast.LENGTH_LONG);
                 toast.setGravity(Gravity.CENTER_VERTICAL, 0, 0);
                 toast.show();
-                if (spinner != null)
+                if (spinner != null) {
+                    Log.d("app5", "remove spinne 4635r");
                     spinner.setVisibility(View.GONE);
+                }
 
                 //  finish();
                 return;
@@ -4610,7 +4570,7 @@ return "injectedObject";
                             handler.postDelayed(new Runnable() {
                                 @Override
                                 public void run() {
-
+                                    Log.d("app5", "remove spinner 4663");
                                     spinner.setVisibility(View.GONE);
 
 
@@ -4635,8 +4595,10 @@ return "injectedObject";
                         }
                     }, 3000);
                 } else {
-                    if (spinner != null)
+                    if (spinner != null) {
+                        Log.d("app5", "remove spinner");
                         spinner.setVisibility(View.GONE);
+                    }
                     Toast toast = Toast.makeText(ShareActivity.this, "Saving multi-post complete.", Toast.LENGTH_LONG);
                     toast.setGravity(Gravity.CENTER_VERTICAL, 0, 0);
                     toast.show();
@@ -4767,40 +4729,40 @@ return "injectedObject";
             Toast toast;
             String msg;
             if (isVideo) {
-                src = new File(Environment.getExternalStorageDirectory() + tempVideoName);
+                src = new File(Util.getTempVideoFilePath());
                 fname = regrannPictureFolder + File.separator + author + "_video_" + currTime + ".mp4";
                 saveToastMsg = "Video was saved in /Pictures/Regrann/Video-" + currTime + ".mp4";
             } else {
 
 
                 // Get the directory for the user's public pictures directory.
-                File file = new File(Environment.getExternalStorageDirectory(), "temp");
+                //        File file = new File(Environment.getExternalStorageDirectory(), Environment.DIRECTORY_DOWNLOADS);
 
 
-                tempFileName = "temp_regrann-" + System.currentTimeMillis() + ".jpg";
+                //        tempFileName = "temp_regrann-" + System.currentTimeMillis() + ".jpg";
 
 
-                tempFileFullPathName = file.toString() + File.separator + tempFileName;
+                //         tempFileFullPathName = file.toString() + File.separator + tempFileName;
 
-                File tempFileSave = new File(tempFileFullPathName);
+                //            File tempFileSave = new File(tempFileFullPathName);
+
+/**
+ ByteArrayOutputStream bytes = new ByteArrayOutputStream();
+ originalBitmapBeforeNoCrop.compress(Bitmap.CompressFormat.JPEG, 99, bytes);
+
+ // no crop if not square ??
 
 
-                ByteArrayOutputStream bytes = new ByteArrayOutputStream();
-                originalBitmapBeforeNoCrop.compress(Bitmap.CompressFormat.JPEG, 99, bytes);
+ // write the bytes in file
+ FileOutputStream fo = new FileOutputStream(tempFileSave);
+ fo.write(bytes.toByteArray());
 
-                // no crop if not square ??
-
-
-                // write the bytes in file
-                FileOutputStream fo = new FileOutputStream(tempFileSave);
-                fo.write(bytes.toByteArray());
-
-                // remember close de FileOutput
-                fo.close();
-
+ // remember close de FileOutput
+ fo.close();
+ **/
                 //  cleanUp();
 
-                src = tempFileSave;
+                src = lastDownloadedFile;
                 fname = regrannPictureFolder + File.separator + author + "-" + currTime + ".jpg";
                 saveToastMsg = "Photo was saved in /Pictures/Regrann/" + author + "  -" + currTime + ".jpg";
             }
@@ -4809,7 +4771,6 @@ return "injectedObject";
             File dst = new File(fname);
 
             copy(src, dst);
-
 
             Intent mediaScannerIntent = new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE);
             Uri fileContentUri = Uri.fromFile(dst); // With 'permFile' being the File object
@@ -4849,7 +4810,7 @@ return "injectedObject";
                             handler.postDelayed(new Runnable() {
                                 @Override
                                 public void run() {
-
+                                    Log.d("app5", "remove spinner 4903");
                                     spinner.setVisibility(View.GONE);
 
 
@@ -4917,6 +4878,60 @@ return "injectedObject";
     }
 
 
+    private PhotoEditorSettingsList createPesdkSettingsList() {
+
+        // Create a empty new SettingsList and apply the changes on this referance.
+        PhotoEditorSettingsList settingsList = new PhotoEditorSettingsList();
+
+        // If you include our asset Packs and you use our UI you also need to add them to the UI,
+        // otherwise they are only available for the backend
+        // See the specific feature sections of our guides if you want to know how to add our own Assets.
+
+        settingsList.getSettingsModel(UiConfigFilter.class).setFilterList(
+                FilterPackBasic.getFilterPack()
+        );
+
+        settingsList.getSettingsModel(UiConfigText.class).setFontList(
+                FontPackBasic.getFontPack()
+        );
+
+        settingsList.getSettingsModel(UiConfigFrame.class).setFrameList(
+                FramePackBasic.getFramePack()
+        );
+
+        settingsList.getSettingsModel(UiConfigOverlay.class).setOverlayList(
+                OverlayPackBasic.getOverlayPack()
+        );
+
+        settingsList.getSettingsModel(UiConfigSticker.class).setStickerLists(
+                StickerPackEmoticons.getStickerCategory(),
+                StickerPackShapes.getStickerCategory()
+        );
+
+
+        return settingsList;
+    }
+
+
+    private void openEditor(Uri inputImage) {
+
+        try {
+            PhotoEditorSettingsList settingsList = createPesdkSettingsList();
+
+            // Set input image
+            settingsList.getSettingsModel(LoadSettings.class).setSource(inputImage);
+
+            settingsList.getSettingsModel(PhotoEditorSaveSettings.class).setOutputToUri(inputImage);
+
+            new EditorBuilder(this)
+                    .setSettingsList(settingsList)
+                    .startActivityForResult(this, PESDK_RESULT);
+        } catch (Exception e) {
+            Log.d("app5", e.getMessage());
+        }
+    }
+
+
     @Override
     public void onClick(View v) {
         try {
@@ -4929,10 +4944,7 @@ return "injectedObject";
             if (v == btndownloadphoto) {
 
                 if (isMulti) {
-                    //DefaultSliderView slider = (DefaultSliderView) mDemoSlider.getCurrentSlider();
-                    //   Toast.makeText(_this, slider.getBundle().get("url") + "   \n IS_VIDEO :  " + slider.getBundle().get("is_video"), Toast.LENGTH_SHORT).show();
-                    //  if (slider.getBundle().get("is_video").toString() == "false")
-                    //    downloadSinglePhotoToTemp(slider.getBundle().get("url").toString());
+
 
                     copyAllMultiToSave();
                     RegrannApp.sendEvent("sc_savebtn_multi");
@@ -4943,13 +4955,8 @@ return "injectedObject";
                 RegrannApp.sendEvent("sc_savebtn");
 
 
-                // flurryAgent.logEvent("Save Button Pressed");
                 copyTempToSave();
 
-                //     if (Build.VERSION.SDK_INT >= 21) {
-                //        CookieManager.getInstance().setAcceptThirdPartyCookies(webViewInsta, true);
-                //       webViewInsta.loadUrl("https://www.instagram.com/");
-                //  }
 
                 return;
 
@@ -5030,47 +5037,6 @@ return "injectedObject";
 
             }
 
-/**
- if (v == scheduleBtn) {
-
-
- if (inputMediaType != 0) {
- title = "";
- author = "";
-
- }
- KeptListAdapter db = KeptListAdapter.getInstance(_this);
-
- InstaItem instaItem = new InstaItem(title, tempFileFullPathName, tempVideoFullPathName, author);
- int itemID = (int) db.addItem(instaItem, 0);
-
-
- clearClipboard();
-
-
- Intent i = new Intent(ShareActivity.this, PostPhoto.class);
- i.putExtra("itemid", itemID);
- i.putExtra("fileName", tempFileFullPathName);
- i.putExtra("videoURL", tempVideoFullPathName);
- i.putExtra("caption", title);
- i.putExtra("author", author);
-
- i.putExtra("scheduledTime", Long.valueOf(0));
- i.putExtra("isScheduled", 0);
- i.putExtra("fromschedulebtn", true);
-
- i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP | Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NO_ANIMATION);
- //	i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
- //   i.setAction("com.jaredco.action.fromkept");
- startActivity(i);
-
- cleanUp();
-
-
- finish();
-
- }
- **/
 
             if (v == btnCurrentToFeed) {
 
@@ -5106,36 +5072,6 @@ return "injectedObject";
             }
 
 
-/**
- if (v == btnCurrentToStory) {
-
- RegrannApp.sendEvent("sc_current_to_story");
-
- if (isMulti) {
-
- runOnUiThread(new Runnable() {
- public void run() {
- try {
-
- if (Objects.requireNonNull(mDemoSlider.getCurrentSlider().getBundle().get("is_video")).toString() == "false") {
- downloadSinglePhotoToTemp(Objects.requireNonNull(mDemoSlider.getCurrentSlider().getBundle().get("url")).toString());
- }
- isMulti = false;
-
- onClick(btnInstagramstories);
-
- } catch (Exception e) {
- }
- }
- });
-
-
- return;
- }
-
- }
- **/
-
             if (v == postlater) {
 
                 RegrannApp.sendEvent("sc_postlaterbtn");
@@ -5148,34 +5084,7 @@ return "injectedObject";
                 }
 
 
-                KeptListAdapter db = KeptListAdapter.getInstance(_this);
-
-
-                try {
-                    File videoDst = null;
-
-                    File folderDst = new File(Environment.getExternalStoragePublicDirectory(
-                            Environment.DIRECTORY_PICTURES) + "/regrann_postlater/" + new File(tempFileFullPathName).getName());
-
-
-                    FileUtils.copyFile(new File(tempFileFullPathName), folderDst);
-
-
-                    if (isVideo) {
-
-                        videoDst = new File(Environment.getExternalStoragePublicDirectory(
-                                Environment.DIRECTORY_PICTURES) + "/regrann_postlater/" + new File(tempVideoFullPathName).getName());
-
-
-                        FileUtils.copyFile(new File(tempVideoFullPathName), videoDst);
-                        db.addItem(new InstaItem(title, folderDst.getAbsolutePath(), videoDst.getAbsolutePath(), author));
-
-                    } else {
-                        db.addItem(new InstaItem(title, folderDst.getAbsolutePath(), "", author));
-                    }
-                } catch (Exception e) {
-                    Log.d("tag", e.getMessage());
-                }
+                copyPostLaterToPictureFolder();
 
 
                 clearClipboard();
@@ -5213,33 +5122,6 @@ return "injectedObject";
                 }
 
                 if (isMulti) {
-                    // DefaultSliderView slider = (DefaultSliderView) mDemoSlider.getCurrentSlider();
-                    //   Toast.makeText(_this, slider.getBundle().get("url") + "   \n IS_VIDEO :  " + slider.getBundle().get("is_video"), Toast.LENGTH_SHORT).show();
-                    //   if (slider.getBundle().get("is_video").toString() == "false")
-                    //     downloadSinglePhotoToTemp(slider.getBundle().get("url").toString());
-
-                    /**
-                     AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(ShareActivity.this);
-
-                     // set dialog message
-                     alertDialogBuilder.setMessage("The multi-post pics are in a new folder [Regrann Multi-Post]. To post them you need to switch to Instagram and upload them manually.").setCancelable(false).setPositiveButton("Ok", new DialogInterface.OnClickListener() {
-                     public void onClick(DialogInterface dialog, int id) {
-                     String caption = Util.prepareCaption(title, author, _this.getApplication().getApplicationContext(), caption_suffix, isVine);
-                     ClipboardManager clipboard = (ClipboardManager) getSystemService(CLIPBOARD_SERVICE);
-                     ClipData clip = ClipData.newPlainText("Post caption", caption);
-                     clipboard.setPrimaryClip(clip);
-                     //  if (doFinish)
-                     finish();
-                     }
-
-                     });
-
-                     // create alert dialog
-                     AlertDialog alertDialog = alertDialogBuilder.create();
-
-                     // show it
-                     alertDialog.show();
-                     **/
 
 
                     showMultiDialog();
@@ -5249,12 +5131,7 @@ return "injectedObject";
                 }
 
 
-                //   cleanUp();
-
-
                 final int numWarnings = preferences.getInt("captionWarning", 0);
-
-//                numWarnings = 5;
 
 
                 if (numWarnings < 3 && inputMediaType == 0) {
@@ -5265,12 +5142,6 @@ return "injectedObject";
 
                 } else {
 
-                    long prevAdShown = preferences.getLong("instagramAdShownTime", 0);
-
-                    long diff = (System.currentTimeMillis() - prevAdShown) / 1000 / 60;
-
-
-                    Log.d("app", "DIFF Inst. Button :" + diff);
 
                     //    diff = 8 ;
                     if (showInterstitial) {
@@ -5296,61 +5167,6 @@ return "injectedObject";
                 }
 
 
-                /**
-                 if (btnStoriesClicked) {
-
-
-                 final String newVideo = tempVideoFullPathName + "z" ;
-
-
-                 new Mp4Composer(tempVideoFullPathName, newVideo)
-
-                 .size(1080, 1920)
-                 .fillMode(FillMode.PRESERVE_ASPECT_FIT)
-
-                 .listener(new Mp4Composer.Listener() {
-                @Override public void onProgress(double progress) {
-                Log.d(TAG, "onProgress = " + progress);
-                }
-
-                @Override public void onCompleted() {
-                Log.d(TAG, "onCompleted()");
-                runOnUiThread(new Runnable() {
-                public void run() {
-
-
-                String newFileName = tempVideoFullPathName ;
-                // copy new video to old name
-                File file = new File(tempVideoFullPathName);
-                boolean deleted = file.delete();
-
-                if (deleted)
-                {
-
-                File file2 = new File(newVideo);
-                file2.renameTo(new File(newFileName));
-                }
-
-                }
-
-                });
-
-                }
-
-                @Override public void onCanceled() {
-                Log.d(TAG, "onCanceled");
-                }
-
-                @Override public void onFailed(Exception exception) {
-                Log.e(TAG, "onFailed()", exception);
-
-                onCompleted();
-                }
-                })
-                 .start();
-                 }
-                 **/
-
             }
 
 
@@ -5361,6 +5177,44 @@ return "injectedObject";
 
     }
 
+
+    private void copyPostLaterToPictureFolder() {
+
+        try {
+            File videoDst = null;
+
+            // Get the directory for the user's public pictures directory.
+            File file = new File(Environment.getExternalStorageDirectory(), Environment.DIRECTORY_PICTURES + "/regrann_postlater");
+
+            if (!file.mkdirs()) {
+                Log.e("error", "Directory not created");
+            }
+
+            File folderDst = new File(Environment.getExternalStoragePublicDirectory(
+                    Environment.DIRECTORY_PICTURES) + "/regrann_postlater/" + new File(tempFileFullPathName).getName());
+
+
+            copy(new File(tempFileFullPathName), folderDst);
+
+
+            KeptListAdapter db = KeptListAdapter.getInstance(_this);
+
+            if (isVideo) {
+
+                videoDst = new File(Environment.getExternalStoragePublicDirectory(
+                        Environment.DIRECTORY_PICTURES) + "/regrann_postlater/" + Util.getCurrentVideoFileName());
+
+
+                copy(new File(Util.getTempVideoFilePath()), videoDst);
+                db.addItem(new InstaItem(title, folderDst.getAbsolutePath(), videoDst.getAbsolutePath(), author));
+
+            } else {
+                db.addItem(new InstaItem(title, folderDst.getAbsolutePath(), "", author));
+            }
+        } catch (Exception e) {
+            Log.d("tag", e.getMessage());
+        }
+    }
 
     private void changeSaveButton() {
 
@@ -5384,7 +5238,7 @@ return "injectedObject";
 
 
             if (intent != null) {
-                shareIntent = new Intent();
+                Intent shareIntent = new Intent();
                 shareIntent.setAction(Intent.ACTION_SEND);
                 shareIntent.setPackage("com.instagram.android");
                 //  shareIntent.setClassName("com.instagram.android",instagram_activity);
@@ -5404,31 +5258,27 @@ return "injectedObject";
                 shareIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_NO_ANIMATION);
 
 
-                if (inputMediaType == 0) {
-                    //        shareIntent.putExtra(Intent.EXTRA_TEXT, caption);
+                ClipboardManager clipboard = (ClipboardManager) getSystemService(CLIPBOARD_SERVICE);
+                ClipData clip = ClipData.newPlainText("Post caption", caption);
+                Objects.requireNonNull(clipboard).setPrimaryClip(clip);
 
-
-                    ClipboardManager clipboard = (ClipboardManager) getSystemService(CLIPBOARD_SERVICE);
-                    ClipData clip = ClipData.newPlainText("Post caption", caption);
-                    Objects.requireNonNull(clipboard).setPrimaryClip(clip);
-                } else {
-                    caption = "";
-                    if (Util.isKeepCaption(_this) == false)
-                        caption = "@regrann no-crop:";
-
-
-                    ClipboardManager clipboard = (ClipboardManager) getSystemService(CLIPBOARD_SERVICE);
-                    ClipData clip = ClipData.newPlainText("Post caption", caption);
-                    Objects.requireNonNull(clipboard).setPrimaryClip(clip);
-
-
-                }
 
                 if (isVideo) {
                     shareIntent.setType("video/*");
-                    shareIntent.putExtra(Intent.EXTRA_STREAM, Uri.fromFile(tempVideoFile));
+                    File t = new File(Util.getTempVideoFilePath());
+                    shareIntent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
+                    Uri uri = Uri.fromFile(t);
+                    _this.grantUriPermission(
+                            "com.instagram.android", uri, Intent.FLAG_GRANT_READ_URI_PERMISSION);
+
+                    shareIntent.putExtra(Intent.EXTRA_STREAM, uri);
                 } else {
-                    shareIntent.putExtra(Intent.EXTRA_STREAM, Uri.fromFile(tempFile));
+                    Log.d("app5", "tempfile :  " + tempFile.toString());
+                    Uri uri = Uri.fromFile(tempFile);
+
+                    _this.grantUriPermission(
+                            "com.instagram.android", uri, Intent.FLAG_GRANT_READ_URI_PERMISSION);
+                    shareIntent.putExtra(Intent.EXTRA_STREAM, uri);
 
                     shareIntent.setType("image/jpeg");
                 }
@@ -5451,34 +5301,7 @@ return "injectedObject";
 
                 } else {
 
-                    sendToInstagram = true;
-
-
-                    Log.d("regrann", "No warnings;");
-                    // Do something after 5s = 5000ms
-
-
-/**
- PackageManager packManager = getPackageManager();
- List<ResolveInfo> resolvedInfoList = packManager.queryIntentActivities(shareIntent,  PackageManager.MATCH_DEFAULT_ONLY);
-
- boolean resolved = false;
- for(ResolveInfo resolveInfo: resolvedInfoList){
- if(resolveInfo.activityInfo.packageName.startsWith("com.instagram.android")){
-
-
-
- Log.d("app5", resolveInfo.activityInfo.packageName + "    " + resolveInfo.activityInfo.name);
-
- //  break;
- }
- }
- **/
-
-
                     startActivity(shareIntent);
-
-                    //   cleanUp();
 
 
                     final Handler handler = new Handler();
@@ -5515,57 +5338,4 @@ return "injectedObject";
     }
 
 
-    @Override
-    public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
-
-    }
-
-    @Override
-    public void onStartTrackingTouch(SeekBar seekBar) {
-        // TODO Auto-generated method stub
-
-    }
-
-    @Override
-    public void onStopTrackingTouch(SeekBar seekBar) {
-        // TODO Auto-generated method stub
-
-    }
-
-
-/**
-
- //==============================================================================================
- // Callbacks
- //==============================================================================================
- // PubnativeFeedBanner.Listener
- //----------------------------------------------------------------------------------------------
-
- @Override public void onPubnativeFeedBannerLoadFinish(PubnativeFeedBanner feedBanner) {
- try {
- Log.v(TAG, "onPubnativeFeedBannerLoadFinish");
- if (mFeedBanner == feedBanner) {
- feedBanner.show(mFeedBannerContainer);
- // mLoaderContainer.setVisibility(View.GONE);
- }
- } catch (Exception e){}
- }
-
- @Override public void onPubnativeFeedBannerLoadFailed(PubnativeFeedBanner feedBanner, Exception exception) {
- Log.v(TAG, "onPubnativeFeedBannerLoadFailed");
- //   mLoaderContainer.setVisibility(View.GONE);
- }
-
- @Override public void onPubnativeFeedBannerShow(PubnativeFeedBanner feedBanner) {
- Log.v(TAG, "onPubnativeFeedBannerShow");
- }
-
- @Override public void onPubnativeFeedBannerImpressionConfirmed(PubnativeFeedBanner feedBanner) {
- Log.v(TAG, "onPubnativeFeedBannerImpressionConfirmed");
- }
-
- @Override public void onPubnativeFeedBannerClick(PubnativeFeedBanner feedBanner) {
- Log.v(TAG, "onPubnativeFeedBannerClick");
- }
- **/
 }

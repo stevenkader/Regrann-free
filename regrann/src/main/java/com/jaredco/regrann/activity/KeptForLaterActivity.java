@@ -26,7 +26,6 @@ import static com.jaredco.regrann.activity.RegrannApp.sendEvent;
 public class KeptForLaterActivity extends AppCompatActivity {
 
     private KeptListAdapter dbHelper;
-    private SimpleCursorAdapter dataAdapter;
     private long currentPhotoID;
     public static KeptForLaterActivity _this;
 
@@ -152,9 +151,13 @@ public class KeptForLaterActivity extends AppCompatActivity {
 
         // create the adapter using the cursor pointing to the desired data
         // as well as the layout information
-        dataAdapter = new SimpleCursorAdapter(this, R.layout.kept_list_item, cursor, columns, to, 0);
+        SimpleCursorAdapter dataAdapter = new SimpleCursorAdapter(this, R.layout.kept_list_item, cursor, columns, to, 0);
 
 
+        if (dataAdapter.isEmpty()) {
+            finish();
+            return;
+        }
         ListView listView = findViewById(R.id.gridView);
 
 

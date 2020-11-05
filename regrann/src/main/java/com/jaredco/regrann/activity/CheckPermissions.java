@@ -24,7 +24,7 @@ import java.util.Map;
 
 public class CheckPermissions extends AppCompatActivity {
 
-    private static CheckPermissions _this;
+    CheckPermissions _this;
 
     Bundle _savedInstanceState;
 

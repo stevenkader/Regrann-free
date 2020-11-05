@@ -108,7 +108,6 @@ public class SettingsActivity2 extends PreferenceActivity {
 
     // SKU for our subscription (infinite gas)
     static final String SKU_INFINITE_GAS_MONTHLY = "com.jaredco.testinapp_regrann";
-    private FirebaseAnalytics mFirebaseAnalytics;
     // The helper object
     //   IabHelper mHelper;
 
@@ -248,7 +247,7 @@ public class SettingsActivity2 extends PreferenceActivity {
 
         _this = this;
 
-        mFirebaseAnalytics = FirebaseAnalytics.getInstance(this);
+        FirebaseAnalytics mFirebaseAnalytics = FirebaseAnalytics.getInstance(this);
 
         preferences = PreferenceManager.getDefaultSharedPreferences(_this.getApplication().getApplicationContext());
 
@@ -367,7 +366,7 @@ public class SettingsActivity2 extends PreferenceActivity {
     }
 
 
-    private static Preference.OnPreferenceChangeListener sBindPreferenceSummaryToValueListener = new Preference.OnPreferenceChangeListener() {
+    private static final Preference.OnPreferenceChangeListener sBindPreferenceSummaryToValueListener = new Preference.OnPreferenceChangeListener() {
         @Override
         public boolean onPreferenceChange(Preference preference, Object value) {
             String stringValue = value.toString();
@@ -514,7 +513,7 @@ public class SettingsActivity2 extends PreferenceActivity {
      * }
      **/
 
-    private String inAppSku = "regrann_001";
+    private final String inAppSku = "regrann_001";
 
 
 // Listener that's called when we finish querying the items and subscriptions we own

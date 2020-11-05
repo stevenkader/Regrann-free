@@ -51,7 +51,7 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_horizontal"
                     android:layout_marginBottom="50dp"
-                    android:text="@string/auto_saving"
+                    android:text="Quick Action...."
                     android:textAlignment="center"
                     android:textColor="#000000"
                     android:textSize="24sp"

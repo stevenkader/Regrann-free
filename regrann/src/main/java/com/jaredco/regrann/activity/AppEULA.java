@@ -21,8 +21,7 @@ import android.preference.PreferenceManager;
 import com.jaredco.regrann.R;
 
 public class AppEULA {
-    private String EULA_PREFIX = "appeula";
-    private Activity mContext;
+    private final Activity mContext;
 
     public AppEULA(Activity context) {
         mContext = context;
@@ -44,6 +43,7 @@ public class AppEULA {
 
         // The eulaKey changes every time you increment the version number in
         // the AndroidManifest.xml
+        String EULA_PREFIX = "appeula";
         final String eulaKey = EULA_PREFIX + versionInfo.versionCode;
         final SharedPreferences prefs = PreferenceManager
                 .getDefaultSharedPreferences(mContext);

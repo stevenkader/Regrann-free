@@ -1,10 +1,13 @@
 package com.jaredco.regrann.util;
 
 import android.app.AlertDialog;
+import android.app.DownloadManager;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.net.Uri;
+import android.os.Environment;
 import android.preference.PreferenceManager;
 import android.util.Log;
 
@@ -16,9 +19,73 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 
 
-public class Util
+public class Util {
+    public static String RootDirectoryPhoto = "/Regrann/";
+    public static String RootDirectoryMultiPhoto = "/Regrann - Multi Post/";
 
-{
+    private static String currentTempVideoFileName;
+
+    public static String getCurrentVideoFileName() {
+
+        return currentTempVideoFileName;
+    }
+
+    public static String getTempVideoFilePath() {
+
+        File file = new File(Environment.getExternalStorageDirectory(), Environment.DIRECTORY_DOWNLOADS);
+        Log.d("app5", " getTempvideofilepath : " + file.toString() + RootDirectoryPhoto + currentTempVideoFileName);
+        return file.toString() + RootDirectoryPhoto + currentTempVideoFileName;
+    }
+
+    public static void setTempVideoFileName(String fname) {
+        currentTempVideoFileName = fname;
+        Log.d("app5", "currentTempVideoFilePath :   " + currentTempVideoFileName);
+
+    }
+
+    public static long startDownload(String str, String str2, Context context2, String str3) {
+        DownloadManager.Request request = new DownloadManager.Request(Uri.parse(str));
+        request.setAllowedNetworkTypes(3);
+        request.setAllowedOverRoaming(true);
+        request.setNotificationVisibility(1);
+        StringBuilder sb = new StringBuilder();
+        sb.append(str3);
+        sb.append("");
+        request.setTitle(sb.toString());
+        String str4 = Environment.DIRECTORY_DOWNLOADS;
+
+        String sb2 = Util.RootDirectoryPhoto + str3;
+
+        setTempVideoFileName(str3);
+        request.setDestinationInExternalPublicDir(str4, sb2);
+        return ((DownloadManager) context2.getSystemService(Context.DOWNLOAD_SERVICE)).enqueue(request);
+    }
+
+
+    public static long startDownloadMulti(String str, String str2, Context context2, String str3, boolean isAutsave) {
+        DownloadManager.Request request = new DownloadManager.Request(Uri.parse(str));
+        request.setAllowedNetworkTypes(3);
+        request.setAllowedOverRoaming(true);
+        request.setNotificationVisibility(1);
+        StringBuilder sb = new StringBuilder();
+        sb.append(str3);
+        sb.append("");
+        request.setTitle(sb.toString());
+
+        String str4;
+        String sb2;
+        if (isAutsave) {
+            str4 = Environment.DIRECTORY_PICTURES;
+            sb2 = Util.RootDirectoryPhoto + str3;
+        } else {
+            str4 = Environment.DIRECTORY_DOWNLOADS;
+            sb2 = Util.RootDirectoryMultiPhoto + str3;
+        }
+
+
+        request.setDestinationInExternalPublicDir(str4, sb2);
+        return ((DownloadManager) context2.getSystemService(Context.DOWNLOAD_SERVICE)).enqueue(request);
+    }
 
 
     public static void showOkDialog(String title, String msg, Context ctx) {

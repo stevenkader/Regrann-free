@@ -29,14 +29,11 @@ import java.util.Map;
 public class OnBoardingActivity extends Activity {
 
 
-
+    int REQUEST_CODE_ASK_MULTIPLE_PERMISSIONS = 124;
     private LinearLayout pager_indicator;
     private int dotsCount;
     private ImageView[] dots;
 
-
-
-    private ViewPager onboard_pager;
 
     private OnBoard_Adapter mAdapter;
 
@@ -54,7 +51,7 @@ public class OnBoardingActivity extends Activity {
         setContentView(R.layout.activity_on_boarding);
 
         btn_get_started = findViewById(R.id.btn_get_started);
-        onboard_pager = findViewById(R.id.pager_introduction);
+        ViewPager onboard_pager = findViewById(R.id.pager_introduction);
         pager_indicator = findViewById(R.id.viewPagerCountDots);
 
 
@@ -235,9 +232,6 @@ public class OnBoardingActivity extends Activity {
     }
 
 
-    final private int REQUEST_CODE_ASK_MULTIPLE_PERMISSIONS = 124;
-
-
     private boolean addPermission(List<String> permissionsList, String permission) {
         if (ActivityCompat.checkSelfPermission(this, permission) != PackageManager.PERMISSION_GRANTED) {
             permissionsList.add(permission);
@@ -302,8 +296,9 @@ public class OnBoardingActivity extends Activity {
 
     @Override
     public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
+
         switch (requestCode) {
-            case REQUEST_CODE_ASK_MULTIPLE_PERMISSIONS: {
+            case 124: {
                 Map<String, Integer> perms = new HashMap<String, Integer>();
                 // Initial
                 perms.put(Manifest.permission.WRITE_EXTERNAL_STORAGE, PackageManager.PERMISSION_GRANTED);

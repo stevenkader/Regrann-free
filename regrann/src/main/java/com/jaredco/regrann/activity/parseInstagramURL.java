@@ -17,7 +17,6 @@ import android.webkit.WebViewClient;
 
 public class parseInstagramURL extends Service {
 
-    private Looper serviceLooper;
     private ServiceHandler serviceHandler;
     static String theURL ;
 
@@ -69,10 +68,7 @@ public class parseInstagramURL extends Service {
 
         class MyJavaScriptInterface {
 
-            private Context ctx;
-
             MyJavaScriptInterface(Context ctx) {
-                this.ctx = ctx;
             }
 
             @JavascriptInterface
@@ -105,7 +101,7 @@ public class parseInstagramURL extends Service {
         thread.start();
 
         // Get the HandlerThread's Looper and use it for our Handler
-        serviceLooper = thread.getLooper();
+        Looper serviceLooper = thread.getLooper();
         serviceHandler = new ServiceHandler(serviceLooper);
 
     }

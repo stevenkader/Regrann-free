@@ -23,14 +23,11 @@ import java.util.ArrayList;
  */
 public class KeptPhotosAdapter extends BaseAdapter {
 
-    private Activity activity;
-    private LayoutInflater inflater;
-    private ViewHolder holder;
+    private final LayoutInflater inflater;
     ArrayList<InstaItem> list;
 //    private AQuery aQuery;
 
     public KeptPhotosAdapter(Activity activity, ArrayList<InstaItem> list) {
-        this.activity = activity;
         inflater = (LayoutInflater) activity
                 .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         this.list = list;
@@ -54,6 +51,7 @@ public class KeptPhotosAdapter extends BaseAdapter {
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
+        ViewHolder holder;
         if (convertView == null) {
             convertView = inflater.inflate(R.layout.kept_list_item,
                     parent, false);
@@ -98,7 +96,7 @@ public class KeptPhotosAdapter extends BaseAdapter {
         }
     }
 
-    private class ViewHolder {
+    private static class ViewHolder {
         TextView tvAuthour, tvVideo;
         ImageView imageView, ivIsScheduled;
     }
