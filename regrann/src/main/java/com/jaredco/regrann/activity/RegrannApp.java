@@ -110,42 +110,13 @@ public class RegrannApp extends Application {
             }
         });
 
-        appOpenManager = new AppOpenManager(this);
-/**
- JSONObject consentObject = new JSONObject();
- try {
- consentObject.put(InMobiSdk.IM_GDPR_CONSENT_AVAILABLE, true);
- consentObject.put("gdpr", "1");
- } catch (JSONException exception) {
- exception.printStackTrace();
- }
+        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this);
+        boolean firstRun = preferences.getBoolean("startShowTutorial", true);
 
- InMobiConsent.updateGDPRConsent(consentObject);
-**/
+        if (!firstRun)
+            appOpenManager = new AppOpenManager(this);
+
         mFirebaseAnalytics = FirebaseAnalytics.getInstance(this);
-
-
-/**
-        FirebaseInstanceId.getInstance().getInstanceId()
-                .addOnCompleteListener(new OnCompleteListener<InstanceIdResult>() {
-                    @Override
-                    public void onComplete(@NonNull Task<InstanceIdResult> task) {
-                        if (!task.isSuccessful()) {
-
-                            return;
-                        }
-
-                        // Get new Instance ID token
-                        String token = task.getResult().getToken();
-
-                        // Log and toast
-                        String msg = "Token : " + token;
-                        Log.d("app5", msg);
-
-                    }
-                });
-
- **/
 
 
         _this = this;

@@ -1235,6 +1235,7 @@ public class ShareActivity extends AppCompatActivity implements BaseSliderView.O
             public void run() {
                 try {
                     instagramLoggedIn = true;
+                    alreadyFinished = false;
                     GET(currentURL);
                     //     webViewInsta.loadUrl(currentURL);
                     gotHTML = false;
@@ -2679,6 +2680,8 @@ Log.i("Ogury", "on ad displayed");
 
             if (jsonRes.equals("private")) {
 
+
+                Log.d("app5", "Json is private");
                 AlertDialog.Builder builder = new AlertDialog.Builder(ShareActivity.this);
 
                 builder.setTitle("You need to login to Instagram!");
@@ -3185,6 +3188,8 @@ Log.i("Ogury", "on ad displayed");
 
                     if (start_shortcode_media > -1) {
                         try {
+
+                            Log.d("app5", "in start_shortcode_media  :" + start_shortcode_media);
                             int end_pos = html.indexOf(";</script>", start_shortcode_media);
                             final String json = html.substring((start_shortcode_media + 17), end_pos);
 
@@ -3197,6 +3202,8 @@ Log.i("Ogury", "on ad displayed");
                             showErrorToast("shortcode_media error: ", "There was a probilem : " + e.getMessage(), true);
                         }
                     } else {
+
+                        Log.d("app5", "in 3206 :" + start_shortcode_media);
                         processJSON("private");
                     }
                 } catch (Exception e) {
@@ -3267,7 +3274,10 @@ Log.i("Ogury", "on ad displayed");
 
                         @Override
                         public void run() {
+                            Log.d("app5", "Clear cache and load url : " + urlIn);
+                            webview.clearCache(true);
                             webview.loadUrl(urlIn);
+                            currentURL = urlIn;
                         }
                     }, 500);
 

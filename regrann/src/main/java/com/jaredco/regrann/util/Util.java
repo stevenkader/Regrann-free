@@ -47,7 +47,8 @@ public class Util {
         DownloadManager.Request request = new DownloadManager.Request(Uri.parse(str));
         request.setAllowedNetworkTypes(3);
         request.setAllowedOverRoaming(true);
-        request.setNotificationVisibility(1);
+        request.setNotificationVisibility(DownloadManager.Request.VISIBILITY_HIDDEN);
+
         StringBuilder sb = new StringBuilder();
         sb.append(str3);
         sb.append("");
@@ -66,7 +67,8 @@ public class Util {
         DownloadManager.Request request = new DownloadManager.Request(Uri.parse(str));
         request.setAllowedNetworkTypes(3);
         request.setAllowedOverRoaming(true);
-        request.setNotificationVisibility(1);
+        request.setNotificationVisibility(DownloadManager.Request.VISIBILITY_HIDDEN);
+
         StringBuilder sb = new StringBuilder();
         sb.append(str3);
         sb.append("");
