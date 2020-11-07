@@ -2936,6 +2936,7 @@ Log.i("Ogury", "on ad displayed");
 
                         }
                     } catch (Exception e) {
+                        Log.d("app5", "exception e " + e.getMessage());
                     }
 
                     if ((readyToHideSpinner && downloadingStarted) || downloadingStarted == false) {

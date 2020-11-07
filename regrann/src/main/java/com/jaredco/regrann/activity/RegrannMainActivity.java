@@ -864,7 +864,7 @@ public class RegrannMainActivity extends AppCompatActivity {
     public void onClickHowToMulti(View view) {
 
 
-        watchYoutubeVideo(preferences.getString("multipost_videoid","HRuG5Y72LDQ" ));
+        watchYoutubeVideo(preferences.getString("multipost_videoid", "rikrGCItVSw"));
 
     }
 

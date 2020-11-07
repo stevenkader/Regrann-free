@@ -29,6 +29,7 @@ public class AppOpenManager implements LifecycleObserver, Application.ActivityLi
     private boolean isAutoSave, isQuickPost, isQuickKeep;
     private AppOpenAd.AppOpenAdLoadCallback loadCallback;
     private Activity currentActivity;
+    private static final boolean okToShow = false;
     private final RegrannApp myApplication;
     FullScreenContentCallback fullScreenContentCallback;
     private static boolean isShowingAd = false;
@@ -66,12 +67,16 @@ public class AppOpenManager implements LifecycleObserver, Application.ActivityLi
 
         boolean noAds = preferences.getBoolean("removeAds", false);
 
+
         if (noAds)
             return;
 
         isAutoSave = preferences.getBoolean("quicksave", false);
         isQuickPost = preferences.getBoolean("quickpost", false);
         isQuickKeep = preferences.getBoolean("quickkeep", false);
+
+        if (isAutoSave == false && isQuickKeep == false && isQuickPost == false)
+            return;
 
 
         if (!isShowingAd && isAdAvailable()) {
@@ -100,21 +105,16 @@ public class AppOpenManager implements LifecycleObserver, Application.ActivityLi
 
             if (currentActivity.toString().contains("NewShareText")) {
 
-                if (isAutoSave || isQuickKeep || isQuickPost) {
-                    new Handler().postDelayed(new Runnable() {
-                        @Override
-                        public void run() {
-                            RegrannApp.sendEvent("AppOpen - Showing Quick");
-                            appOpenAd.show(currentActivity, fullScreenContentCallback);
-                        }
-                    }, 50);
-                }
 
-            } else {
+                new Handler().postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        RegrannApp.sendEvent("AppOpen - Showing Quick");
+                        appOpenAd.show(currentActivity, fullScreenContentCallback);
+                    }
+                }, 50);
 
-                if (currentActivity.toString().contains("RegrannMainActivity"))
-                    RegrannApp.sendEvent("AppOpen - Showing Main");
-                appOpenAd.show(currentActivity, fullScreenContentCallback);
+
             }
 
             Log.d("app5", "show ad  : " + currentActivity.toString());
@@ -190,20 +190,28 @@ public class AppOpenManager implements LifecycleObserver, Application.ActivityLi
 
     @Override
     public void onActivityStarted(Activity activity) {
+
+
         currentActivity = activity;
     }
 
     @Override
     public void onActivityResumed(Activity activity) {
+
+
         currentActivity = activity;
     }
 
     @Override
-    public void onActivityStopped(Activity activity) {
+    public void onActivityStopped(
+            Activity activity) {
+
     }
 
     @Override
     public void onActivityPaused(Activity activity) {
+        currentActivity = activity;
+
     }
 
     @Override
