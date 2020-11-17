@@ -1,9 +1,9 @@
 <component name="libraryTable">
   <library name="Gradle: ly.img.android.sdk.operation:video-core:8.0.0@aar">
     <CLASSES>
-      <root url="jar://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/baf2ad0061abff7305c38f43b086b4be/jetified-video-core-8.0.0/jars/classes.jar!/" />
-      <root url="file://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/baf2ad0061abff7305c38f43b086b4be/jetified-video-core-8.0.0/res" />
-      <root url="file://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/baf2ad0061abff7305c38f43b086b4be/jetified-video-core-8.0.0/AndroidManifest.xml" />
+      <root url="file://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/8e2260ae46459a4981be3b1a8c93994a/jetified-video-core-8.0.0/AndroidManifest.xml" />
+      <root url="jar://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/8e2260ae46459a4981be3b1a8c93994a/jetified-video-core-8.0.0/jars/classes.jar!/" />
+      <root url="file://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/8e2260ae46459a4981be3b1a8c93994a/jetified-video-core-8.0.0/res" />
     </CLASSES>
     <JAVADOC />
     <SOURCES />

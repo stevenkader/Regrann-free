@@ -1,9 +1,9 @@
 <component name="libraryTable">
   <library name="Gradle: ly.img.android.sdk.operation:focus:8.0.0@aar">
     <CLASSES>
-      <root url="jar://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/1b220b5e053a3a4ca49e4e18b3ad9599/jetified-focus-8.0.0/jars/classes.jar!/" />
-      <root url="file://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/1b220b5e053a3a4ca49e4e18b3ad9599/jetified-focus-8.0.0/res" />
-      <root url="file://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/1b220b5e053a3a4ca49e4e18b3ad9599/jetified-focus-8.0.0/AndroidManifest.xml" />
+      <root url="file://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/048ff49fe39763f18fa9fc97cc9610cb/jetified-focus-8.0.0/AndroidManifest.xml" />
+      <root url="jar://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/048ff49fe39763f18fa9fc97cc9610cb/jetified-focus-8.0.0/jars/classes.jar!/" />
+      <root url="file://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/048ff49fe39763f18fa9fc97cc9610cb/jetified-focus-8.0.0/res" />
     </CLASSES>
     <JAVADOC />
     <SOURCES />

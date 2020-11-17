@@ -88,7 +88,7 @@ public class PostFromKeptActivity extends Activity implements OnClickListener, O
                     tempVideoName = intent.getStringExtra("videoURL");
                     int isScheduled = intent.getIntExtra("isScheduled", 0);
                     long scheduledTime = intent.getLongExtra("scheduledTime", 0);
-                    if (tempVideoName != null && tempVideoName.equals("") == false)
+                    if (tempVideoName != null && !tempVideoName.equals(""))
                         isVideo = true;
 
 

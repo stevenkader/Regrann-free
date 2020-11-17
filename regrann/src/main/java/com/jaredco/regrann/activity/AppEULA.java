@@ -49,11 +49,11 @@ public class AppEULA {
                 .getDefaultSharedPreferences(mContext);
 
         boolean bAlreadyAccepted = prefs.getBoolean(eulaKey, false);
-        if (bAlreadyAccepted == false) {
+        if (!bAlreadyAccepted) {
 
             // EULA title
             String title = mContext.getString(R.string.app_name) + " "
-            + versionInfo.versionName;
+                    + versionInfo.versionName;
 
             // EULA text
             String message = mContext.getString(R.string.eula_string);

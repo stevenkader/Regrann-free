@@ -10,7 +10,7 @@ import android.text.TextUtils;
  */
 
 public class SharedPreferenceHelper {
-    private Context mContext;
+    private final Context mContext;
 
     public SharedPreferenceHelper(Context context) {
         this.mContext = context;

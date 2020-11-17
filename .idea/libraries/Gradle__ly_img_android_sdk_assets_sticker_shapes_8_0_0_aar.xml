@@ -1,9 +1,9 @@
 <component name="libraryTable">
   <library name="Gradle: ly.img.android.sdk.assets:sticker-shapes:8.0.0@aar">
     <CLASSES>
-      <root url="jar://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/d7fa03456724b34ed6ed34199e361822/jetified-sticker-shapes-8.0.0/jars/classes.jar!/" />
-      <root url="file://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/d7fa03456724b34ed6ed34199e361822/jetified-sticker-shapes-8.0.0/res" />
-      <root url="file://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/d7fa03456724b34ed6ed34199e361822/jetified-sticker-shapes-8.0.0/AndroidManifest.xml" />
+      <root url="jar://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/47686c619c2fd4972141556241dfce68/jetified-sticker-shapes-8.0.0/jars/classes.jar!/" />
+      <root url="file://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/47686c619c2fd4972141556241dfce68/jetified-sticker-shapes-8.0.0/AndroidManifest.xml" />
+      <root url="file://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/47686c619c2fd4972141556241dfce68/jetified-sticker-shapes-8.0.0/res" />
     </CLASSES>
     <JAVADOC />
     <SOURCES />

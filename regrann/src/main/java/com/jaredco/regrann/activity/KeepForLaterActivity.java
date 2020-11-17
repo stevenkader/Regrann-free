@@ -69,7 +69,7 @@ public class KeepForLaterActivity extends Activity {
     public static final int ACTION_TWEET_SEND = 1;
     public static final int ACTION_FACEBOOK_POST = 2;
     private ProgressBar spinner;
-    private String mTinyUrl = null;
+    private final String mTinyUrl = null;
     JSONObject jsonInstagramDetails;
     static String url, title, author;
     String internalPath;

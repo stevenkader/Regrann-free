@@ -297,31 +297,23 @@ public class OnBoardingActivity extends Activity {
     @Override
     public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
 
-        switch (requestCode) {
-            case 124: {
-                Map<String, Integer> perms = new HashMap<String, Integer>();
-                // Initial
-                perms.put(Manifest.permission.WRITE_EXTERNAL_STORAGE, PackageManager.PERMISSION_GRANTED);
-                //       perms.put(Manifest.permission.RECEIVE_SMS, PackageManager.PERMISSION_GRANTED);
-                //      perms.put(android.Manifest.permission.READ_SMS, PackageManager.PERMISSION_GRANTED);
+        if (requestCode == 124) {
+            Map<String, Integer> perms = new HashMap<String, Integer>();
+            // Initial
+            perms.put(Manifest.permission.WRITE_EXTERNAL_STORAGE, PackageManager.PERMISSION_GRANTED);
+            //       perms.put(Manifest.permission.RECEIVE_SMS, PackageManager.PERMISSION_GRANTED);
+            //      perms.put(android.Manifest.permission.READ_SMS, PackageManager.PERMISSION_GRANTED);
 
 
+            if (perms.get(Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED
 
-
-
-                if (perms.get(Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED
-
-                        ) {
-                    // All Permissions Granted
-                    // insertDummyContact();
-
-                }
-
+            ) {
+                // All Permissions Granted
+                // insertDummyContact();
 
             }
-            break;
-            default:
-                super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        } else {
+            super.onRequestPermissionsResult(requestCode, permissions, grantResults);
         }
     }
 

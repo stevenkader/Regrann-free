@@ -67,7 +67,7 @@ public class QuickSaveActivity extends AppCompatActivity {
 
 
     private void executeServiceRequest(Runnable runnable) {
-        if (billingReady == true) {
+        if (billingReady) {
             runnable.run();
         }
     }
@@ -126,7 +126,7 @@ public class QuickSaveActivity extends AppCompatActivity {
 
 
     private void showErrorToast(final String error, final String displayMsg) {
-        if (updateScreenOn == false)
+        if (!updateScreenOn)
             showErrorToast(error, displayMsg, false);
     }
 
@@ -165,9 +165,9 @@ public class QuickSaveActivity extends AppCompatActivity {
 
 
     public void onClickUpgradeNow(View view) {
-        if (billingReady == false) {
+        if (!billingReady) {
             RegrannApp.sendEvent("ug_removeads_billingnotready");
-            showErrorToast( "Purchasing system isn't ready" ,"Please try again later", true);
+            showErrorToast("Purchasing system isn't ready", "Please try again later", true);
         } else {
 // Retrieve a value for "skuDetails" by calling querySkuDetailsAsync().
 

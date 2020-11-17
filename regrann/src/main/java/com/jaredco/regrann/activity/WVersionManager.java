@@ -37,10 +37,10 @@ public class WVersionManager implements IWVersionManager {
 
     private CustomTagHandler customTagHandler;
 
-    private String PREF_IGNORE_VERSION_CODE = "w.ignore.version.code";
-    private String PREF_REMINDER_TIME = "w.reminder.time";
+    private final String PREF_IGNORE_VERSION_CODE = "w.ignore.version.code";
+    private final String PREF_REMINDER_TIME = "w.reminder.time";
 
-    private Activity activity;
+    private final Activity activity;
     private Drawable icon;
     private String title;
     private String message;
@@ -51,9 +51,9 @@ public class WVersionManager implements IWVersionManager {
     private String versionContentUrl;
     private int reminderTimer;
     private int versionCode;
-    private AlertDialogButtonListener listener;
+    private final AlertDialogButtonListener listener;
     private boolean mDialogCancelable = true;
-    private boolean mIsAskForRate = false;
+    private final boolean mIsAskForRate = false;
     private String mAskForRatePositiveLabel;
     private String mAskForRateNegativeLabel;
     private int mMode = 100; // default mode

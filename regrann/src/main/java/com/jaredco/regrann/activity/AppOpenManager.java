@@ -26,8 +26,6 @@ public class AppOpenManager implements LifecycleObserver, Application.ActivityLi
     private static final String LOG_TAG = "app5";
     private static final String AD_UNIT_ID = "ca-app-pub-8534786486141147/6665853268";  //ca-app-pub-8534786486141147/6665853268   //ca-app-pub-3940256099942544/3419835294"
     private AppOpenAd appOpenAd = null;
-    private boolean isAutoSave, isQuickPost, isQuickKeep;
-    private AppOpenAd.AppOpenAdLoadCallback loadCallback;
     private Activity currentActivity;
     private static final boolean okToShow = false;
     private final RegrannApp myApplication;
@@ -71,11 +69,11 @@ public class AppOpenManager implements LifecycleObserver, Application.ActivityLi
         if (noAds)
             return;
 
-        isAutoSave = preferences.getBoolean("quicksave", false);
-        isQuickPost = preferences.getBoolean("quickpost", false);
-        isQuickKeep = preferences.getBoolean("quickkeep", false);
+        boolean isAutoSave = preferences.getBoolean("quicksave", false);
+        boolean isQuickPost = preferences.getBoolean("quickpost", false);
+        boolean isQuickKeep = preferences.getBoolean("quickkeep", false);
 
-        if (isAutoSave == false && isQuickKeep == false && isQuickPost == false)
+        if (!isAutoSave && !isQuickKeep && !isQuickPost)
             return;
 
 
@@ -148,33 +146,43 @@ public class AppOpenManager implements LifecycleObserver, Application.ActivityLi
             return;
         }
 
-        loadCallback =
-                new AppOpenAd.AppOpenAdLoadCallback() {
-                    /**
-                     * Called when an app open ad has loaded.
-                     *
-                     * @param ad the loaded app open ad.
-                     */
-                    @Override
-                    public void onAppOpenAdLoaded(AppOpenAd ad) {
-                        AppOpenManager.this.appOpenAd = ad;
-                        RegrannApp.sendEvent("AppOpen - Loaded");
-                        Log.d("app5", "Add Loaded");
-                    }
+        /**
+         * Called when an app open ad has loaded.
+         *
+         * @param ad the loaded app open ad.
+         */
+        /**
+         * Called when an app open ad has failed to load.
+         *
+         * @param loadAdError the error.
+         */
+        // Handle the error.
+        AppOpenAd.AppOpenAdLoadCallback loadCallback = new AppOpenAd.AppOpenAdLoadCallback() {
+            /**
+             * Called when an app open ad has loaded.
+             *
+             * @param ad the loaded app open ad.
+             */
+            @Override
+            public void onAppOpenAdLoaded(AppOpenAd ad) {
+                AppOpenManager.this.appOpenAd = ad;
+                RegrannApp.sendEvent("AppOpen - Loaded");
+                Log.d("app5", "Add Loaded");
+            }
 
-                    /**
-                     * Called when an app open ad has failed to load.
-                     *
-                     * @param loadAdError the error.
-                     */
-                    @Override
-                    public void onAppOpenAdFailedToLoad(LoadAdError loadAdError) {
-                        // Handle the error.
-                        RegrannApp.sendEvent("AppOpen - Fail Load");
-                        Log.d("app5", "Ad failed to load  : " + loadAdError.getMessage());
-                    }
+            /**
+             * Called when an app open ad has failed to load.
+             *
+             * @param loadAdError the error.
+             */
+            @Override
+            public void onAppOpenAdFailedToLoad(LoadAdError loadAdError) {
+                // Handle the error.
+                RegrannApp.sendEvent("AppOpen - Fail Load");
+                Log.d("app5", "Ad failed to load  : " + loadAdError.getMessage());
+            }
 
-                };
+        };
         AdRequest request = getAdRequest();
         AppOpenAd.load(
                 myApplication, AD_UNIT_ID, request,

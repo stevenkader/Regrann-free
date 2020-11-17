@@ -564,7 +564,7 @@ public class RegrannMainActivity extends AppCompatActivity {
 
                             for (Purchase purchase : purchasesResult.getPurchasesList()) {
 
-                                if (1 == 2&&  BuildConfig.DEBUG) {
+                                if (false) {
 
 
                                     ConsumeParams consumeParams = ConsumeParams.newBuilder()
@@ -621,7 +621,7 @@ public class RegrannMainActivity extends AppCompatActivity {
 
 
     private void executeServiceRequest(Runnable runnable) {
-        if (billingReady == true) {
+        if (billingReady) {
             runnable.run();
         }
     }

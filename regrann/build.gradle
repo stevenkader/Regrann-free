@@ -62,8 +62,8 @@ android {
         applicationId "com.jaredco.regrann"
         minSdkVersion 21
         targetSdkVersion 29
-        versionCode 427
-        versionName "9.45"
+        versionCode 431
+        versionName "9.52"
 
         multiDexEnabled true
         resValue 'string', 'pesdk_version', "v$pesdk_version"
@@ -173,6 +173,7 @@ dependencies {
     implementation 'androidx.multidex:multidex:2.0.1'
     implementation 'com.google.firebase:firebase-core:18.0.0'
 
+    implementation 'com.google.android.play:core:1.8.3'
 
     /* 4) Add the CSDK framework dependencies (Make sure these version numbers are correct) */
     implementation 'org.jsoup:jsoup:1.13.1'

@@ -88,6 +88,9 @@ import com.google.android.gms.ads.InterstitialAd;
 import com.google.android.gms.ads.formats.UnifiedNativeAd;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.android.play.core.review.ReviewInfo;
+import com.google.android.play.core.review.ReviewManager;
+import com.google.android.play.core.review.ReviewManagerFactory;
 import com.google.firebase.analytics.FirebaseAnalytics;
 import com.google.firebase.remoteconfig.FirebaseRemoteConfig;
 import com.google.firebase.remoteconfig.FirebaseRemoteConfigSettings;
@@ -173,7 +176,6 @@ public class ShareActivity extends AppCompatActivity implements BaseSliderView.O
     ImageView previewImage;
 
     private AdView adBannerView;
-    private FrameLayout adContainerView;
 
     boolean readyToHideSpinner = false;
     boolean btnStoriesClicked = false;
@@ -392,7 +394,7 @@ public class ShareActivity extends AppCompatActivity implements BaseSliderView.O
 
 
     private void executeServiceRequest(Runnable runnable) {
-        if (billingReady == true) {
+        if (billingReady) {
             runnable.run();
         }
     }
@@ -930,7 +932,7 @@ public class ShareActivity extends AppCompatActivity implements BaseSliderView.O
 
                 final Intent iv = getIntent();
 
-                if (getIntent().getBooleanExtra("fromExtension", false) == false) {
+                if (!getIntent().getBooleanExtra("fromExtension", false)) {
                     Log.d("mediaURL", iv.getStringExtra("mediaUrl"));
                     String url = iv.getStringExtra("mediaUrl");
                     // String result = GET (t);
@@ -959,7 +961,7 @@ public class ShareActivity extends AppCompatActivity implements BaseSliderView.O
         String title = null;
 
 
-        if (1 == 1 || noAds) {
+        if (true) {
             setContentView(R.layout.activity_autosave2);
 
             Toolbar myToolbar = findViewById(R.id.my_toolbar);
@@ -1362,7 +1364,7 @@ public class ShareActivity extends AppCompatActivity implements BaseSliderView.O
 
                 boolean show_midrect = preferences.getBoolean("show_midrect", true);
 
-                if (1 == 2 && isAutoSave == false && show_midrect) {
+                if (false) {
 
 
                 }
@@ -1589,7 +1591,7 @@ Log.i("Ogury", "on ad displayed");
                         for (int i = 0; i < children.length; i++) {
                             try {
 
-                                if (children[i].contains("nomedia") == false) {
+                                if (!children[i].contains("nomedia")) {
                                     Log.d("app5", children[i]);
 
                                     File toScan = new File(dir, children[i]);
@@ -1792,7 +1794,7 @@ Log.i("Ogury", "on ad displayed");
     public void onBackPressed() {
         try {
 
-            if (noAds == false && isAutoSave)
+            if (!noAds && isAutoSave)
                 return;
 
             super.onBackPressed();
@@ -1942,11 +1944,10 @@ Log.i("Ogury", "on ad displayed");
 
 
     private void AddBannerAd(FrameLayout frameContainer) {
-        adContainerView = frameContainer;
         // Step 1 - Create an AdView and set the ad unit ID on it.
         adBannerView = new AdView(this);
         adBannerView.setAdUnitId("ca-app-pub-8534786486141147/4655316331");
-        adContainerView.addView(adBannerView);
+        frameContainer.addView(adBannerView);
         loadBanner();
     }
 
@@ -2124,9 +2125,22 @@ Log.i("Ogury", "on ad displayed");
                     try {
 
                         RegrannApp.sendEvent("sc_rating_ok");
-                        Intent intent = new Intent(Intent.ACTION_VIEW);
-                        intent.setData(Uri.parse("market://details?id=com.jaredco.regrann"));
-                        startActivity(intent);
+                        ReviewManager manager = ReviewManagerFactory.create(_this);
+
+                        com.google.android.play.core.tasks.Task<ReviewInfo> request = manager.requestReviewFlow();
+                        request.addOnCompleteListener(task -> {
+                            if (task.isSuccessful()) {
+                                // We can get the ReviewInfo object
+                                ReviewInfo reviewInfo = task.getResult();
+                                com.google.android.play.core.tasks.Task<Void> flow = manager.launchReviewFlow(_this, reviewInfo);
+
+
+                            } else {
+                                // There was some problem, continue regardless of the result.
+                            }
+                        });
+
+
                     } catch (Exception e) {
                     }
                 }
@@ -2173,15 +2187,13 @@ Log.i("Ogury", "on ad displayed");
 
             Log.d("app5", "Count of Runs :" + count);
 
-            if (count != 4 && count != 16) {
+            if (count != 4) {
 
                 // check for update every second time
 
 
                 return;
             }
-
-            RegrannApp.sendEvent("sc_rating_howisexp");
 
 
             AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(ShareActivity.this);
@@ -2255,7 +2267,7 @@ Log.i("Ogury", "on ad displayed");
             canvas.drawBitmap(src, 0, 0, null);
 
 
-            if (customWatermark == false) {
+            if (!customWatermark) {
                 int stripHeight = (int) (0.08 * src.getHeight());
                 // get profile picture of author
                 URL profilePicURL = new URL(profile_pic_url);
@@ -2465,7 +2477,6 @@ Log.i("Ogury", "on ad displayed");
      **/
 
 
-
     @Override
     protected void onDestroy() {
 
@@ -2474,8 +2485,6 @@ Log.i("Ogury", "on ad displayed");
             unregisterReceiver(onComplete);
         } catch (Exception e) {
         }
-
-
 
 
         super.onDestroy();
@@ -2619,7 +2628,7 @@ Log.i("Ogury", "on ad displayed");
                                     //  final Drawable drawable = Drawable.createFromPath(path);
                                     previewImage.setImageBitmap(Util.decodeFile(new File(path)));
 
-                                    if (isVideo == false) {
+                                    if (!isVideo) {
                                         findViewById(R.id.btnEditor).setVisibility(View.VISIBLE);
                                     }
 
@@ -2760,7 +2769,7 @@ Log.i("Ogury", "on ad displayed");
 
 
         if (json != null)
-            if (json.isNull("edge_sidecar_to_children") == false) {
+            if (!json.isNull("edge_sidecar_to_children")) {
                 try {
 
                     // Get the directory for the user's public pictures directory.
@@ -2939,7 +2948,7 @@ Log.i("Ogury", "on ad displayed");
                         Log.d("app5", "exception e " + e.getMessage());
                     }
 
-                    if ((readyToHideSpinner && downloadingStarted) || downloadingStarted == false) {
+                    if (readyToHideSpinner || !downloadingStarted) {
 
                         runOnUiThread(new Runnable() {
                             public void run() {
@@ -3013,7 +3022,7 @@ Log.i("Ogury", "on ad displayed");
             fo.close();
 
 
-            if (1 == 2 && isVideo) {
+            if (false) {
                 RegrannApp.sendEvent("sc_video");
 
                 if (preferences.getBoolean("watermark_checkbox", false) ||
@@ -3228,10 +3237,10 @@ Log.i("Ogury", "on ad displayed");
 
 
                     if (isAutoSave | isQuickKeep | isQuickPost)
-                        webview = (WebView) findViewById(R.id.browser2);
+                        webview = findViewById(R.id.browser2);
                     else
 
-                        webview = (WebView) findViewById(R.id.browser);
+                        webview = findViewById(R.id.browser);
 
                     webview.getSettings().setLoadWithOverviewMode(true);
                     webview.getSettings().setUseWideViewPort(true);
@@ -3256,7 +3265,7 @@ Log.i("Ogury", "on ad displayed");
                         public void onPageFinished(WebView view, String url) {
 
                             Log.d("app5", "in page finisihed ");
-                            if (alreadyFinished == false) {
+                            if (!alreadyFinished) {
                                 Log.d("app5", "in already finisihed");
                                 webview.loadUrl("javascript:window.HtmlViewer.showHTML" +
                                         "('<html>'+document.getElementsByTagName('html')[0].innerHTML+'</html>');");
@@ -3339,27 +3348,21 @@ Log.i("Ogury", "on ad displayed");
 
 
         if (resultCode == RESULT_OK) {
-            switch (requestCode) {
+            /* 4) Make a case for the request code we passed to startActivityForResult() */
+            if (requestCode == 1) {
+                try {
 
-                /* 4) Make a case for the request code we passed to startActivityForResult() */
-                case 1:
-
-                    try {
-
-                        Uri mImageUri = data.getData();
+                    Uri mImageUri = data.getData();
 
 
-                        previewImage.setImageBitmap(Util.decodeFile(new File(mImageUri != null ? mImageUri.getPath() : null)));
+                    previewImage.setImageBitmap(Util.decodeFile(new File(mImageUri != null ? mImageUri.getPath() : null)));
 
-                        //  final Drawable drawable = Drawable.createFromPath(mImageUri.getPath());
-                        //    previewImage.setImageDrawable(drawable);
-
-
-                    } catch (Exception e) {
-                    }
+                    //  final Drawable drawable = Drawable.createFromPath(mImageUri.getPath());
+                    //    previewImage.setImageDrawable(drawable);
 
 
-                    break;
+                } catch (Exception e) {
+                }
             }
         }
     }
@@ -3430,8 +3433,6 @@ Log.i("Ogury", "on ad displayed");
         LocalBroadcastManager localBroadcastManager = LocalBroadcastManager.getInstance(this);
         localBroadcastManager.unregisterReceiver(myDownloadLinkReceiver);
         unregisterReceiver(downloadCompleteReceiver);
-
-
 
 
     }
@@ -3568,7 +3569,7 @@ Log.i("Ogury", "on ad displayed");
     }
 
     private void showErrorToast(final String error, final String displayMsg) {
-        if (updateScreenOn == false)
+        if (!updateScreenOn)
             showErrorToast(error, displayMsg, false);
     }
 
@@ -3593,7 +3594,7 @@ Log.i("Ogury", "on ad displayed");
 
 
                     sleep(1000);
-                    if (updateScreenOn == true)
+                    if (updateScreenOn)
                         return;
 
                     if (spinner != null) {
@@ -4198,6 +4199,67 @@ Log.i("Ogury", "on ad displayed");
      **/
 
 
+    private class addWatermarkToFile extends AsyncTask<String, Integer, String> {
+        @Override
+        protected String doInBackground(String... fnames) {
+
+            String fname = fnames[0];
+
+            Bitmap bitmap = null;
+            try {
+
+                bitmap = BitmapFactory.decodeFile(fname);
+
+            } catch (Throwable e) {
+                showErrorToast("Out of memory", "Sorry not enough memory to continue", true);
+
+            }
+
+            try {
+                if (preferences.getBoolean("watermark_checkbox", false) ||
+                        preferences.getBoolean("custom_watermark", false)) {
+                    Point p = new Point(10, (bitmap != null ? bitmap.getHeight() : 0) - 10);
+                    int textSize = 20;
+                    if (bitmap.getHeight() > 640)
+                        textSize = 50;
+                    bitmap = mark(bitmap, author, p, Color.YELLOW, 180, textSize, false);
+                }
+            } catch (Exception e99) {
+
+            }
+
+            ByteArrayOutputStream bytes = new ByteArrayOutputStream();
+            bitmap.compress(Bitmap.CompressFormat.JPEG, 99, bytes);
+
+
+            try {
+
+
+                Log.d("app5", "in oncomplete photo : " + fname);
+                FileOutputStream fo = new FileOutputStream(new File(fname), false);
+                byte[] contents = bytes.toByteArray();
+                fo.write(contents);
+                fo.flush();
+                // remember close de FileOutput
+                fo.close();
+            } catch (Exception e) {
+                Log.d("app5", "in  error oncomplete photo : " + e.getMessage());
+            }
+
+            return fname;
+        }
+
+        protected void onProgressUpdate(Integer... progress) {
+
+        }
+
+
+        protected void onPostExecute(String result) {
+
+
+        }
+    }
+
     BroadcastReceiver onComplete = new BroadcastReceiver() {
 
         public void onReceive(Context ctxt, Intent intent) {
@@ -4257,7 +4319,32 @@ Log.i("Ogury", "on ad displayed");
                 }
 
 
-                if (isVideo == false) {
+                if (!isVideo) {
+
+
+                    String fname = "";
+                    Bitmap bitmap = null;
+                    Bitmap originalBitmapBeforeNoCrop;
+
+                    Bundle extras = intent.getExtras();
+                    DownloadManager.Query q = new DownloadManager.Query();
+                    q.setFilterById(extras.getLong(DownloadManager.EXTRA_DOWNLOAD_ID));
+                    Cursor c = downloadManager.query(q);
+
+                    if (c.moveToFirst()) {
+                        int status = c.getInt(c.getColumnIndex(DownloadManager.COLUMN_STATUS));
+                        if (status == DownloadManager.STATUS_SUCCESSFUL) {
+                            // process download
+                            fname = c.getString(c.getColumnIndex(DownloadManager.COLUMN_TITLE));
+
+                            fname = Environment.getExternalStorageDirectory() + "/" + Environment.DIRECTORY_DOWNLOADS + Util.RootDirectoryMultiPhoto + fname;
+                            // get other required data by changing the constant passed to getColumnIndex
+                        }
+                    }
+
+
+                    new addWatermarkToFile().execute(fname);
+
                     return;
 
                 }
@@ -4518,7 +4605,7 @@ Log.i("Ogury", "on ad displayed");
                 for (int i = 0; i < children.length; i++) {
                     try {
 
-                        if (children[i].contains("nomedia") == false) {
+                        if (!children[i].contains("nomedia")) {
                             File source = new File(dir, children[i]);
 
 
@@ -4564,7 +4651,7 @@ Log.i("Ogury", "on ad displayed");
 
             if (isAutoSave) {
                 // user is premium and we are in quick save mode
-                if (1 == 2 && showInterstitial) {
+                if (false) {
 
                     final Handler handler = new Handler();
                     handler.postDelayed(new Runnable() {
@@ -4693,7 +4780,7 @@ Log.i("Ogury", "on ad displayed");
         protected void onPreExecute() {
 
 
-            if (isAutoSave == false)
+            if (!isAutoSave)
                 pd = ProgressDialog.show(ShareActivity.this, _this.getString(R.string.progress_dialog_msg), "Saving.....", true, false);
 
         }
@@ -4803,7 +4890,7 @@ Log.i("Ogury", "on ad displayed");
 
             if (isAutoSave) {
                 // user is premium and we are in quick save mode
-                if (1 == 2 && showInterstitial) {
+                if (false) {
 
                     final Handler handler = new Handler();
                     handler.postDelayed(new Runnable() {
@@ -4993,7 +5080,7 @@ Log.i("Ogury", "on ad displayed");
                         String caption;
                         //count how many hashtags
 
-                        if (title != null && (Util.isKeepCaption(_this) == false)) {
+                        if (title != null && (!Util.isKeepCaption(_this))) {
 
 
                             share.putExtra(Intent.EXTRA_SUBJECT, "Regrann from @" + author);
@@ -5012,7 +5099,7 @@ Log.i("Ogury", "on ad displayed");
 
                     } else {
                         String caption = "";
-                        if (Util.isKeepCaption(_this) == false)
+                        if (!Util.isKeepCaption(_this))
                             caption = "@regrann no-crop:";
 
 
@@ -5145,7 +5232,7 @@ Log.i("Ogury", "on ad displayed");
                 final int numWarnings = preferences.getInt("captionWarning", 0);
 
 
-                if (numWarnings < 3 && inputMediaType == 0) {
+                if (numWarnings < 3) {
 
 
                     sendToInstagam();

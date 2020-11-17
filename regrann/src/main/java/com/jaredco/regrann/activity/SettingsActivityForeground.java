@@ -52,7 +52,7 @@ public class SettingsActivityForeground extends PreferenceActivity {
     private AppCompatDelegate mDelegate;
 
 
-    private static OnPreferenceChangeListener sBindPreferenceSummaryToValueListener = new OnPreferenceChangeListener() {
+    private static final OnPreferenceChangeListener sBindPreferenceSummaryToValueListener = new OnPreferenceChangeListener() {
         @Override
         public boolean onPreferenceChange(Preference preference, Object value) {
             String stringValue = value.toString();

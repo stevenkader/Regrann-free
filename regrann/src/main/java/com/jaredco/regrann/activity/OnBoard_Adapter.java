@@ -22,8 +22,8 @@ import java.util.ArrayList;
 
 class OnBoard_Adapter extends PagerAdapter {
 
-    private Context mContext;
-    ArrayList<OnBoardItem> onBoardItems=new ArrayList<>();
+    private final Context mContext;
+    ArrayList<OnBoardItem> onBoardItems = new ArrayList<>();
 
 
     public OnBoard_Adapter(Context mContext, ArrayList<OnBoardItem> items) {

@@ -155,27 +155,22 @@ public class SettingsActivity2 extends PreferenceActivity {
 
     @Override
     public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
-        switch (requestCode) {
-            case REQUEST_CODE_ASK_MULTIPLE_PERMISSIONS: {
-                Map<String, Integer> perms = new HashMap<String, Integer>();
-                // Initial
-                perms.put(Manifest.permission.WRITE_EXTERNAL_STORAGE, PackageManager.PERMISSION_GRANTED);
-                //       perms.put(Manifest.permission.RECEIVE_SMS, PackageManager.PERMISSION_GRANTED);
-                //      perms.put(android.Manifest.permission.READ_SMS, PackageManager.PERMISSION_GRANTED);
+        if (requestCode == REQUEST_CODE_ASK_MULTIPLE_PERMISSIONS) {
+            Map<String, Integer> perms = new HashMap<String, Integer>();
+            // Initial
+            perms.put(Manifest.permission.WRITE_EXTERNAL_STORAGE, PackageManager.PERMISSION_GRANTED);
+            //       perms.put(Manifest.permission.RECEIVE_SMS, PackageManager.PERMISSION_GRANTED);
+            //      perms.put(android.Manifest.permission.READ_SMS, PackageManager.PERMISSION_GRANTED);
 
 
-                if (perms.get(Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED
+            if (perms.get(Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED
 
-                ) {
-
-
-                }
+            ) {
 
 
             }
-            break;
-            default:
-                super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        } else {
+            super.onRequestPermissionsResult(requestCode, permissions, grantResults);
         }
     }
 
@@ -722,7 +717,7 @@ public class SettingsActivity2 extends PreferenceActivity {
                 @Override
                 public boolean onPreferenceChange(final Preference preference,
                                                   final Object newValue) {
-                    if ((boolean)newValue == true) {
+                    if ((boolean) newValue) {
                         checkboxPref.setChecked(false);
                         editor.putBoolean("custom_watermark", false);
 
@@ -731,8 +726,7 @@ public class SettingsActivity2 extends PreferenceActivity {
                         editor.commit();
 
 
-                    }
-                    else
+                    } else
                     {
 
                         cbxCreditWatermark.setChecked(false);
@@ -753,14 +747,14 @@ public class SettingsActivity2 extends PreferenceActivity {
                     //     if (BuildConfig.DEBUG)
                     //       noAds = false ;
 
-                    if (noAds == false ) {
+                    if (!noAds) {
                         Intent i = new Intent(RegrannApp._this, UpgradeActivity.class);
                         i.putExtra("from__custom_watermark", false);
                         startActivity(i);
                         return false;
                     }
 
-                    if ((Boolean)newValue == true) {
+                    if ((Boolean) newValue) {
                         // select photo
                         cbxCreditWatermark.setChecked(false);
                         editor.putBoolean("watermark_checkbox", false);
@@ -817,7 +811,7 @@ public class SettingsActivity2 extends PreferenceActivity {
             });
 
 
-            if (fromForegroundNotice == false) {
+            if (!fromForegroundNotice) {
                 bindPreferenceSummaryToValue(findPreference("signature_type_list"));
                 bindPreferenceSummaryToValue(findPreference("signature_text"));
                 bindPreferenceSummaryToValue(findPreference("mode_string"));
@@ -830,26 +824,21 @@ public class SettingsActivity2 extends PreferenceActivity {
 
         @Override
         public void onActivityResult(int requestCode, int resultCode, Intent imageReturnedIntent) {
-           // super.onActivityResult(requestCode, resultCode, imageReturnedIntent);
-            switch (requestCode) {
-
-                case 1:
-                    if (resultCode == RESULT_OK) {
+            // super.onActivityResult(requestCode, resultCode, imageReturnedIntent);
+            if (requestCode == 1) {
+                if (resultCode == RESULT_OK) {
 
 
-                        editor.putString("watermark_imagefile",    getRealPathFromURI_API19(_this, imageReturnedIntent.getData()));
-                        editor.apply();
+                    editor.putString("watermark_imagefile", getRealPathFromURI_API19(_this, imageReturnedIntent.getData()));
+                    editor.apply();
 
-                        RegrannApp.sendEvent("custom_watermark_uploaded");
-                        //imageview.setImageURI(selectedImage);
-                    }
-                    else
-                    {
-                        checkboxPref.setChecked(false);
-                        editor.putBoolean("custom_watermark", false);
+                    RegrannApp.sendEvent("custom_watermark_uploaded");
+                    //imageview.setImageURI(selectedImage);
+                } else {
+                    checkboxPref.setChecked(false);
+                    editor.putBoolean("custom_watermark", false);
 
-                    }
-                    break;
+                }
             }
         }
     }

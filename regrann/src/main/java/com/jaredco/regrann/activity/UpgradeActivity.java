@@ -28,7 +28,6 @@ import com.android.billingclient.api.PurchasesUpdatedListener;
 import com.android.billingclient.api.SkuDetails;
 import com.android.billingclient.api.SkuDetailsParams;
 import com.android.billingclient.api.SkuDetailsResponseListener;
-import com.jaredco.regrann.BuildConfig;
 import com.jaredco.regrann.R;
 
 import java.util.ArrayList;
@@ -77,7 +76,7 @@ public class UpgradeActivity extends AppCompatActivity {
 
 
     private void executeServiceRequest(Runnable runnable) {
-        if (billingReady == true) {
+        if (billingReady) {
             runnable.run();
         }
     }
@@ -356,7 +355,7 @@ public class UpgradeActivity extends AppCompatActivity {
 
 
     private void showErrorToast(final String error, final String displayMsg) {
-        if (updateScreenOn == false)
+        if (!updateScreenOn)
             showErrorToast(error, displayMsg, false);
     }
 
@@ -396,19 +395,18 @@ public class UpgradeActivity extends AppCompatActivity {
 
     public void onClickUpgradeNow(View view) {
 
-        if (1 == 2 && BuildConfig.DEBUG)
-        {
+        if (false) {
             SharedPreferences.Editor editor = preferences.edit();
             editor.putBoolean("removeAds", true);
 
             editor.commit();
-            return ;
+            return;
         }
 
 
-        if (billingReady == false) {
+        if (!billingReady) {
             RegrannApp.sendEvent("ug_removeads_billingnotready");
-            showErrorToast( "Purchasing system isn't ready" ,"Please try again later", true);
+            showErrorToast("Purchasing system isn't ready", "Please try again later", true);
         } else {
 // Retrieve a value for "skuDetails" by calling querySkuDetailsAsync().
 

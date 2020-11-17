@@ -1,9 +1,9 @@
 <component name="libraryTable">
   <library name="Gradle: ly.img.android.sdk:serializer:8.0.0@aar">
     <CLASSES>
-      <root url="jar://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/19ba6886677ebb7624b2c4aaa1fbc5db/jetified-serializer-8.0.0/jars/classes.jar!/" />
-      <root url="file://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/19ba6886677ebb7624b2c4aaa1fbc5db/jetified-serializer-8.0.0/res" />
-      <root url="file://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/19ba6886677ebb7624b2c4aaa1fbc5db/jetified-serializer-8.0.0/AndroidManifest.xml" />
+      <root url="jar://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/8696a028c10a56f0d8f15a1a07b58e5a/jetified-serializer-8.0.0/jars/classes.jar!/" />
+      <root url="file://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/8696a028c10a56f0d8f15a1a07b58e5a/jetified-serializer-8.0.0/res" />
+      <root url="file://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/8696a028c10a56f0d8f15a1a07b58e5a/jetified-serializer-8.0.0/AndroidManifest.xml" />
     </CLASSES>
     <JAVADOC />
     <SOURCES />
