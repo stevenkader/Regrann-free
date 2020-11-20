@@ -1665,13 +1665,7 @@ Log.i("Ogury", "on ad displayed");
 
 
         int numWarnings = preferences.getInt("multiWarning", 0);
-        String caption = Util.prepareCaption(title, author, _this.getApplication().getApplicationContext(), caption_suffix, false);
 
-
-        ClipboardManager clipboard = (ClipboardManager) getSystemService(CLIPBOARD_SERVICE);
-        ClipData clip = ClipData.newPlainText("Post caption", caption);
-
-        Objects.requireNonNull(clipboard).setPrimaryClip(clip);
 
         if (numWarnings < 8) {
 
@@ -2909,6 +2903,13 @@ Log.i("Ogury", "on ad displayed");
 
                         readyToHideSpinner = false;
 
+                        String caption = Util.prepareCaption(title, author, _this.getApplication().getApplicationContext(), caption_suffix, false);
+
+
+                        ClipboardManager clipboard = (ClipboardManager) getSystemService(CLIPBOARD_SERVICE);
+                        ClipData clip = ClipData.newPlainText("Post caption", caption);
+
+                        Objects.requireNonNull(clipboard).setPrimaryClip(clip);
 
                         for (int i = 0; i < pics.length(); i++) {
 
@@ -5112,7 +5113,7 @@ Log.i("Ogury", "on ad displayed");
 
                     if (isVideo) {
                         share.setType("video/*");
-                        share.putExtra(Intent.EXTRA_STREAM, Uri.fromFile(tempVideoFile));
+                        share.putExtra(Intent.EXTRA_STREAM, Uri.fromFile(new File(Util.getTempVideoFilePath())));
                     } else {
                         share.putExtra(Intent.EXTRA_STREAM, Uri.fromFile(tempFile));
 
