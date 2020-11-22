@@ -4206,47 +4206,51 @@ Log.i("Ogury", "on ad displayed");
 
             String fname = fnames[0];
 
-            Bitmap bitmap = null;
-            try {
-
-                bitmap = BitmapFactory.decodeFile(fname);
-
-            } catch (Throwable e) {
-                showErrorToast("Out of memory", "Sorry not enough memory to continue", true);
-
-            }
 
             try {
-                if (preferences.getBoolean("watermark_checkbox", false) ||
-                        preferences.getBoolean("custom_watermark", false)) {
-                    Point p = new Point(10, (bitmap != null ? bitmap.getHeight() : 0) - 10);
-                    int textSize = 20;
-                    if (bitmap.getHeight() > 640)
-                        textSize = 50;
-                    bitmap = mark(bitmap, author, p, Color.YELLOW, 180, textSize, false);
+                Bitmap bitmap = null;
+                try {
+
+                    bitmap = BitmapFactory.decodeFile(fname);
+
+                } catch (Throwable e) {
+                    showErrorToast("Out of memory", "Sorry not enough memory to continue", true);
+
                 }
-            } catch (Exception e99) {
 
-            }
+                try {
+                    if (preferences.getBoolean("watermark_checkbox", false) ||
+                            preferences.getBoolean("custom_watermark", false)) {
+                        Point p = new Point(10, (bitmap != null ? bitmap.getHeight() : 0) - 10);
+                        int textSize = 20;
+                        if (bitmap.getHeight() > 640)
+                            textSize = 50;
+                        bitmap = mark(bitmap, author, p, Color.YELLOW, 180, textSize, false);
+                    }
+                } catch (Exception e99) {
 
-            ByteArrayOutputStream bytes = new ByteArrayOutputStream();
-            bitmap.compress(Bitmap.CompressFormat.JPEG, 99, bytes);
+                }
+
+                ByteArrayOutputStream bytes = new ByteArrayOutputStream();
+                bitmap.compress(Bitmap.CompressFormat.JPEG, 99, bytes);
 
 
-            try {
+                try {
 
 
-                Log.d("app5", "in oncomplete photo : " + fname);
-                FileOutputStream fo = new FileOutputStream(new File(fname), false);
-                byte[] contents = bytes.toByteArray();
-                fo.write(contents);
-                fo.flush();
-                // remember close de FileOutput
-                fo.close();
+                    Log.d("app5", "in oncomplete photo : " + fname);
+                    FileOutputStream fo = new FileOutputStream(new File(fname), false);
+                    byte[] contents = bytes.toByteArray();
+                    fo.write(contents);
+                    fo.flush();
+                    // remember close de FileOutput
+                    fo.close();
+                } catch (Exception e) {
+                    Log.d("app5", "in  error oncomplete photo : " + e.getMessage());
+                }
+
             } catch (Exception e) {
-                Log.d("app5", "in  error oncomplete photo : " + e.getMessage());
             }
-
             return fname;
         }
 

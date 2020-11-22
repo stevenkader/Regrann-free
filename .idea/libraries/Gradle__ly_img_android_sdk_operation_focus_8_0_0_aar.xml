@@ -4,6 +4,9 @@
       <root url="file://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/048ff49fe39763f18fa9fc97cc9610cb/jetified-focus-8.0.0/AndroidManifest.xml" />
       <root url="jar://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/048ff49fe39763f18fa9fc97cc9610cb/jetified-focus-8.0.0/jars/classes.jar!/" />
       <root url="file://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/048ff49fe39763f18fa9fc97cc9610cb/jetified-focus-8.0.0/res" />
+      <root url="file://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/d9eb20c03ac124853284a6f040fd6875/jetified-focus-8.0.0/AndroidManifest.xml" />
+      <root url="jar://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/d9eb20c03ac124853284a6f040fd6875/jetified-focus-8.0.0/jars/classes.jar!/" />
+      <root url="file://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/d9eb20c03ac124853284a6f040fd6875/jetified-focus-8.0.0/res" />
     </CLASSES>
     <JAVADOC />
     <SOURCES />

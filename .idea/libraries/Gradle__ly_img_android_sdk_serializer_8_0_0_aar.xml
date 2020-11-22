@@ -4,6 +4,9 @@
       <root url="jar://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/8696a028c10a56f0d8f15a1a07b58e5a/jetified-serializer-8.0.0/jars/classes.jar!/" />
       <root url="file://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/8696a028c10a56f0d8f15a1a07b58e5a/jetified-serializer-8.0.0/res" />
       <root url="file://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/8696a028c10a56f0d8f15a1a07b58e5a/jetified-serializer-8.0.0/AndroidManifest.xml" />
+      <root url="jar://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/a34927261e91d3195c30f476621022f0/jetified-serializer-8.0.0/jars/classes.jar!/" />
+      <root url="file://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/a34927261e91d3195c30f476621022f0/jetified-serializer-8.0.0/res" />
+      <root url="file://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/a34927261e91d3195c30f476621022f0/jetified-serializer-8.0.0/AndroidManifest.xml" />
     </CLASSES>
     <JAVADOC />
     <SOURCES />

@@ -4,6 +4,9 @@
       <root url="jar://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/108baae5fe22718b41f466b882ab770d/jetified-sticker-smart-8.0.0/jars/classes.jar!/" />
       <root url="file://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/108baae5fe22718b41f466b882ab770d/jetified-sticker-smart-8.0.0/AndroidManifest.xml" />
       <root url="file://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/108baae5fe22718b41f466b882ab770d/jetified-sticker-smart-8.0.0/res" />
+      <root url="file://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/090d8d58804fef44ed7c839885b87e5d/jetified-sticker-smart-8.0.0/res" />
+      <root url="jar://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/090d8d58804fef44ed7c839885b87e5d/jetified-sticker-smart-8.0.0/jars/classes.jar!/" />
+      <root url="file://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/090d8d58804fef44ed7c839885b87e5d/jetified-sticker-smart-8.0.0/AndroidManifest.xml" />
     </CLASSES>
     <JAVADOC />
     <SOURCES />
