@@ -1,10 +1,9 @@
 <component name="libraryTable">
   <library name="Gradle: com.google.firebase:firebase-config:19.0.0@aar">
     <CLASSES>
-      <root url="file://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/392bba3e8c201abd0033c550832402ad/jetified-firebase-config-19.0.0/res" />
-      <root url="file://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/0fbc0dac57f276c33364699e7e848a09/jetified-firebase-config-19.0.0/AndroidManifest.xml" />
-      <root url="file://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/0fbc0dac57f276c33364699e7e848a09/jetified-firebase-config-19.0.0/res" />
       <root url="jar://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/0fbc0dac57f276c33364699e7e848a09/jetified-firebase-config-19.0.0/jars/classes.jar!/" />
+      <root url="file://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/0fbc0dac57f276c33364699e7e848a09/jetified-firebase-config-19.0.0/res" />
+      <root url="file://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/0fbc0dac57f276c33364699e7e848a09/jetified-firebase-config-19.0.0/AndroidManifest.xml" />
     </CLASSES>
     <JAVADOC>
       <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.google.firebase/firebase-config/19.0.0/52d717b9f5b5d8cc07924f86c5e12459d9d8c7d6/firebase-config-19.0.0-javadoc.jar!/" />

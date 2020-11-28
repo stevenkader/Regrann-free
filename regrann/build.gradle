@@ -62,8 +62,8 @@ android {
         applicationId "com.jaredco.regrann"
         minSdkVersion 21
         targetSdkVersion 29
-        versionCode 433
-        versionName "9.54"
+        versionCode 435
+        versionName "9.56"
 
         multiDexEnabled true
         resValue 'string', 'pesdk_version', "v$pesdk_version"
@@ -195,19 +195,19 @@ dependencies {
 
 
   //  implementation 'com.google.firebase:firebase-invites:17.0.0'
-      implementation 'androidx.constraintlayout:constraintlayout:2.0.1'
+      implementation 'androidx.constraintlayout:constraintlayout:2.0.4'
 
  //   implementation 'com.google.android.ads:mediation-test-suite:1.4.0'
 
     implementation 'androidx.annotation:annotation:1.1.0'
-    implementation 'com.facebook.android:audience-network-sdk:6.1.0'
+    implementation 'com.facebook.android:audience-network-sdk:6.2.0'
     implementation 'com.google.ads.mediation:applovin:9.13.4.0'
     implementation 'androidx.lifecycle:lifecycle-process:2.2.0'
 
     def lifecycle_version = "2.0.0"
-    implementation "androidx.lifecycle:lifecycle-extensions:$lifecycle_version"
-    implementation "androidx.lifecycle:lifecycle-runtime:$lifecycle_version"
-    annotationProcessor "androidx.lifecycle:lifecycle-compiler:$lifecycle_version"
+    implementation "androidx.lifecycle:lifecycle-extensions:2.2.0"
+    implementation "androidx.lifecycle:lifecycle-runtime-ktx:2.2.0"
+    annotationProcessor "androidx.lifecycle:lifecycle-compiler:2.2.0"
 
 }
 

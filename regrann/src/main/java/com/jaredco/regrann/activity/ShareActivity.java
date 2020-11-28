@@ -551,7 +551,7 @@ public class ShareActivity extends AppCompatActivity implements BaseSliderView.O
 
 
         sharedPref = this.getPreferences(Context.MODE_PRIVATE);
-
+        inputMediaType = getIntent().getIntExtra("mediaType", 0);
 
         preferences = PreferenceManager.getDefaultSharedPreferences(_this.getApplication().getApplicationContext());
         isVine = getIntent().getBooleanExtra("vine", false);
@@ -854,7 +854,6 @@ public class ShareActivity extends AppCompatActivity implements BaseSliderView.O
         }
 
 
-        inputMediaType = 0;
         inputFileName = getIntent().getStringExtra("fileName");
         QuickSaveShare = getIntent().getBooleanExtra("quicksave", false);
 
@@ -925,25 +924,45 @@ public class ShareActivity extends AppCompatActivity implements BaseSliderView.O
 
             try {
 
+
                 title = "";
+                if (inputMediaType != 0) {
+
+                    if (Util.isKeepCaption(_this) == false)
+                        title = "@Regrann no-crop...";
+                    tempFileName = inputFileName;
+                    if (inputMediaType == 1)
+                        tempFileFullPathName = tempFileName;
+
+                    //   tempVideoFullPathName = tempFileName ;
+
+                    tempFile = new File(tempFileFullPathName);
 
 
-                tempFile = new File(tempFileFullPathName);
+                    processPhotoImage();
 
-                final Intent iv = getIntent();
 
-                if (!getIntent().getBooleanExtra("fromExtension", false)) {
-                    Log.d("mediaURL", iv.getStringExtra("mediaUrl"));
-                    String url = iv.getStringExtra("mediaUrl");
-                    // String result = GET (t);
-                    if (tiktokLink)
-                        FetchDownloadUrlService.startFetchDownloadUrlService(_this, url);
-
-                    else
-                        startProcessURL(url);
                 } else {
 
-                    handleImageFromExtension();
+
+                    tempFile = new File(tempFileFullPathName);
+
+                    final Intent iv = getIntent();
+
+                    if (!getIntent().getBooleanExtra("fromExtension", false)) {
+                        Log.d("mediaURL", iv.getStringExtra("mediaUrl"));
+                        String url = iv.getStringExtra("mediaUrl");
+                        // String result = GET (t);
+                        if (tiktokLink)
+                            FetchDownloadUrlService.startFetchDownloadUrlService(_this, url);
+
+                        else
+                            startProcessURL(url);
+
+                    } else {
+
+                        handleImageFromExtension();
+                    }
                 }
 
 
@@ -2512,6 +2531,10 @@ Log.i("Ogury", "on ad displayed");
             runOnUiThread(new Runnable() {
                 public void run() {
 
+                    if (result.compareTo("error_noquickkeep") == 0) {
+                        showErrorToast("Error", "Can't keep for post-later multi-photo posts.", true);
+                        return;
+                    }
 
                     if (result.compareTo("private") == 0)
                         return;
@@ -2527,8 +2550,6 @@ Log.i("Ogury", "on ad displayed");
 
                                 if (isAutoSave)
                                     copyAllMultiToSave();
-
-                                showMultiDialog();
 
 
                                 return;
@@ -2550,12 +2571,6 @@ Log.i("Ogury", "on ad displayed");
                                 mainUI.setVisibility(View.VISIBLE);
 
 
-                            if (isQuickPost) {
-                                showMultiDialog();
-
-
-                                return;
-                            }
                             if (isQuickKeep) {
                                 Toast toast = Toast.makeText(ShareActivity.this, "Sorry. Quick Post Later not available for Multi-Posts", Toast.LENGTH_LONG);
                                 toast.setGravity(Gravity.CENTER_VERTICAL, 0, 0);
@@ -2675,6 +2690,8 @@ Log.i("Ogury", "on ad displayed");
     }
 
 
+    int totalMultiToDownload = 0;
+
     private void processJSON(String jsonRes) {
 
         JSONObject json = null;
@@ -2788,6 +2805,13 @@ Log.i("Ogury", "on ad displayed");
                     }
 
                     isMulti = true;
+
+                    if (isQuickKeep) {
+                        postExecute("error_noquickkeep");
+
+                    }
+
+
                     final Long currTime = System.currentTimeMillis();
 
                     final JSONArray pics = json.getJSONObject("edge_sidecar_to_children").getJSONArray("edges");
@@ -2827,6 +2851,8 @@ Log.i("Ogury", "on ad displayed");
 
 
                         String folder = regrannMultiPostFolder;
+
+                        totalMultiToDownload = pics.length();
 
 
                         for (int i = 0; i < pics.length(); i++) {
@@ -4265,64 +4291,40 @@ Log.i("Ogury", "on ad displayed");
         }
     }
 
+
+    private boolean allDownloadsComplete() {
+
+
+        DownloadManager downloadManager = (DownloadManager)
+                _this.getSystemService(Context.DOWNLOAD_SERVICE);
+        DownloadManager.Query query = new DownloadManager.Query();
+
+        query.setFilterByStatus(DownloadManager.STATUS_RUNNING);
+        Cursor c = downloadManager.query(query);
+        if (c.moveToFirst()) {
+            c.close();
+            Log.i("app5", " download still running : " + DownloadManager.STATUS_RUNNING);
+            return false;
+        }
+
+        Log.d("app5", "All done downloading!");
+        return true;
+
+
+    }
+
+
+    int totalDownloadedAlready = 0;
+
     BroadcastReceiver onComplete = new BroadcastReceiver() {
 
         public void onReceive(Context ctxt, Intent intent) {
 
 
-            if (loadingMultiVideo) {
-
-                runOnUiThread(new Runnable() {
-                    public void run() {
-                        try {
-                            numMultVideos -= 1;
-
-                            if (numMultVideos == 0 && pd != null) {
+            totalDownloadedAlready++;
 
 
-                                if (readyToHideSpinner) {
-                                    Log.d("app5", "remove spinner 4308");
-                                    spinner.setVisibility(View.GONE);
-                                    showBottomButtons();
-                                }
-
-                                removeProgressDialog();
-
-
-                            }
-                        } catch (Exception e4) {
-                        }
-
-
-                        long downloadId = intent.getLongExtra(
-                                DownloadManager.EXTRA_DOWNLOAD_ID, 0);
-                        System.out.println("download id=" + downloadId);
-                        CheckDwnloadStatus(downloadId);
-                    }
-
-                });
-
-
-            } else {
-
-                if (isQuickKeep) {
-                    if (isVideo)
-                        removeProgressDialog();
-
-
-                    clearClipboard();
-
-                    copyPostLaterToPictureFolder();
-
-
-                    Toast toast = Toast.makeText(ShareActivity.this, R.string.postlaterconfirmtoastvideo, Toast.LENGTH_LONG);
-                    toast.setGravity(Gravity.CENTER_VERTICAL, 0, 0);
-
-                    toast.show();
-                    finish();
-
-                }
-
+            if (isMulti) {
 
                 if (!isVideo) {
 
@@ -4350,37 +4352,88 @@ Log.i("Ogury", "on ad displayed");
 
                     new addWatermarkToFile().execute(fname);
 
-                    return;
 
                 }
 
 
-                if (isVideo) {
-                    long referenceId = intent.getLongExtra(DownloadManager.EXTRA_DOWNLOAD_ID, -1);
+                if (totalDownloadedAlready == totalMultiToDownload) {
+                    if (isQuickPost)
+                        showMultiDialog();
+                    else {
 
 
+                        runOnUiThread(new Runnable() {
+                            public void run() {
+                                try {
+
+                                    Log.d("app5", "all downloads complete");
+                                    spinner.setVisibility(View.GONE);
+                                    showBottomButtons();
+
+
+                                    removeProgressDialog();
+
+
+                                } catch (Exception e4) {
+                                }
+
+
+                            }
+
+                        });
+
+                    }
+
+
+                }
+                return;
+            }
+
+            if (isQuickKeep) {
+                if (isVideo)
                     removeProgressDialog();
 
-                    scanRegrannFolder();
 
-                    if (isAutoSave) {
-                        copyTempToSave();
-                        //   finish();
+                clearClipboard();
+
+                copyPostLaterToPictureFolder();
+
+
+                Toast toast = Toast.makeText(ShareActivity.this, R.string.postlaterconfirmtoastvideo, Toast.LENGTH_LONG);
+                toast.setGravity(Gravity.CENTER_VERTICAL, 0, 0);
+
+                toast.show();
+                finish();
+                return;
+
+            }
+
+
+            if (isVideo) {
+                long referenceId = intent.getLongExtra(DownloadManager.EXTRA_DOWNLOAD_ID, -1);
+
+
+                removeProgressDialog();
+
+                scanRegrannFolder();
+
+                if (isAutoSave) {
+                    copyTempToSave();
+                    //   finish();
+                }
+
+                if (isQuickPost) {
+                    if (isVideo) {
+
+                        quickPostSendToInstagram();
+
                     }
-
-                    if (isQuickPost) {
-                        if (isVideo) {
-
-                            quickPostSendToInstagram();
-
-                        }
-                    }
-
-
                 }
 
 
             }
+
+
         }
     };
 
@@ -4801,10 +4854,11 @@ Log.i("Ogury", "on ad displayed");
 
     public void copy(File src, File dst) throws IOException {
 
-        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O)
+        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
 
+            Log.d("app5", "Copying :  " + src.toString() + "   " + dst.toString());
             Files.copy(src.toPath(), dst.toPath());
-        else {
+        } else {
 
 
             FileInputStream inStream = new FileInputStream(src);

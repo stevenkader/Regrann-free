@@ -1,10 +1,9 @@
 <component name="libraryTable">
   <library name="Gradle: com.google.android.gms:play-services-ads-base:19.5.0@aar">
     <CLASSES>
-      <root url="file://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/3ce91e78148b561f7e7c097b1a5ba589/jetified-play-services-ads-base-19.5.0/res" />
+      <root url="jar://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/4d5059eab114c46eb6269423a7cb879a/jetified-play-services-ads-base-19.5.0/jars/classes.jar!/" />
       <root url="file://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/4d5059eab114c46eb6269423a7cb879a/jetified-play-services-ads-base-19.5.0/res" />
       <root url="file://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/4d5059eab114c46eb6269423a7cb879a/jetified-play-services-ads-base-19.5.0/AndroidManifest.xml" />
-      <root url="jar://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/4d5059eab114c46eb6269423a7cb879a/jetified-play-services-ads-base-19.5.0/jars/classes.jar!/" />
     </CLASSES>
     <JAVADOC>
       <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.google.android.gms/play-services-ads-base/19.5.0/c9cfe329caed53df2d630f13f112ba6c9c8e3a81/play-services-ads-base-19.5.0-javadoc.jar!/" />
