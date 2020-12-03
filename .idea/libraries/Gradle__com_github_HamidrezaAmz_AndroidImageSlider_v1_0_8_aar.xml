@@ -1,9 +1,9 @@
 <component name="libraryTable">
   <library name="Gradle: com.github.HamidrezaAmz:AndroidImageSlider:v1.0.8@aar">
     <CLASSES>
-      <root url="jar://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/916eeb93f4e46babcbadd8c1b0bf9072/jetified-AndroidImageSlider-v1.0.8/jars/classes.jar!/" />
-      <root url="file://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/916eeb93f4e46babcbadd8c1b0bf9072/jetified-AndroidImageSlider-v1.0.8/res" />
-      <root url="file://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/916eeb93f4e46babcbadd8c1b0bf9072/jetified-AndroidImageSlider-v1.0.8/AndroidManifest.xml" />
+      <root url="jar://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/1f9571368782e663dfac65f9ca118abf/jetified-AndroidImageSlider-v1.0.8/jars/classes.jar!/" />
+      <root url="file://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/1f9571368782e663dfac65f9ca118abf/jetified-AndroidImageSlider-v1.0.8/AndroidManifest.xml" />
+      <root url="file://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/1f9571368782e663dfac65f9ca118abf/jetified-AndroidImageSlider-v1.0.8/res" />
     </CLASSES>
     <JAVADOC />
     <SOURCES>

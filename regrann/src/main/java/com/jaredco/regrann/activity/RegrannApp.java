@@ -24,7 +24,7 @@ import java.util.Arrays;
 public class RegrannApp extends Application {
 //    public class RegrannApp extends Application  {
 
-    private static AppOpenManager appOpenManager;
+
     // The following line should be changed to include the correct property id.
 
     private static FirebaseAnalytics mFirebaseAnalytics;
@@ -113,8 +113,6 @@ public class RegrannApp extends Application {
         SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this);
         boolean firstRun = preferences.getBoolean("startShowTutorial", true);
 
-        if (!firstRun)
-            appOpenManager = new AppOpenManager(this);
 
         mFirebaseAnalytics = FirebaseAnalytics.getInstance(this);
 

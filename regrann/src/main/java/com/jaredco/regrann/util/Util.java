@@ -77,13 +77,15 @@ public class Util {
 
         String str4;
         String sb2;
-        if (isAutsave) {
-            str4 = Environment.DIRECTORY_PICTURES;
+
+
+        str4 = Environment.DIRECTORY_PICTURES;
+
+        if (isAutsave)
             sb2 = Util.RootDirectoryPhoto + str3;
-        } else {
-            str4 = Environment.DIRECTORY_DOWNLOADS;
+        else
+
             sb2 = Util.RootDirectoryMultiPhoto + str3;
-        }
 
 
         request.setDestinationInExternalPublicDir(str4, sb2);

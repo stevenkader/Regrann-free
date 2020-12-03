@@ -40,6 +40,16 @@
         tools:replace="android:name">
 
 
+        <provider
+            android:name="androidx.core.content.FileProvider"
+            android:authorities="com.jaredco.regrann"
+            android:exported="false"
+            android:grantUriPermissions="true">
+            <meta-data
+                android:name="android.support.FILE_PROVIDER_PATHS"
+                android:resource="@xml/provider_paths" />
+        </provider>
+
         <activity
             android:name=".activity.RegrannMainActivity"
             android:label="Regrann">

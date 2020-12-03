@@ -1,9 +1,9 @@
 <component name="libraryTable">
   <library name="Gradle: ly.img.android.sdk.ui.mobile_ui:filter:8.0.0@aar">
     <CLASSES>
-      <root url="jar://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/3ba7c5262e3e895aec749ef5a1708997/jetified-filter-8.0.0/jars/classes.jar!/" />
-      <root url="file://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/3ba7c5262e3e895aec749ef5a1708997/jetified-filter-8.0.0/res" />
-      <root url="file://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/3ba7c5262e3e895aec749ef5a1708997/jetified-filter-8.0.0/AndroidManifest.xml" />
+      <root url="file://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/01b5e942a89485f79ea6a561bbad2436/jetified-filter-8.0.0/AndroidManifest.xml" />
+      <root url="jar://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/01b5e942a89485f79ea6a561bbad2436/jetified-filter-8.0.0/jars/classes.jar!/" />
+      <root url="file://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/01b5e942a89485f79ea6a561bbad2436/jetified-filter-8.0.0/res" />
     </CLASSES>
     <JAVADOC />
     <SOURCES />

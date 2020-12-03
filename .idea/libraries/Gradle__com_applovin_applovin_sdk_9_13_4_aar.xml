@@ -1,9 +1,9 @@
 <component name="libraryTable">
   <library name="Gradle: com.applovin:applovin-sdk:9.13.4@aar">
     <CLASSES>
-      <root url="jar://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/e430748e49e45247fa5ccd754545da2e/jetified-applovin-sdk-9.13.4/jars/classes.jar!/" />
-      <root url="file://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/e430748e49e45247fa5ccd754545da2e/jetified-applovin-sdk-9.13.4/res" />
-      <root url="file://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/e430748e49e45247fa5ccd754545da2e/jetified-applovin-sdk-9.13.4/AndroidManifest.xml" />
+      <root url="file://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/af538e939efb6308beb1bd7b4cc4c632/jetified-applovin-sdk-9.13.4/res" />
+      <root url="file://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/af538e939efb6308beb1bd7b4cc4c632/jetified-applovin-sdk-9.13.4/AndroidManifest.xml" />
+      <root url="jar://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/af538e939efb6308beb1bd7b4cc4c632/jetified-applovin-sdk-9.13.4/jars/classes.jar!/" />
     </CLASSES>
     <JAVADOC>
       <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.applovin/applovin-sdk/9.13.4/95375a39b8d9ac0c7438bc3fb2617324e929e314/applovin-sdk-9.13.4-javadoc.jar!/" />

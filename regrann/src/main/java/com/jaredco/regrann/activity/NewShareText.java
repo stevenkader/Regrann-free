@@ -45,16 +45,11 @@ public class NewShareText extends Activity {
 
                             try {
 
-                                if ((text.contains("ig.me") || text.contains("vm.tiktok")|| text.contains("instagram.com/reel/") || text.contains("instagram.com/tv/")) || (text.contains("/p/") && text.contains("instagram.com"))) {
+                             //   if ((text.contains("ig.me") || text.contains("vm.tiktok")|| text.contains("instagram.com/reel/") || text.contains("instagram.com/tv/")) || (text.contains("/p/") && text.contains("instagram.com"))) {
 
                                     Intent i;
                                     i = new Intent(_this, ShareActivity.class);
 
-                                    if ( text.contains("vm.tiktok")) {
-                                        i.putExtra("tiktok", true);
-                                    }
-                                    else
-                                        text = text.substring(text.indexOf("https://www.instagram"));
 
   // String uri=imgDirPath+"/"+path;
                                     i.putExtra("mediaUrl", text);
@@ -65,19 +60,18 @@ public class NewShareText extends Activity {
                                     startActivity(i);
 
 
+                                finish();
 
-                                    finish();
+                                overridePendingTransition(R.anim.slide_up_anim, R.anim.slide_down_anim);
 
-                                    overridePendingTransition(R.anim.slide_up_anim, R.anim.slide_down_anim);
-
-                                    RegrannApp.sendEvent("NewShareTextMethod", "count", "");
-
-
-                                } else {
-                                    showErrorToast("Error", "Regrann doesn't support his share link.");
+                                RegrannApp.sendEvent("NewShareTextMethod", "count", "");
 
 
-                                }
+                                //  } else {
+                                //     showErrorToast("Error", "Regrann doesn't support his share link.");
+
+
+                                // }
 
 
                             } catch (Exception e) {

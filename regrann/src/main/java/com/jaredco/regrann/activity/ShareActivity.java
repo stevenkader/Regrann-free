@@ -54,6 +54,7 @@ import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.MediaController;
 import android.widget.ProgressBar;
 import android.widget.SeekBar;
 import android.widget.TextView;
@@ -65,6 +66,8 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.core.app.ActivityCompat;
+import androidx.core.app.ShareCompat;
+import androidx.core.content.FileProvider;
 import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 
 import com.android.billingclient.api.AcknowledgePurchaseParams;
@@ -107,6 +110,10 @@ import com.potyvideo.slider.library.Tricks.ViewPagerEx;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
+import org.jsoup.Jsoup;
+import org.jsoup.nodes.Document;
+import org.jsoup.nodes.Element;
+import org.jsoup.select.Elements;
 
 import java.io.BufferedInputStream;
 import java.io.BufferedReader;
@@ -556,6 +563,11 @@ public class ShareActivity extends AppCompatActivity implements BaseSliderView.O
         preferences = PreferenceManager.getDefaultSharedPreferences(_this.getApplication().getApplicationContext());
         isVine = getIntent().getBooleanExtra("vine", false);
 
+
+        //   if ( text.contains("vm.tiktok")) {
+        //      i.putExtra("tiktok", true);
+        //  }
+
         tiktokLink = getIntent().getBooleanExtra("tiktok", false);
 
 
@@ -718,7 +730,7 @@ public class ShareActivity extends AppCompatActivity implements BaseSliderView.O
             @Override
             public void run() {
                 try {
-                    //     deleteOldFiles("temp");
+                    //   deleteOldFiles("temp");
                 } catch (Exception e) {
                 }
             }
@@ -758,14 +770,13 @@ public class ShareActivity extends AppCompatActivity implements BaseSliderView.O
 
         regrannDownloadfolder = new File(Environment.getExternalStorageDirectory(), Environment.DIRECTORY_DOWNLOADS + Util.RootDirectoryPhoto).getAbsolutePath();
 
-        regrannMultiPostFolder = new File(Environment.getExternalStorageDirectory(), Environment.DIRECTORY_DOWNLOADS + Util.RootDirectoryMultiPhoto).getAbsolutePath();
+        regrannMultiPostFolder = new File(Environment.getExternalStorageDirectory(), Environment.DIRECTORY_PICTURES + Util.RootDirectoryMultiPhoto).getAbsolutePath();
 
-        regrannMultiPostPictureFolder = new File(Environment.getExternalStorageDirectory(), Environment.DIRECTORY_PICTURES + Util.RootDirectoryMultiPhoto).getAbsolutePath();
 
 
         try {
             // Clear the multipost folder
-
+/**
             File dir = new File(regrannMultiPostFolder);
             if (dir.isDirectory()) {
                 String[] children = dir.list();
@@ -775,19 +786,20 @@ public class ShareActivity extends AppCompatActivity implements BaseSliderView.O
                         //  RegrannApp._this.getApplicationContext().getContentResolver().delete(Uri.fromFile(toDelete), null, null);
                         toDelete.delete();
 
-                        //    _this.sendBroadcast(new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE, Uri.fromFile(toDelete)));
+ //    _this.sendBroadcast(new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE, Uri.fromFile(toDelete)));
 
-                    } catch (Exception e) {
-                        int i4 = 1;
-                    }
-
-
-                }
-
-            }
+ } catch (Exception e) {
+ int i4 = 1;
+ }
 
 
-            dir = new File(Environment.getExternalStorageDirectory(), Environment.DIRECTORY_PICTURES +
+ }
+
+ }
+ **/
+
+
+            File dir = new File(Environment.getExternalStorageDirectory(), Environment.DIRECTORY_PICTURES +
                     Util.RootDirectoryMultiPhoto);
             if (dir.isDirectory()) {
                 String[] children = dir.list();
@@ -2546,10 +2558,10 @@ Log.i("Ogury", "on ad displayed");
 
 
                             if (isAutoSave | isQuickPost | isQuickKeep) {
-                                removeProgressDialog();
+                                //     removeProgressDialog();
 
-                                if (isAutoSave)
-                                    copyAllMultiToSave();
+                                //   if (isAutoSave)
+                                //     copyAllMultiToSave();
 
 
                                 return;
@@ -2635,9 +2647,8 @@ Log.i("Ogury", "on ad displayed");
 
 
                                     //  final Drawable drawable = Drawable.createFromPath(path);
-                                    previewImage.setImageBitmap(Util.decodeFile(new File(path)));
 
-                                    if (!isVideo) {
+                                    if (!isVideo && !isMulti) {
                                         findViewById(R.id.btnEditor).setVisibility(View.VISIBLE);
                                     }
 
@@ -2651,15 +2662,47 @@ Log.i("Ogury", "on ad displayed");
 
                                     }
 
-                                    previewImage.setVisibility(View.VISIBLE);
 
                                     checkForRatingRequest();
 
 
                                     if (isVideo) {
+
+
+                                        VideoView v = findViewById(R.id.videoview);
+                                        v.setVideoURI(Uri.parse(videoURL));
+                                        v.setVisibility(View.VISIBLE);
+                                        MediaController controller = new MediaController(_this);
+                                        Handler handler = new Handler();
+                                        handler.postDelayed(
+                                                new Runnable() {
+                                                    public void run() {
+                                                        controller.show(0);
+                                                    }
+                                                },
+                                                100);
+                                        controller.setMediaPlayer(v);
+                                        v.setMediaController(controller);
+
+                                        v.setOnPreparedListener(
+                                                new MediaPlayer.OnPreparedListener() {
+                                                    @Override
+                                                    public void onPrepared(MediaPlayer mediaPlayer) {
+
+                                                        v.seekTo(1);
+
+                                                    }
+                                                });
+
                                         LoadVideo();
-                                        videoIcon.setVisibility(View.VISIBLE);
+                                        //   videoIcon.setVisibility(View.VISIBLE);
+                                    } else {
+                                        previewImage.setImageBitmap(Util.decodeFile(new File(path)));
+
+                                        previewImage.setVisibility(View.VISIBLE);
+
                                     }
+
 
                                     photoReady = true;
 
@@ -2692,50 +2735,269 @@ Log.i("Ogury", "on ad displayed");
 
     int totalMultiToDownload = 0;
 
+    private void processPotentialPrivate() {
+        Log.d("app5", "Json is private");
+        AlertDialog.Builder builder = new AlertDialog.Builder(ShareActivity.this);
+
+        builder.setTitle("You need to login to Instagram!");
+        builder.setMessage("To repost private media you need to first login to Instagram.  The app will not see your username or password");
+
+        builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+
+            public void onClick(DialogInterface dialog, int which) {
+                // Do nothing but close the dialog
+
+                dialog.dismiss();
+                Intent myIntent = new Intent(ShareActivity.this, InstagramLogin.class);
+                _this.startActivity(myIntent);
+
+            }
+        });
+
+        builder.setNegativeButton("CANCEL", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                launchedLogin = false;
+                // Do nothing
+                dialog.dismiss();
+                finish();
+            }
+        });
+
+        AlertDialog alert = builder.create();
+        alert.show();
+        return;
+    }
+
+
+    private void processMultiPhotoJSON(JSONObject json) {
+
+        try {
+
+            // Get the directory for the user's public pictures directory.
+            File file = new File(Environment.getExternalStorageDirectory(), Environment.DIRECTORY_DOWNLOADS + Util.RootDirectoryMultiPhoto);
+
+            if (!file.mkdirs()) {
+                Log.e("error", "Directory not created");
+            }
+
+            try {
+
+                File output = new File(file.getPath(), ".nomedia");
+                boolean fileCreated = output.createNewFile();
+            } catch (Exception e) {
+            }
+
+            // Get the directory for the user's public pictures directory.
+            file = new File(Environment.getExternalStorageDirectory(), Environment.DIRECTORY_PICTURES + Util.RootDirectoryMultiPhoto);
+
+            if (!file.mkdirs()) {
+                Log.e("error", "Directory not created");
+            }
+
+            isMulti = true;
+
+            if (isQuickKeep) {
+                postExecute("error_noquickkeep");
+                return;
+
+            }
+
+
+            final Long currTime = System.currentTimeMillis();
+
+            final JSONArray pics = json.getJSONObject("edge_sidecar_to_children").getJSONArray("edges");
+
+
+            try {
+                boolean isScreen = true;
+
+                if (isQuickPost || isAutoSave || isQuickKeep) {
+                    isScreen = false;
+                }
+                if (isScreen) {
+                    runOnUiThread(new Runnable() {
+                        public void run() {
+
+                            btnShare.setVisibility(View.GONE);
+
+                            findViewById(R.id.btnEditor).setVisibility(View.GONE);
+
+
+                            findViewById(R.id.snapchat).setVisibility(View.GONE);
+                            postlater.setVisibility(View.GONE);
+
+
+                            btnInstagramstories.setVisibility(View.GONE);
+
+                            btnCurrentToFeed.setVisibility(View.VISIBLE);
+                            //       btnCurrentToStory.setVisibility((View.VISIBLE));
+
+
+                            previewImage.setVisibility(View.GONE);
+
+                            mDemoSlider.setPresetIndicator(SliderLayout.PresetIndicators.Center_Bottom);
+                            mDemoSlider.setVisibility(View.VISIBLE);
+
+                        }
+                    });
+
+
+                }
+
+
+                String folder = regrannMultiPostFolder;
+
+                totalMultiToDownload = pics.length();
+
+
+                for (int i = 0; i < pics.length(); i++) {
+
+
+                    TextSliderView sliderView = new TextSliderView(_this);
+
+
+                    if (isScreen) {
+                        Log.d("app5", "Setting image to slideview # " + i + " :   " + pics.getJSONObject(i).getJSONObject("node").getString("display_url"));
+                        sliderView.image(pics.getJSONObject(i).getJSONObject("node").getString("display_url"));
+
+                    }
+
+
+                    String fname = "";
+
+                    if (pics.getJSONObject(i).getJSONObject("node").getString("is_video").equals("true")) {
+                        if (isScreen)
+                            sliderView.description("Video #" + (i + 1));
+
+                        fname = author + "-" + currTime + i + ".mp4";
+
+                    } else {
+                        if (isScreen)
+                            sliderView.description("Photo #" + (i + 1));
+
+                        fname = folder + File.separator + author + "-" + currTime + i + ".jpg";
+
+                    }
+                    Log.d("app5", " fname  = " + fname);
+                    if (isScreen) {
+                        sliderView.bundle(new Bundle());
+                        sliderView.getBundle()
+                                .putString("url", pics.getJSONObject(i).getJSONObject("node").getString("display_url"));
+                        sliderView.getBundle()
+                                .putString("fname", fname);
+                        sliderView.getBundle()
+                                .putString("is_video", pics.getJSONObject(i).getJSONObject("node").getString("is_video"));
+
+
+                        sliderView.setScaleType(BaseSliderView.ScaleType.CenterInside);
+
+                        runOnUiThread(new Runnable() {
+                            public void run() {
+                                mDemoSlider.addSlider(sliderView);
+                            }
+                        });
+                    }
+
+
+                }
+            } catch (Exception e) {
+                int i9 = 43;
+            }
+
+
+            boolean downloadingStarted = false;
+
+            // final int index = i;
+            //  final File tmpFile = new File(fname);
+            try {
+
+
+                String fname;
+
+                readyToHideSpinner = false;
+
+                String caption = Util.prepareCaption(title, author, _this.getApplication().getApplicationContext(), caption_suffix, false);
+
+
+                ClipboardManager clipboard = (ClipboardManager) getSystemService(CLIPBOARD_SERVICE);
+                ClipData clip = ClipData.newPlainText("Post caption", caption);
+
+                Objects.requireNonNull(clipboard).setPrimaryClip(clip);
+
+                for (int i = 0; i < pics.length(); i++) {
+
+
+                    Log.d("app5", "in loop " + i);
+
+
+                    if (pics.getJSONObject(i).getJSONObject("node").getString("is_video").equals("true")) {
+
+                        fname = author + "-" + currTime + i + ".mp4";
+
+                    } else {
+
+                        fname = author + "-" + currTime + i + ".jpg";
+
+                    }
+
+
+                    Log.d("app5", " fnames " + i + "   " + fname + "   " + currTime);
+
+
+                    if (pics.getJSONObject(i).getJSONObject("node").getString("is_video") == "false") {
+
+
+                        downloadImage(pics.getJSONObject(i).getJSONObject("node").getString("display_url"), fname);
+                    } else {
+
+                        downloadingStarted = true;
+                        LoadMultiVideo2(pics.getJSONObject(i).getJSONObject("node").getString("video_url"), fname);
+
+
+                    }
+
+
+                }
+            } catch (Exception e) {
+                Log.d("app5", "exception e " + e.getMessage());
+            }
+
+            if (readyToHideSpinner || !downloadingStarted) {
+
+                runOnUiThread(new Runnable() {
+                    public void run() {
+                        Log.d("app5", "remove spinner 3032");
+                        //            spinner.setVisibility(View.GONE);
+                        //          showBottomButtons();
+
+                    }
+                });
+
+
+            }
+
+
+            readyToHideSpinner = true;
+
+            RegrannApp.sendEvent("sc_multiphoto");
+
+
+            postExecute("multi");
+            return;
+        } catch (Exception e) {
+
+            showErrorToast("#5a - " + e.getMessage(), getString(R.string.porblemfindingphoto), true);
+
+            return;
+        }
+    }
+
     private void processJSON(String jsonRes) {
 
         JSONObject json = null;
 
         try {
-
-            if (jsonRes.equals("private")) {
-
-
-                Log.d("app5", "Json is private");
-                AlertDialog.Builder builder = new AlertDialog.Builder(ShareActivity.this);
-
-                builder.setTitle("You need to login to Instagram!");
-                builder.setMessage("To repost private media you need to first login to Instagram.  The app will not see your username or password");
-
-                builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
-
-                    public void onClick(DialogInterface dialog, int which) {
-                        // Do nothing but close the dialog
-
-                        dialog.dismiss();
-                        Intent myIntent = new Intent(ShareActivity.this, InstagramLogin.class);
-                        _this.startActivity(myIntent);
-
-                    }
-                });
-
-                builder.setNegativeButton("CANCEL", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        launchedLogin = false;
-                        // Do nothing
-                        dialog.dismiss();
-                        finish();
-                    }
-                });
-
-                AlertDialog alert = builder.create();
-                alert.show();
-                return;
-            }
-
-
-            String thumbURL = null;
 
 
             json = new JSONObject(jsonRes);
@@ -2780,232 +3042,23 @@ Log.i("Ogury", "on ad displayed");
 
 
         if (json != null)
+
+            // Multi-Photo post
             if (!json.isNull("edge_sidecar_to_children")) {
-                try {
-
-                    // Get the directory for the user's public pictures directory.
-                    File file = new File(Environment.getExternalStorageDirectory(), Environment.DIRECTORY_DOWNLOADS + Util.RootDirectoryMultiPhoto);
-
-                    if (!file.mkdirs()) {
-                        Log.e("error", "Directory not created");
-                    }
-
-                    try {
-
-                        File output = new File(file.getPath(), ".nomedia");
-                        boolean fileCreated = output.createNewFile();
-                    } catch (Exception e) {
-                    }
-
-                    // Get the directory for the user's public pictures directory.
-                    file = new File(Environment.getExternalStorageDirectory(), Environment.DIRECTORY_PICTURES + Util.RootDirectoryMultiPhoto);
-
-                    if (!file.mkdirs()) {
-                        Log.e("error", "Directory not created");
-                    }
-
-                    isMulti = true;
-
-                    if (isQuickKeep) {
-                        postExecute("error_noquickkeep");
-
-                    }
-
-
-                    final Long currTime = System.currentTimeMillis();
-
-                    final JSONArray pics = json.getJSONObject("edge_sidecar_to_children").getJSONArray("edges");
-
-
-                    try {
-                        boolean isScreen = true;
-
-                        if (isQuickPost || isAutoSave || isQuickKeep) {
-                            isScreen = false;
-                        }
-                        if (isScreen) {
-                            runOnUiThread(new Runnable() {
-                                public void run() {
-
-                                    btnShare.setVisibility(View.GONE);
-
-
-                                    postlater.setVisibility(View.INVISIBLE);
-
-                                    btnInstagramstories.setVisibility(View.GONE);
-
-                                    btnCurrentToFeed.setVisibility(View.VISIBLE);
-                                    //       btnCurrentToStory.setVisibility((View.VISIBLE));
-
-
-                                    previewImage.setVisibility(View.GONE);
-
-                                    mDemoSlider.setPresetIndicator(SliderLayout.PresetIndicators.Center_Bottom);
-                                    mDemoSlider.setVisibility(View.VISIBLE);
-
-                                }
-                            });
-
-
-                        }
-
-
-                        String folder = regrannMultiPostFolder;
-
-                        totalMultiToDownload = pics.length();
-
-
-                        for (int i = 0; i < pics.length(); i++) {
-
-
-                            TextSliderView sliderView = new TextSliderView(_this);
-
-
-                            if (isScreen) {
-                                Log.d("app5", "Setting image to slideview # " + i + " :   " + pics.getJSONObject(i).getJSONObject("node").getString("display_url"));
-                                sliderView.image(pics.getJSONObject(i).getJSONObject("node").getString("display_url"));
-
-                            }
-
-
-                            String fname = "";
-
-                            if (pics.getJSONObject(i).getJSONObject("node").getString("is_video").equals("true")) {
-                                if (isScreen)
-                                    sliderView.description("Video #" + (i + 1));
-
-                                fname = author + "-" + currTime + i + ".mp4";
-
-                            } else {
-                                if (isScreen)
-                                    sliderView.description("Photo #" + (i + 1));
-
-                                fname = folder + File.separator + author + "-" + currTime + i + ".jpg";
-
-                            }
-                            Log.d("app5", " fname  = " + fname);
-                            if (isScreen) {
-                                sliderView.bundle(new Bundle());
-                                sliderView.getBundle()
-                                        .putString("url", pics.getJSONObject(i).getJSONObject("node").getString("display_url"));
-                                sliderView.getBundle()
-                                        .putString("fname", fname);
-                                sliderView.getBundle()
-                                        .putString("is_video", pics.getJSONObject(i).getJSONObject("node").getString("is_video"));
-
-
-                                sliderView.setScaleType(BaseSliderView.ScaleType.CenterInside);
-
-                                runOnUiThread(new Runnable() {
-                                    public void run() {
-                                        mDemoSlider.addSlider(sliderView);
-                                    }
-                                });
-                            }
-
-
-                        }
-                    } catch (Exception e) {
-                        int i9 = 43;
-                    }
-
-
-                    boolean downloadingStarted = false;
-
-                    // final int index = i;
-                    //  final File tmpFile = new File(fname);
-                    try {
-                        String folder = regrannMultiPostFolder;
-
-
-                        if (isAutoSave) {
-
-
-                            folder = regrannPictureFolder;
-
-                        }
-
-                        String fname;
-
-                        readyToHideSpinner = false;
-
-                        String caption = Util.prepareCaption(title, author, _this.getApplication().getApplicationContext(), caption_suffix, false);
-
-
-                        ClipboardManager clipboard = (ClipboardManager) getSystemService(CLIPBOARD_SERVICE);
-                        ClipData clip = ClipData.newPlainText("Post caption", caption);
-
-                        Objects.requireNonNull(clipboard).setPrimaryClip(clip);
-
-                        for (int i = 0; i < pics.length(); i++) {
-
-
-                            Log.d("app5", "in loop " + i);
-
-
-                            if (pics.getJSONObject(i).getJSONObject("node").getString("is_video").equals("true")) {
-
-                                fname = author + "-" + currTime + i + ".mp4";
-
-                            } else {
-
-                                fname = author + "-" + currTime + i + ".jpg";
-
-                            }
-
-
-                            Log.d("app5", " fnames " + i + "   " + fname + "   " + currTime);
-
-
-                            if (pics.getJSONObject(i).getJSONObject("node").getString("is_video") == "false") {
-
-
-                                downloadImage(pics.getJSONObject(i).getJSONObject("node").getString("display_url"), fname);
-                            } else {
-
-                                downloadingStarted = true;
-                                LoadMultiVideo2(pics.getJSONObject(i).getJSONObject("node").getString("video_url"), fname);
-
-
-                            }
-
-
-                        }
-                    } catch (Exception e) {
-                        Log.d("app5", "exception e " + e.getMessage());
-                    }
-
-                    if (readyToHideSpinner || !downloadingStarted) {
-
-                        runOnUiThread(new Runnable() {
-                            public void run() {
-                                Log.d("app5", "remove spinner 3032");
-                                spinner.setVisibility(View.GONE);
-                                showBottomButtons();
-
-                            }
-                        });
-
-
-                    }
-
-
-                    readyToHideSpinner = true;
-
-                    RegrannApp.sendEvent("sc_multiphoto");
-
-
-                    postExecute("multi");
-                    return;
-                } catch (Exception e) {
-
-                    showErrorToast("#5a - " + e.getMessage(), getString(R.string.porblemfindingphoto), true);
-
-                    return;
-                }
+                processMultiPhotoJSON(json);
+                return;
             }
 
 
+        downloadSinglePhotoFromURL(url);
+
+
+        postExecute("");
+
+    }
+
+
+    private void downloadSinglePhotoFromURL(String url) {
         try {
             Bitmap bitmap = null;
             try {
@@ -3017,27 +3070,23 @@ Log.i("Ogury", "on ad displayed");
 
             }
 
-            try {
-                if (preferences.getBoolean("watermark_checkbox", false) ||
-                        preferences.getBoolean("custom_watermark", false)) {
-                    Point p = new Point(10, (bitmap != null ? bitmap.getHeight() : 0) - 10);
-                    int textSize = 20;
-                    if (bitmap.getHeight() > 640)
-                        textSize = 50;
-                    bitmap = mark(bitmap, author, p, Color.YELLOW, 180, textSize, false);
-                }
-            } catch (Exception e99) {
+            /**
+             try {
+             if (preferences.getBoolean("watermark_checkbox", false) ||
+             preferences.getBoolean("custom_watermark", false)) {
+             Point p = new Point(10, (bitmap != null ? bitmap.getHeight() : 0) - 10);
+             int textSize = 20;
+             if (bitmap.getHeight() > 640)
+             textSize = 50;
+             bitmap = mark(bitmap, author, p, Color.YELLOW, 180, textSize, false);
+             }
+             } catch (Exception e99) {
 
-            }
+             }
+             **/
 
             ByteArrayOutputStream bytes = new ByteArrayOutputStream();
             bitmap.compress(Bitmap.CompressFormat.JPEG, 99, bytes);
-
-
-            // no crop if not square ??
-
-
-            // write the bytes in file
 
             lastDownloadedFile = tempFile;
 
@@ -3049,38 +3098,19 @@ Log.i("Ogury", "on ad displayed");
             fo.close();
 
 
-            if (false) {
-                RegrannApp.sendEvent("sc_video");
-
-                if (preferences.getBoolean("watermark_checkbox", false) ||
-                        preferences.getBoolean("custom_watermark", false)) {
-                    Point p = new Point(10, bitmap.getHeight() - 10);
-                    int textSize = 20;
-                    if (bitmap.getHeight() > 640)
-                        textSize = 50;
-                    createVideoWatermark(bitmap, author, p, Color.YELLOW, 180, textSize, false);
-                }
-
-
-            } else
-
-                RegrannApp.sendEvent("sc_photo");
+            RegrannApp.sendEvent("sc_photo");
 
             showBottomButtons();
 
 
-        } catch (
-                Exception e) {
+        } catch (Exception e) {
 
             showErrorToast("#5b - " + e.getMessage(), getString(R.string.porblemfindingphoto), true);
 
             return;
         }
 
-        postExecute("");
-
     }
-
 
     private void showBottomButtons() {
 
@@ -3124,75 +3154,11 @@ Log.i("Ogury", "on ad displayed");
 
 
     private void downloadImage(String url, final String fname) {
-        File tmpFile = new File(Environment.getExternalStorageDirectory(), Environment.DIRECTORY_DOWNLOADS + Util.RootDirectoryMultiPhoto + fname);
 
         try {
-            //    URL imageurl = new URL(url);
 
 
             Util.startDownloadMulti(url, "", _this, fname, isAutoSave);
-
-            /**
-             Log.d("app5", "Downloading : " + url);
-
-             FutureTarget<Bitmap> futureBitmap = Glide.with(RegrannApp._this)
-             .asBitmap()
-             .load(url)
-             .submit();
-
-             if (futureBitmap == null) {
-
-             showErrorToast("#72 - ", "There was a problem downloading the photo.  Please try again.", true);
-             return;
-             }
-
-             try {
-             originalBitmapBeforeNoCrop = futureBitmap.get();
-             } catch (InterruptedException e) {
-             e.printStackTrace();
-             } catch (ExecutionException e) {
-             e.printStackTrace();
-             }
-
-             ByteArrayOutputStream bytes = new ByteArrayOutputStream();
-
-             try {
-
-             // originalBitmapBeforeNoCrop = resource;
-             Bitmap bitmap = originalBitmapBeforeNoCrop;
-
-
-             if (preferences.getBoolean("watermark_checkbox", false) ||
-             preferences.getBoolean("custom_watermark", false)) {
-             Point p = new Point(10, bitmap.getHeight() - 10);
-             int textSize = 20;
-             if (bitmap.getHeight() > 640)
-             textSize = 50;
-             bitmap = mark(bitmap, author, p, Color.YELLOW, 180, textSize, false);
-             }
-
-
-             bitmap.compress(Bitmap.CompressFormat.JPEG, 99, bytes);
-
-             } catch (Exception e) {
-             RegrannApp.sendEvent("sc_bitmap null");
-
-             showErrorToast("#72 - ", "There was a problem downloading the photo.  Please try again.", true);
-             return;
-             }
-
-             // no crop if not square ??
-
-             try {
-             // write the bytes in file
-             FileOutputStream fo = new FileOutputStream(tmpFile);
-             fo.write(bytes.toByteArray());
-
-             // remember close de FileOutput
-             fo.close();
-             } catch (Exception e) {
-             }
-             **/
 
 
         } catch (OutOfMemoryError e) {
@@ -3209,6 +3175,163 @@ Log.i("Ogury", "on ad displayed");
 
     WebView webview;
 
+    private void processNonInstagramURL(String html) {
+        Document doc = Jsoup.parse(html);
+        Elements metaTags = doc.getElementsByTag("meta");
+
+        String videoURL = null;
+        String photoURL = null;
+
+        for (Element metaTag : metaTags) {
+            if (metaTag.attr("property").equals("og:video") || metaTag.attr("name").equals("og:video")) {
+                videoURL = metaTag.attr("content");
+
+
+                Log.d("app5", "Found video URL: " + videoURL);
+                break;
+
+            }
+
+            if (metaTag.attr("property").equals("og:image") || metaTag.attr("name").equals("og:image")) {
+                photoURL = metaTag.attr("content");
+
+
+                Log.d("app5", "Found image URL: " + photoURL);
+                break;
+
+            }
+        }
+
+
+        if (videoURL != null)
+            prepareForSingleVideo(videoURL);
+        else if (photoURL != null)
+            prepareForSinglePhoto(photoURL);
+        else
+            showErrorToast("There was a problem ", "Unable to find a video or photo at this link.", true);
+
+
+    }
+
+
+    private void processParler(String html) {
+        Document doc = Jsoup.parse(html);
+        Elements metaTags = doc.getElementsByTag("meta");
+
+        String videoURL = null;
+        String photoURL = null;
+
+        for (Element metaTag : metaTags) {
+            if (metaTag.attr("property").equals("og:video") || metaTag.attr("name").equals("og:video")) {
+                videoURL = metaTag.attr("content");
+
+
+                Log.d("app5", "Found video URL: " + videoURL);
+                break;
+
+            }
+
+
+        }
+
+
+        if (videoURL != null) {
+            prepareForSingleVideo(videoURL);
+            return;
+        }
+
+
+        Elements elements = doc.getElementsByTag("img");
+        for (Element e : elements) {
+            String alt = e.attr("alt");
+            if (alt.equals("Article Image")) {
+                photoURL = e.attr("src");
+                break;
+            }
+
+        }
+
+        if (photoURL != null)
+            prepareForSinglePhoto(photoURL);
+        else
+            showErrorToast("There was a problem ", "Unable to find a video or photo at this link.", true);
+
+
+    }
+
+
+    private void prepareForSinglePhoto(String photoURL) {
+
+        downloadSinglePhotoFromURL(photoURL);
+
+        postExecute("");
+
+    }
+
+
+    private void prepareForSingleVideo(String tempVideoURL) {
+        isVideo = true;
+        videoURL = tempVideoURL;
+
+
+        postExecute("");
+
+
+    }
+
+
+    private void processHTML(String html) {
+        try {
+
+            Log.d("app5", "in showhtml ");
+            int start_shortcode_media = html.indexOf("shortcode_media");
+
+            if (start_shortcode_media > -1) {
+
+
+                Log.d("app5", "in start_shortcode_media  :" + start_shortcode_media);
+                int end_pos = html.indexOf(";</script>", start_shortcode_media);
+                final String json = html.substring((start_shortcode_media + 17), end_pos);
+
+
+                Log.d("app5", "JSON : ");
+
+                // found Instagram JSON
+                processJSON(json);
+                return;
+
+            }
+
+            //<meta property="og:site_name" content="Parler" />
+
+            if (html.indexOf("content=\"Parler\"") > 0) {
+                if ((html.indexOf("og:video") > -1) || (html.indexOf("mc-article--image") > -1))
+                    processParler(html);
+                return;
+            }
+
+            // check to see if has OG:video tag
+            if ((html.indexOf("og:video") > -1) || (html.indexOf("og:image") > -1)) {
+                Log.d("app5", "OG:   FOUND");
+                processNonInstagramURL(html);
+
+                return;
+            }
+
+
+            Log.d("app5", "in 3206 :" + start_shortcode_media);
+            if (currentURL.indexOf("instagram.com") > 0)
+                processPotentialPrivate();
+            else
+                showErrorToast("There was a problem ", "Unable to find any photos or videos at this link", true);
+
+
+        } catch (Exception e) {
+            showErrorToast("There was a problem ", "There was a problem : " + html, true);
+        }
+    }
+
+
     public void GET(final String urlIn) {
 
         class MyJavaScriptInterface {
@@ -3218,34 +3341,8 @@ Log.i("Ogury", "on ad displayed");
 
             @JavascriptInterface
             public void showHTML(String html) {
-                try {
 
-                    Log.d("app5", "in showhtml ");
-                    int start_shortcode_media = html.indexOf("shortcode_media");
-
-                    if (start_shortcode_media > -1) {
-                        try {
-
-                            Log.d("app5", "in start_shortcode_media  :" + start_shortcode_media);
-                            int end_pos = html.indexOf(";</script>", start_shortcode_media);
-                            final String json = html.substring((start_shortcode_media + 17), end_pos);
-
-
-                            Log.d("app5", "JSON : ");
-
-
-                            processJSON(json);
-                        } catch (Exception e) {
-                            showErrorToast("shortcode_media error: ", "There was a probilem : " + e.getMessage(), true);
-                        }
-                    } else {
-
-                        Log.d("app5", "in 3206 :" + start_shortcode_media);
-                        processJSON("private");
-                    }
-                } catch (Exception e) {
-                    showErrorToast("There was a problem ", "There was a problem : " + html, true);
-                }
+                processHTML(html);
 
 
             }
@@ -3253,8 +3350,6 @@ Log.i("Ogury", "on ad displayed");
         }
 
 
-        InputStream inputStream = null;
-        // String result = "";
         try {
 
             runOnUiThread(new Runnable() {
@@ -3392,6 +3487,51 @@ Log.i("Ogury", "on ad displayed");
                 }
             }
         }
+    }
+
+
+    public void onClickSnapChat(View v) {
+
+        copyTempToSave();
+
+        Intent intent = this.getPackageManager().getLaunchIntentForPackage("com.instagram.android");
+        String caption = Util.prepareCaption(title, author, _this.getApplication().getApplicationContext(), caption_suffix, tiktokLink);
+
+
+        if (intent != null) {
+            Intent shareIntent = new Intent();
+            shareIntent.setAction(Intent.ACTION_SEND);
+            shareIntent.setPackage("com.instagram.android");
+            //  shareIntent.setClassName("com.instagram.android",instagram_activity);
+
+
+            shareIntent.setClassName(
+                    "com.snapchat.android",
+                    "com.snapchat.android.LandingPageActivity");
+
+
+            shareIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_NO_ANIMATION);
+
+
+            startActivity(shareIntent);
+
+
+            final Handler handler = new Handler();
+            handler.postDelayed(new Runnable() {
+                @Override
+                public void run() {
+
+                    try {
+                        finish();
+                    } catch (Exception e) {
+                        Log.d("app5", "on finish");
+                    }
+                }
+            }, 2000);
+
+
+        }
+
     }
 
 
@@ -3964,266 +4104,18 @@ Log.i("Ogury", "on ad displayed");
 
     }
 
-    /**
-     * private void LoadVideo() {
-     * <p>
-     * try {
-     * if (videoURL != null) {
-     * loadingMultiVideo = false;
-     * <p>
-     * <p>
-     * AsyncTask<Void, Void, Void> videoLoader = new AsyncTask<Void, Void, Void>() {
-     *
-     * @Override protected Void doInBackground(Void... params) {
-     * try {
-     * <p>
-     * if (!isNetworkAvailable()) {
-     * showErrorToast("", _this.getString(R.string.noInternet), true);
-     * return null;
-     * <p>
-     * }
-     * <p>
-     * <p>
-     * final int TIMEOUT_CONNECTION = 5000;// 5sec
-     * final int TIMEOUT_SOCKET = 30000;// 30sec
-     * <p>
-     * URL url = null;
-     * try {
-     * url = new URL(videoURL);
-     * } catch (MalformedURLException e3) {
-     * e3.printStackTrace();
-     * }
-     * long startTime = System.currentTimeMillis();
-     * Log.i("info", "image download beginning: " + videoURL);
-     * <p>
-     * // Open a connection to that URL.
-     * URLConnection ucon = null;
-     * try {
-     * ucon = url != null ? url.openConnection() : null;
-     * } catch (IOException e2) {
-     * showErrorToast("#11 - " + e2.getMessage(), getString(R.string.problemfindingvideo), true);
-     * <p>
-     * e2.printStackTrace();
-     * }
-     * <p>
-     * assert ucon != null;
-     * ucon.setReadTimeout(TIMEOUT_CONNECTION);
-     * ucon.setConnectTimeout(TIMEOUT_SOCKET);
-     * <p>
-     * InputStream is = null;
-     * try {
-     * is = ucon.getInputStream();
-     * } catch (IOException e1) { // TODO
-     * // Auto-generated
-     * // catch block
-     * e1.printStackTrace();
-     * }
-     * assert is != null;
-     * BufferedInputStream inStream = new BufferedInputStream(is, 1024 * 5);
-     * FileOutputStream outStream = null;
-     * try {
-     * outStream = new FileOutputStream(Environment.getExternalStorageDirectory() + tempVideoName);
-     * <p>
-     * } catch (FileNotFoundException e) {
-     * e.printStackTrace();
-     * }
-     * byte[] buff = new byte[5 * 1024];
-     * <p>
-     * // Read bytes (and store them) until there is
-     * // nothing // more to //
-     * <p>
-     * int len;
-     * try {
-     * while ((len = inStream.read(buff)) != -1) {
-     * assert outStream != null;
-     * outStream.write(buff, 0, len);
-     * }
-     * } catch (IOException e) {
-     * <p>
-     * showErrorToast("#10 - " + e.getMessage(), getString(R.string.problemfindingvideo), true);
-     * <p>
-     * e.printStackTrace();
-     * }
-     * <p>
-     * // clean up
-     * try {
-     * assert outStream != null;
-     * outStream.flush();
-     * outStream.close();
-     * inStream.close();
-     * } catch (IOException e) {
-     * e.printStackTrace();
-     * }
-     * <p>
-     * tempVideoFile = new File(Environment.getExternalStorageDirectory() + tempVideoName);
-     * <p>
-     * tempVideoFullPathName = tempVideoFile.getPath();
-     * <p>
-     * <p>
-     * // isVideo = true;
-     * <p>
-     * try {
-     * if (rateRequestDialog != null) {
-     * if (rateRequestDialog.isShowing()) {
-     * rateRequestDialog.dismiss();
-     * }
-     * }
-     * <p>
-     * <p>
-     * } catch (Exception e) {
-     * }
-     * <p>
-     * } catch (Exception e) {
-     * showErrorToast("#12 - " + e.getMessage(), getString(R.string.problemfindingvideo), true);
-     * isVideo = false;
-     * }
-     * <p>
-     * return null;
-     * }
-     * <p>
-     * //show progress in onPre
-     * @Override protected void onPreExecute() {
-     * try {
-     * <p>
-     * pd = ProgressDialog.show(ShareActivity.this, _this.getString(R.string.progress_dialog_msg), _this.getString(R.string.downloadingVideo), true, true);
-     * } catch (Exception e) {
-     * // TODO Auto-generated catch block
-     * e.printStackTrace();
-     * }
-     * <p>
-     * }
-     * @Override protected void onPostExecute(Void result) {
-     * try {
-     * <p>
-     * removeProgressDialog();
-     * <p>
-     * if (isAutoSave) {
-     * copyTempToSave();
-     * finish();
-     * }
-     * <p>
-     * if (isQuickPost) {
-     * if (isVideo) {
-     * <p>
-     * quickPostSendToInstagram();
-     * <p>
-     * }
-     * }
-     * <p>
-     * if (isQuickKeep) {
-     * <p>
-     * KeptListAdapter db = KeptListAdapter.getInstance(_this);
-     * clearClipboard();
-     * <p>
-     * db.addItem(new InstaItem(title, tempFileFullPathName, tempVideoFullPathName, author));
-     * <p>
-     * Toast toast = Toast.makeText(ShareActivity.this, R.string.postlaterconfirmtoast, Toast.LENGTH_LONG);
-     * toast.setGravity(Gravity.CENTER_VERTICAL, 0, 0);
-     * <p>
-     * toast.show();
-     * finish();
-     * <p>
-     * }
-     * <p>
-     * } catch (Exception e) {
-     * }
-     * <p>
-     * }
-     * };
-     * <p>
-     * <p>
-     * // }
-     * // });
-     * <p>
-     * videoLoader.execute((Void[]) null);
-     * <p>
-     * }
-     * } catch (Exception e) {
-     * }
-     * <p>
-     * }
-     **/
 
     private void LoadVideo() {
-        String ThisUrl = this.videoURL;
+
+        startProgressDialog();
 
         String str3 = "";
         try {
-            long DownloadId = Util.startDownload(ThisUrl, str3, _this, tempVideoName);
+            long DownloadId = Util.startDownload(this.videoURL, str3, _this, tempVideoName);
         } catch (Exception e) {
             Log.d("app5", e.getMessage());
         }
     }
-
-    /**
-     * private void LoadVideo() {
-     * <p>
-     * <p>
-     * if (videoURL != null) {
-     * <p>
-     * loadingMultiVideo = false;
-     * <p>
-     * try {
-     * <p>
-     * runOnUiThread(new Runnable() {
-     * public void run() {
-     * try {
-     * <p>
-     * <p>
-     * startProgressDialog();
-     * } catch (Exception e4) {
-     * }
-     * <p>
-     * <p>
-     * }
-     * <p>
-     * });
-     * <p>
-     * <p>
-     * if (!isNetworkAvailable()) {
-     * showErrorToast("", _this.getString(R.string.noInternet), true);
-     * return;
-     * <p>
-     * }
-     * <p>
-     * Download_Uri = Uri.parse(videoURL);
-     * <p>
-     * DownloadManager.Request request = new DownloadManager.Request(Download_Uri);
-     * request.setAllowedNetworkTypes(DownloadManager.Request.NETWORK_WIFI | DownloadManager.Request.NETWORK_MOBILE);
-     * request.setAllowedOverRoaming(true);
-     * <p>
-     * request.setDestinationInExternalPublicDir("/", tempVideoName);
-     * <p>
-     * <p>
-     * refid = downloadManager.enqueue(request);
-     * tempVideoFile = new File(Environment.getExternalStorageDirectory() + tempVideoName);
-     * <p>
-     * tempVideoFullPathName = tempVideoFile.getPath();
-     * <p>
-     * <p>
-     * // isVideo = true;
-     * <p>
-     * try {
-     * if (rateRequestDialog != null) {
-     * if (rateRequestDialog.isShowing()) {
-     * rateRequestDialog.dismiss();
-     * }
-     * }
-     * <p>
-     * <p>
-     * } catch (Exception e) {
-     * }
-     * <p>
-     * } catch (Exception e) {
-     * <p>
-     * showErrorToast("#16 - " + e.getMessage(), getString(R.string.problemfindingvideo), true);
-     * isVideo = false;
-     * }
-     * <p>
-     * }
-     * <p>
-     * }
-     **/
 
 
     private class addWatermarkToFile extends AsyncTask<String, Integer, String> {
@@ -4357,9 +4249,21 @@ Log.i("Ogury", "on ad displayed");
 
 
                 if (totalDownloadedAlready == totalMultiToDownload) {
-                    if (isQuickPost)
+                    if (isQuickPost) {
+
+                        scanMultiPostFolder();
+
+
                         showMultiDialog();
-                    else {
+                        return;
+                    } else if (isAutoSave) {
+
+                        scanRegrannFolder();
+
+
+                        finish();
+                        return;
+                    } else {
 
 
                         runOnUiThread(new Runnable() {
@@ -4420,14 +4324,14 @@ Log.i("Ogury", "on ad displayed");
                 if (isAutoSave) {
                     copyTempToSave();
                     //   finish();
-                }
-
-                if (isQuickPost) {
+                } else if (isQuickPost) {
                     if (isVideo) {
 
                         quickPostSendToInstagram();
 
                     }
+                } else {
+                    showBottomButtons();
                 }
 
 
@@ -4682,6 +4586,7 @@ Log.i("Ogury", "on ad displayed");
 
                 }
             }
+
             scanRegrannFolder();
             return "Executed";
         }
@@ -4690,6 +4595,8 @@ Log.i("Ogury", "on ad displayed");
         protected void onPostExecute(String result) {
 
             Log.i("app5", "done copy multi");
+
+            scanRegrannFolder();
 
             if (noAds && isAutoSave) {
                 // user is premium and we are in quick save mode
@@ -4702,7 +4609,7 @@ Log.i("Ogury", "on ad displayed");
                     spinner.setVisibility(View.GONE);
                 }
 
-                //  finish();
+                finish();
                 return;
             }
 
@@ -5089,6 +4996,54 @@ Log.i("Ogury", "on ad displayed");
     }
 
 
+    private void shareWithChooser() {
+
+        Uri uri;
+        String type;
+        if (isVideo) {
+            uri = FileProvider.getUriForFile(this, getPackageName(), new File(Util.getTempVideoFilePath()));
+            type = "video/*";
+        } else {
+            type = "image/*";
+            uri = FileProvider.getUriForFile(this, getPackageName(), tempFile);
+        }
+
+        String txt;
+
+        Intent intent = ShareCompat.IntentBuilder.from(this)
+                .setStream(uri) // uri from FileProvider
+                .getIntent()
+                .setAction(Intent.ACTION_SEND) //Change if needed
+                .setDataAndType(uri, type)
+                .addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
+
+        if (title != null && (!Util.isKeepCaption(_this))) {
+
+
+            intent.putExtra(Intent.EXTRA_SUBJECT, "Regrann from @" + author);
+            txt = "@Regrann from @" + author + "  -  " + title + "  -  " + getIntent().getStringExtra("mediaUrl")
+                    + "\n\nRegrann App - Repost without leaving Instagram - Download Here : http://regrann.com/download";
+        } else {
+            intent.putExtra(Intent.EXTRA_SUBJECT, "Photo share");
+
+            txt = "  - via @Regrann app";
+        }
+
+
+        ClipboardManager clipboard = (ClipboardManager) getSystemService(CLIPBOARD_SERVICE);
+        ClipData clip = ClipData.newPlainText("Post caption", txt);
+        Objects.requireNonNull(clipboard).setPrimaryClip(clip);
+
+
+        intent.putExtra(Intent.EXTRA_TEXT, txt);
+
+        startActivity(Intent.createChooser(intent, "Share to"));
+
+
+        finish();
+
+    }
+
     @Override
     public void onClick(View v) {
         try {
@@ -5126,69 +5081,73 @@ Log.i("Ogury", "on ad displayed");
                 RegrannApp.sendEvent("sc_sharebtn");
 
 
-                try {
+                shareWithChooser();
 
-                    // flurryAgent.logEvent("Share button pressed");
-                    // Create the new Intent using the 'Send' action.
-                    Intent share = new Intent(Intent.ACTION_SEND);
+                /**
+                 try {
 
-                    share.setFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
-                    String txt;
+                 // flurryAgent.logEvent("Share button pressed");
+                 // Create the new Intent using the 'Send' action.
+                 Intent share = new Intent(Intent.ACTION_SEND);
 
-                    if (inputMediaType == 0) {
-                        String caption;
-                        //count how many hashtags
+                 share.setFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
+                 String txt;
 
-                        if (title != null && (!Util.isKeepCaption(_this))) {
+                 if (inputMediaType == 0) {
+                 String caption;
+                 //count how many hashtags
 
-
-                            share.putExtra(Intent.EXTRA_SUBJECT, "Regrann from @" + author);
-                            txt = "@Regrann from @" + author + "  -  " + title + "  -  " + getIntent().getStringExtra("mediaUrl")
-                                    + "\n\nRegrann App - Repost without leaving Instagram - Download Here : http://regrann.com/download";
-                        } else {
-                            share.putExtra(Intent.EXTRA_SUBJECT, "Photo share");
-
-                            txt = "  - via @Regrann app";
-                        }
-
-                        caption = txt;
-                        share.putExtra(Intent.EXTRA_TEXT, caption);
-                        clearClipboard();
+                 if (title != null && (!Util.isKeepCaption(_this))) {
 
 
-                    } else {
-                        String caption = "";
-                        if (!Util.isKeepCaption(_this))
-                            caption = "@regrann no-crop:";
+                 share.putExtra(Intent.EXTRA_SUBJECT, "Regrann from @" + author);
+                 txt = "@Regrann from @" + author + "  -  " + title + "  -  " + getIntent().getStringExtra("mediaUrl")
+                 + "\n\nRegrann App - Repost without leaving Instagram - Download Here : http://regrann.com/download";
+                 } else {
+                 share.putExtra(Intent.EXTRA_SUBJECT, "Photo share");
+
+                 txt = "  - via @Regrann app";
+                 }
+
+                 caption = txt;
+                 share.putExtra(Intent.EXTRA_TEXT, caption);
+                 clearClipboard();
 
 
-                        share.putExtra(Intent.EXTRA_TEXT, caption);
-
-                        clearClipboard();
-
-                    }
-
-
-                    if (isVideo) {
-                        share.setType("video/*");
-                        share.putExtra(Intent.EXTRA_STREAM, Uri.fromFile(new File(Util.getTempVideoFilePath())));
-                    } else {
-                        share.putExtra(Intent.EXTRA_STREAM, Uri.fromFile(tempFile));
-
-                        share.setType("image/*");
-                    }
-                    // Broadcast the Intent.
-                    startActivity(Intent.createChooser(share, "Share to"));
-
-                    cleanUp();
+                 } else {
+                 String caption = "";
+                 if (!Util.isKeepCaption(_this))
+                 caption = "@regrann no-crop:";
 
 
-                    finish();
-                } catch (Exception e) {
-                    showErrorToast(e.getMessage(), getString(R.string.therewasproblem));
+                 share.putExtra(Intent.EXTRA_TEXT, caption);
 
-                }
+                 clearClipboard();
 
+                 }
+
+
+                 if (isVideo) {
+                 share.setType("video/*");
+
+                 share.putExtra(Intent.EXTRA_STREAM, Uri.fromFile(new File(Util.getTempVideoFilePath())));
+                 } else {
+                 share.putExtra(Intent.EXTRA_STREAM, Uri.fromFile(tempFile));
+
+                 share.setType("image/*");
+                 }
+                 // Broadcast the Intent.
+                 startActivity(Intent.createChooser(share, "Share to"));
+
+                 cleanUp();
+
+
+                 finish();
+                 } catch (Exception e) {
+                 showErrorToast(e.getMessage(), getString(R.string.therewasproblem));
+
+                 }
+                 **/
                 return;
 
 

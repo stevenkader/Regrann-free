@@ -1,9 +1,9 @@
 <component name="libraryTable">
   <library name="Gradle: ly.img.android.sdk.assets:font-text-design:8.0.0@aar">
     <CLASSES>
-      <root url="jar://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/10f5188e95c8bd8f48dc8dcd518c115a/jetified-font-text-design-8.0.0/jars/classes.jar!/" />
-      <root url="file://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/10f5188e95c8bd8f48dc8dcd518c115a/jetified-font-text-design-8.0.0/res" />
-      <root url="file://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/10f5188e95c8bd8f48dc8dcd518c115a/jetified-font-text-design-8.0.0/AndroidManifest.xml" />
+      <root url="jar://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/3608d73c213e33e4b8b6f269dc3928f2/jetified-font-text-design-8.0.0/jars/classes.jar!/" />
+      <root url="file://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/3608d73c213e33e4b8b6f269dc3928f2/jetified-font-text-design-8.0.0/res" />
+      <root url="file://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/3608d73c213e33e4b8b6f269dc3928f2/jetified-font-text-design-8.0.0/AndroidManifest.xml" />
     </CLASSES>
     <JAVADOC />
     <SOURCES />

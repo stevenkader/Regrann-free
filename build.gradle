@@ -2,7 +2,7 @@
 
 buildscript {
 
-    ext.kotlin_version = '1.4.10'
+    ext.kotlin_version = '1.4.20'
     ext.pesdk_version = '8.0.0' // Insert the latest SDK version here. You will find it here https://github.com/imgly/pesdk-android-demo/releases
 
     repositories {
