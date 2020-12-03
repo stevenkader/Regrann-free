@@ -773,18 +773,17 @@ public class ShareActivity extends AppCompatActivity implements BaseSliderView.O
         regrannMultiPostFolder = new File(Environment.getExternalStorageDirectory(), Environment.DIRECTORY_PICTURES + Util.RootDirectoryMultiPhoto).getAbsolutePath();
 
 
-
         try {
             // Clear the multipost folder
 /**
-            File dir = new File(regrannMultiPostFolder);
-            if (dir.isDirectory()) {
-                String[] children = dir.list();
-                for (int i = 0; i < children.length; i++) {
-                    try {
-                        File toDelete = new File(dir, children[i]);
-                        //  RegrannApp._this.getApplicationContext().getContentResolver().delete(Uri.fromFile(toDelete), null, null);
-                        toDelete.delete();
+ File dir = new File(regrannMultiPostFolder);
+ if (dir.isDirectory()) {
+ String[] children = dir.list();
+ for (int i = 0; i < children.length; i++) {
+ try {
+ File toDelete = new File(dir, children[i]);
+ //  RegrannApp._this.getApplicationContext().getContentResolver().delete(Uri.fromFile(toDelete), null, null);
+ toDelete.delete();
 
  //    _this.sendBroadcast(new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE, Uri.fromFile(toDelete)));
 
@@ -3070,20 +3069,20 @@ Log.i("Ogury", "on ad displayed");
 
             }
 
-            /**
-             try {
-             if (preferences.getBoolean("watermark_checkbox", false) ||
-             preferences.getBoolean("custom_watermark", false)) {
-             Point p = new Point(10, (bitmap != null ? bitmap.getHeight() : 0) - 10);
-             int textSize = 20;
-             if (bitmap.getHeight() > 640)
-             textSize = 50;
-             bitmap = mark(bitmap, author, p, Color.YELLOW, 180, textSize, false);
-             }
-             } catch (Exception e99) {
 
-             }
-             **/
+            try {
+                if (preferences.getBoolean("watermark_checkbox", false) ||
+                        preferences.getBoolean("custom_watermark", false)) {
+                    Point p = new Point(10, (bitmap != null ? bitmap.getHeight() : 0) - 10);
+                    int textSize = 20;
+                    if (bitmap.getHeight() > 640)
+                        textSize = 50;
+                    bitmap = mark(bitmap, author, p, Color.YELLOW, 180, textSize, false);
+                }
+            } catch (Exception e99) {
+
+            }
+
 
             ByteArrayOutputStream bytes = new ByteArrayOutputStream();
             bitmap.compress(Bitmap.CompressFormat.JPEG, 99, bytes);
@@ -4236,7 +4235,7 @@ Log.i("Ogury", "on ad displayed");
                             // process download
                             fname = c.getString(c.getColumnIndex(DownloadManager.COLUMN_TITLE));
 
-                            fname = Environment.getExternalStorageDirectory() + "/" + Environment.DIRECTORY_DOWNLOADS + Util.RootDirectoryMultiPhoto + fname;
+                            fname = Environment.getExternalStorageDirectory() + "/" + Environment.DIRECTORY_PICTURES + Util.RootDirectoryMultiPhoto + fname;
                             // get other required data by changing the constant passed to getColumnIndex
                         }
                     }
