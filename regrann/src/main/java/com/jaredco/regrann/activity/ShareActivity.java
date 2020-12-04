@@ -4214,6 +4214,8 @@ Log.i("Ogury", "on ad displayed");
 
             totalDownloadedAlready++;
 
+            Log.d("app5", "In Oncomplete :  " + totalMultiToDownload + "   " + totalDownloadedAlready);
+
 
             if (isMulti) {
 
@@ -4548,6 +4550,7 @@ Log.i("Ogury", "on ad displayed");
 
     private void copyAllMultiToSave() {
 
+
         clearClipboard();
         new LongOperation().execute("");
 
@@ -4560,6 +4563,15 @@ Log.i("Ogury", "on ad displayed");
         @Override
         protected String doInBackground(String... params) {
 
+
+
+
+            return "Executed";
+        }
+
+        @Override
+        protected void onPostExecute(String result) {
+
             File dir = new File(regrannMultiPostFolder);
             if (dir.isDirectory()) {
                 String[] children = dir.list();
@@ -4570,7 +4582,7 @@ Log.i("Ogury", "on ad displayed");
                             File source = new File(dir, children[i]);
 
 
-                            File destination = new File(regrannPictureFolder + File.separator + author + "-" + children[i]);
+                            File destination = new File(regrannPictureFolder + File.separator + children[i]);
                             try {
                                 copy(source, destination);
                             } catch (IOException e) {
@@ -4585,13 +4597,6 @@ Log.i("Ogury", "on ad displayed");
 
                 }
             }
-
-            scanRegrannFolder();
-            return "Executed";
-        }
-
-        @Override
-        protected void onPostExecute(String result) {
 
             Log.i("app5", "done copy multi");
 
@@ -4745,8 +4750,7 @@ Log.i("Ogury", "on ad displayed");
 
 
             if (!isAutoSave)
-                pd = ProgressDialog.show(ShareActivity.this, _this.getString(R.string.progress_dialog_msg), "Saving.....", true, false);
-
+                startProgressDialog();
         }
 
         @Override
