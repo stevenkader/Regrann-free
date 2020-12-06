@@ -105,6 +105,13 @@ public class NoCropActivity extends Activity implements OnClickListener, OnSeekB
         Bundle extras = intent.getExtras();
         String action = intent.getAction();
 
+        // Get the directory for the user's public pictures directory.
+        File file2 = new File(Environment.getExternalStorageDirectory(), Environment.DIRECTORY_DOWNLOADS + Util.RootDirectoryPhoto);
+
+        if (!file2.mkdirs()) {
+            Log.e("error", "Directory not created");
+        }
+
         // if this is from the share menu
         if (Intent.ACTION_SEND.equals(action)) {
             if (extras.containsKey(Intent.EXTRA_STREAM)) {

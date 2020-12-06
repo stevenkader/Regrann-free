@@ -94,6 +94,7 @@ public class RegrannApp extends Application {
     public void onCreate() {
         super.onCreate();
 
+
         Log.d("app5", "In Regrann App - onCreate");
 
         RequestConfiguration requestConfiguration

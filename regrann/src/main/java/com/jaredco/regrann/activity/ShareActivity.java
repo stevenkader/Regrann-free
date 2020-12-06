@@ -4071,7 +4071,7 @@ Log.i("Ogury", "on ad displayed");
 
             runOnUiThread(new Runnable() {
                 public void run() {
-                    pd = ProgressDialog.show(ShareActivity.this, _this.getString(R.string.progress_dialog_msg), _this.getString(R.string.downloadingVideo), true, true);
+                    pd = ProgressDialog.show(ShareActivity.this, _this.getString(R.string.progress_dialog_msg), _this.getString(R.string.auto_saving_progress), true, true);
 
 
                 }

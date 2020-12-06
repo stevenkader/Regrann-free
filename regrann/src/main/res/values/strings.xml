@@ -158,7 +158,7 @@ By clicking "Confirm", you consent to the use of anonymous data (like your count
     <string name="upgrade_button_text">Upgrade Now</string>
     <string name="auto_saving">Quick Saving......</string>
 
-    <string name="auto_saving_progress">Downloading Photos / Videos....</string>
+    <string name="auto_saving_progress">Downloading Media....</string>
 
     <string name="back_to_instagram">Back To Instagram</string>
     <string name="_3_99"><strike>$3.99</strike></string>
