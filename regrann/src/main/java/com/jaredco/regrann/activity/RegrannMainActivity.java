@@ -20,18 +20,13 @@ import android.os.Handler;
 import android.preference.PreferenceManager;
 import android.telephony.TelephonyManager;
 import android.util.Log;
-import android.view.Menu;
-import android.view.MenuInflater;
-import android.view.MenuItem;
 import android.view.View;
-import android.widget.Button;
 import android.widget.ProgressBar;
 import android.widget.SimpleCursorAdapter;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.Toolbar;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 
@@ -475,72 +470,63 @@ public class RegrannMainActivity extends AppCompatActivity {
             invalidateOptionsMenu();
 
 
-
     }
 
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        MenuInflater inflater = getMenuInflater();
-        inflater.inflate(R.menu.full_menu, menu);
+    public void onClickBtnSupport(View v) {
+        AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(_this);
 
+        // flurryAgent.logEvent("Rating Good or Bad Dialog");
+        // set dialog message
+        alertDialogBuilder.setIcon(R.drawable.ic_launcher);
 
+        alertDialogBuilder.setMessage("Are you stuck?  Do you want to email support?").setCancelable(true)
+                .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        // if this button is clicked, just close
+                        // the dialog box and do nothing
+                        emailSupport();
+                        dialog.dismiss();
 
-        return true;
+                    }
+                })
+                .setNegativeButton("No", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        // if this button is clicked, close
+                        // current activity
+                        // flurryAgent.logEvent("Good Selected");
+
+                        dialog.cancel();
+                    }
+                });
+
+        // create alert dialog
+        alertDialogBuilder.create().show();
+
     }
 
-    @Override
-    public boolean onPrepareOptionsMenu(Menu menu) {
-        super.onPrepareOptionsMenu(menu);
-
-
-        noAds = preferences.getBoolean("removeAds", false);
-
-
-        if (noAds)
-            menu.findItem(R.id.action_removeads).setVisible(false);
-
-        return true;
+    public void onClickBtnHelp(View v) {
+        Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse("http://www.regrann.com/support"));
+        startActivity(browserIntent);
+        RegrannApp.sendEvent("rmain_help_btn");
     }
 
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-            case R.id.action_removeads:
+    public void onClickSettingsBtn(View v) {
+        RegrannApp.sendEvent("rmain_settings_btn");
+        // TODO Auto-generated method stub
 
 
-                Intent i = new Intent(_this, UpgradeActivity.class);
-                i.putExtra("from_main_screen", true);
-                startActivity(i);
-                RegrannApp.sendEvent("rmain_upgrade_btn");
-                return true ;
-            case R.id.action_settings:
-                // User chose the "Settings" item, show the app settings UI...
-                RegrannApp.sendEvent("rmain_settings_btn");
-                // TODO Auto-generated method stub
+        startActivity(new Intent(this, SettingsActivity2.class));
 
-
-                startActivity(new Intent(this, SettingsActivity2.class));
-
-
-                return true;
-
-            case R.id.action_help:
-                Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse("http://www.regrann.com/support"));
-                startActivity(browserIntent);
-                RegrannApp.sendEvent("rmain_help_btn");
-
-                return true;
-
-            default:
-                // If we got here, the user's action was not recognized.
-                // Invoke the superclass to handle it.
-                return super.onOptionsItemSelected(item);
-
-        }
     }
 
+    public void onClickUpgradeButton(View v) {
+
+        Intent i = new Intent(_this, UpgradeActivity.class);
+        i.putExtra("from_main_screen", true);
+        startActivity(i);
+        RegrannApp.sendEvent("rmain_upgrade_btn");
+    }
 
 
     public void queryPurchases() {
@@ -716,70 +702,17 @@ public class RegrannMainActivity extends AppCompatActivity {
 
         setContentView(R.layout.activity_mainscreen);
 
-        Toolbar myToolbar = findViewById(R.id.my_toolbar);
-        setSupportActionBar(myToolbar);
+        //     Toolbar myToolbar = findViewById(R.id.my_toolbar);
+        //   setSupportActionBar(myToolbar);
 
 
+        noAds = preferences.getBoolean("removeAds", false);
 
 
-        Button runTutorial = findViewById(R.id.btnRunTutorial);
-        runTutorial.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                // TODO Auto-generated method stub
-
-                    RegrannApp.sendEvent("Run Tutorial Again", "", "");
-                    startActivity(new Intent(_this, OnBoardingActivity.class));
-
-                    RegrannApp.sendEvent("main_runtutorial");
-
-
-            }
-
-        });
-
-
-
-
-        Button btnEmailSupport = findViewById(R.id.btnEmailSupport);
-        btnEmailSupport.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-                AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(_this);
-
-                // flurryAgent.logEvent("Rating Good or Bad Dialog");
-                // set dialog message
-                alertDialogBuilder.setIcon(R.drawable.ic_launcher);
-
-                alertDialogBuilder.setMessage("Are you stuck?  Do you want to email support?").setCancelable(true)
-                        .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
-                            public void onClick(DialogInterface dialog, int id) {
-                                // if this button is clicked, just close
-                                // the dialog box and do nothing
-                                emailSupport();
-                                dialog.dismiss();
-
-                            }
-                        })
-                        .setNegativeButton("No", new DialogInterface.OnClickListener() {
-                            public void onClick(DialogInterface dialog, int id) {
-                                // if this button is clicked, close
-                                // current activity
-                                // flurryAgent.logEvent("Good Selected");
-
-                                dialog.cancel();
-                            }
-                        });
-
-                // create alert dialog
-                alertDialogBuilder.create().show();
-
-
-            }
-        });
-
-
+        if (!noAds)
+            findViewById(R.id.imgPatch).setVisibility(View.GONE);
+        else
+            findViewById(R.id.btnUpgrade).setVisibility(View.GONE);
 
 
     }

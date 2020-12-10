@@ -1,8 +1,8 @@
 <component name="libraryTable">
   <library name="Gradle: ly.img.android.sdk.assets:filter-basic:8.0.0@aar">
     <CLASSES>
-      <root url="file://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/54de1dc94dcf592e2788a0c2cda2943a/jetified-filter-basic-8.0.0/res" />
       <root url="jar://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/54de1dc94dcf592e2788a0c2cda2943a/jetified-filter-basic-8.0.0/jars/classes.jar!/" />
+      <root url="file://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/54de1dc94dcf592e2788a0c2cda2943a/jetified-filter-basic-8.0.0/res" />
       <root url="file://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/54de1dc94dcf592e2788a0c2cda2943a/jetified-filter-basic-8.0.0/AndroidManifest.xml" />
     </CLASSES>
     <JAVADOC />
