@@ -62,8 +62,8 @@ android {
         applicationId "com.jaredco.regrann"
         minSdkVersion 21
         targetSdkVersion 29
-        versionCode 440
-        versionName "9.63"
+        versionCode 443
+        versionName "9.65"
 
         multiDexEnabled true
         resValue 'string', 'pesdk_version', "v$pesdk_version"

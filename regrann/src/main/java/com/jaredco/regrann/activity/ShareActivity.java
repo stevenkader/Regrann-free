@@ -67,8 +67,6 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.core.app.ActivityCompat;
-import androidx.core.app.ShareCompat;
-import androidx.core.content.FileProvider;
 import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 
 import com.android.billingclient.api.AcknowledgePurchaseParams;
@@ -4588,8 +4586,6 @@ Log.i("Ogury", "on ad displayed");
         protected String doInBackground(String... params) {
 
 
-
-
             return "Executed";
         }
 
@@ -5025,49 +5021,113 @@ Log.i("Ogury", "on ad displayed");
 
     private void shareWithChooser() {
 
-        Uri uri;
-        String type;
-        if (isVideo) {
-            uri = FileProvider.getUriForFile(this, getPackageName(), new File(Util.getTempVideoFilePath()));
-            type = "video/*";
-        } else {
-            type = "image/*";
-            uri = FileProvider.getUriForFile(this, getPackageName(), tempFile);
+        /**
+         Uri uri;
+         String type;
+         if (isVideo) {
+         uri = FileProvider.getUriForFile(this, getPackageName(), new File(Util.getTempVideoFilePath()));
+         type = "video/*";
+         } else {
+         type = "image/*";
+         uri = FileProvider.getUriForFile(this, getPackageName(), tempFile);
+         }
+
+         String txt;
+
+         Intent intent = ShareCompat.IntentBuilder.from(this)
+         .setStream(uri) // uri from FileProvider
+         .getIntent()
+         .setAction(Intent.ACTION_SEND) //Change if needed
+         .setDataAndType(uri, type)
+         .addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
+
+         if (title != null && (!Util.isKeepCaption(_this))) {
+
+
+         intent.putExtra(Intent.EXTRA_SUBJECT, "Regrann from @" + author);
+         txt = "@Regrann from @" + author + "  -  " + title + "  -  " + getIntent().getStringExtra("mediaUrl")
+         + "\n\nRegrann App - Repost without leaving Instagram - Download Here : http://regrann.com/download";
+         } else {
+         intent.putExtra(Intent.EXTRA_SUBJECT, "Photo share");
+
+         txt = "  - via @Regrann app";
+         }
+
+
+         ClipboardManager clipboard = (ClipboardManager) getSystemService(CLIPBOARD_SERVICE);
+         ClipData clip = ClipData.newPlainText("Post caption", txt);
+         Objects.requireNonNull(clipboard).setPrimaryClip(clip);
+
+
+         intent.putExtra(Intent.EXTRA_TEXT, txt);
+
+         startActivity(Intent.createChooser(intent, "Share to"));
+
+
+         finish();
+         **/
+
+        try {
+            // flurryAgent.logEvent("Share button pressed");
+            // Create the new Intent using the 'Send' action.
+            Intent share = new Intent(Intent.ACTION_SEND);
+
+            share.setFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
+            String txt;
+
+            if (inputMediaType == 0) {
+                String caption;
+                //count how many hashtags
+
+                if (title != null && (Util.isKeepCaption(_this) == false)) {
+
+
+                    share.putExtra(Intent.EXTRA_SUBJECT, "Regrann from @" + author);
+                    txt = "@Regrann from @" + author + "  -  " + title + "  -  " + getIntent().getStringExtra("mediaUrl")
+                            + "\n\nRegrann App - Repost without leaving Instagram - Download Here : http://regrann.com/download";
+                } else {
+                    share.putExtra(Intent.EXTRA_SUBJECT, "Photo share");
+
+                    txt = "  - via @Regrann app";
+                }
+
+                caption = txt;
+                share.putExtra(Intent.EXTRA_TEXT, caption);
+                clearClipboard();
+
+
+            } else {
+                String caption = "";
+                if (Util.isKeepCaption(_this) == false)
+                    caption = "@regrann no-crop:";
+
+
+                share.putExtra(Intent.EXTRA_TEXT, caption);
+
+                clearClipboard();
+
+            }
+
+
+            if (isVideo) {
+                share.setType("video/*");
+                share.putExtra(Intent.EXTRA_STREAM, Uri.fromFile(tempVideoFile));
+            } else {
+                share.putExtra(Intent.EXTRA_STREAM, Uri.fromFile(tempFile));
+
+                share.setType("image/*");
+            }
+            // Broadcast the Intent.
+            startActivity(Intent.createChooser(share, "Share to"));
+
+            cleanUp();
+
+
+            finish();
+        } catch (Exception e) {
+            showErrorToast(e.getMessage(), getString(R.string.therewasproblem));
+
         }
-
-        String txt;
-
-        Intent intent = ShareCompat.IntentBuilder.from(this)
-                .setStream(uri) // uri from FileProvider
-                .getIntent()
-                .setAction(Intent.ACTION_SEND) //Change if needed
-                .setDataAndType(uri, type)
-                .addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
-
-        if (title != null && (!Util.isKeepCaption(_this))) {
-
-
-            intent.putExtra(Intent.EXTRA_SUBJECT, "Regrann from @" + author);
-            txt = "@Regrann from @" + author + "  -  " + title + "  -  " + getIntent().getStringExtra("mediaUrl")
-                    + "\n\nRegrann App - Repost without leaving Instagram - Download Here : http://regrann.com/download";
-        } else {
-            intent.putExtra(Intent.EXTRA_SUBJECT, "Photo share");
-
-            txt = "  - via @Regrann app";
-        }
-
-
-        ClipboardManager clipboard = (ClipboardManager) getSystemService(CLIPBOARD_SERVICE);
-        ClipData clip = ClipData.newPlainText("Post caption", txt);
-        Objects.requireNonNull(clipboard).setPrimaryClip(clip);
-
-
-        intent.putExtra(Intent.EXTRA_TEXT, txt);
-
-        startActivity(Intent.createChooser(intent, "Share to"));
-
-
-        finish();
 
     }
 
