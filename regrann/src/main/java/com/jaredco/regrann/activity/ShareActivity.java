@@ -48,6 +48,7 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.webkit.JavascriptInterface;
+import android.webkit.WebResourceRequest;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.Button;
@@ -2738,8 +2739,8 @@ Log.i("Ogury", "on ad displayed");
         Log.d("app5", "Json is private");
         AlertDialog.Builder builder = new AlertDialog.Builder(ShareActivity.this);
 
-        builder.setTitle("You need to login to Instagram!");
-        builder.setMessage("To repost private media you need to first login to Instagram.  The app will not see your username or password");
+        builder.setTitle("This media is from a Private User");
+        builder.setMessage("To repost private media you need to login to Instagram again within Regrann.  The app will not see your username or password");
 
         builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
 
@@ -3309,19 +3310,20 @@ Log.i("Ogury", "on ad displayed");
                 return;
             }
 
+
+            Log.d("app5", "in 3206 :" + start_shortcode_media);
+            if (is_private || currentURL.indexOf("instagram.com") > 0) {
+                processPotentialPrivate();
+                return;
+            }
+
             // check to see if has OG:video tag
             if ((html.indexOf("og:video") > -1) || (html.indexOf("og:image") > -1)) {
                 Log.d("app5", "OG:   FOUND");
                 processNonInstagramURL(html);
 
                 return;
-            }
-
-
-            Log.d("app5", "in 3206 :" + start_shortcode_media);
-            if (currentURL.indexOf("instagram.com") > 0)
-                processPotentialPrivate();
-            else
+            } else
                 showErrorToast("There was a problem ", "Unable to find any photos or videos at this link", true);
 
 
@@ -3368,7 +3370,7 @@ Log.i("Ogury", "on ad displayed");
                     webview.getSettings().setJavaScriptEnabled(true);
                     webview.addJavascriptInterface(new MyJavaScriptInterface(ShareActivity.this), "HtmlViewer");
                     webview.getSettings().setLoadWithOverviewMode(true);
-
+                    webview.getSettings().setDomStorageEnabled(true);
 
                     webview.setWebViewClient(new WebViewClient() {
 
@@ -3376,18 +3378,40 @@ Log.i("Ogury", "on ad displayed");
                         @Override
                         public void onPageStarted(WebView view, String url,
                                                   android.graphics.Bitmap favicon) {
-                            Log.d("app5", "in page started ");
-
+                            Log.d("app5", "in page started " + url);
 
                         }
 
+                        @Override
+                        public boolean shouldOverrideUrlLoading(WebView view, WebResourceRequest request) {
+                            final Uri uri = request.getUrl();
+                            return handleUri(uri);
+                        }
+
+                        private boolean handleUri(final Uri newURL) {
+                            Log.i("app5", "Uri =" + newURL);
+
+                            // Based on some condition you need to determine if you are going to load the url
+                            // in your web view itself or in a browser.
+                            // You can use `host` or `scheme` or any part of the `uri` to decide.
+                            if (!newURL.equals(currentURL)) {
+
+                                if (!newURL.getHost().contains("intstagram.com")) {
+                                    Log.i("app5", "IS_PRIVAYT?");
+                                    is_private = true;
+                                }
+                                // Returning false means that you are going to load this url in the webView itself
+                                return false;
+                            }
+                            return false;
+                        }
 
                         @Override
                         public void onPageFinished(WebView view, String url) {
 
-                            Log.d("app5", "in page finisihed ");
+                            Log.d("app5", "in page finisihed " + url);
                             if (!alreadyFinished) {
-                                Log.d("app5", "in already finisihed");
+                                Log.d("app5", "in already finisihed" + url);
                                 webview.loadUrl("javascript:window.HtmlViewer.showHTML" +
                                         "('<html>'+document.getElementsByTagName('html')[0].innerHTML+'</html>');");
                             }
