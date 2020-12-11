@@ -775,7 +775,7 @@ public class RegrannMainActivity extends AppCompatActivity {
         }
     }
 
-    public void onClickTutorialView(View view) {
+    public void onClickHeaderView(View view) {
         numClicks++;
 
         if (numClicks == 4) {
@@ -787,6 +787,13 @@ public class RegrannMainActivity extends AppCompatActivity {
 
             editor.commit();
             Toast.makeText(_this, "The Upgrade is Complete", Toast.LENGTH_LONG).show();
+
+            noAds = true;
+
+
+            findViewById(R.id.imgPatch).setVisibility(View.VISIBLE);
+
+            findViewById(R.id.btnUpgrade).setVisibility(View.GONE);
 
 
         }

@@ -48,7 +48,6 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.webkit.JavascriptInterface;
-import android.webkit.WebResourceRequest;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.Button;
@@ -3381,28 +3380,12 @@ Log.i("Ogury", "on ad displayed");
                         }
 
                         @Override
-                        public boolean shouldOverrideUrlLoading(WebView view, WebResourceRequest request) {
-                            final Uri uri = request.getUrl();
-                            return handleUri(uri);
+                        public boolean shouldOverrideUrlLoading(WebView view, String url) {
+                            view.loadUrl(url);
+                            return true;
                         }
 
-                        private boolean handleUri(final Uri newURL) {
-                            Log.i("app5", "Uri =" + newURL);
 
-                            // Based on some condition you need to determine if you are going to load the url
-                            // in your web view itself or in a browser.
-                            // You can use `host` or `scheme` or any part of the `uri` to decide.
-                            if (!newURL.equals(currentURL)) {
-
-                                if (!newURL.getHost().contains("intstagram.com")) {
-                                    Log.i("app5", "IS_PRIVAYT?");
-                                    is_private = true;
-                                }
-                                // Returning false means that you are going to load this url in the webView itself
-                                return false;
-                            }
-                            return false;
-                        }
 
                         @Override
                         public void onPageFinished(WebView view, String url) {
@@ -3433,6 +3416,21 @@ Log.i("Ogury", "on ad displayed");
                             currentURL = urlIn;
                         }
                     }, 500);
+
+
+                    final Handler handler = new Handler();
+                    handler.postDelayed(new Runnable() {
+                        @Override
+                        public void run() {
+
+                            if (alreadyFinished == false) {
+                                Log.d("app5", "webpage not found");
+                                showErrorToast("Webpage not seen", getString(R.string.therewasproblem), true);
+
+                            } else
+                                Log.d("app5", "webpage  found");
+                        }
+                    }, 7000);
 
 
                 }
