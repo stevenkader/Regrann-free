@@ -37,7 +37,6 @@ public class NewShareText extends Activity {
 
                     // retrieve URL
 
-
                     Handler h = new Handler(_this.getMainLooper());
                     h.post(new Runnable() {
                         @Override
@@ -46,6 +45,7 @@ public class NewShareText extends Activity {
                             try {
 
                              //   if ((text.contains("ig.me") || text.contains("vm.tiktok")|| text.contains("instagram.com/reel/") || text.contains("instagram.com/tv/")) || (text.contains("/p/") && text.contains("instagram.com"))) {
+                                    text = text.substring(text.indexOf("https://www.instagram"));
 
                                     Intent i;
                                     i = new Intent(_this, ShareActivity.class);

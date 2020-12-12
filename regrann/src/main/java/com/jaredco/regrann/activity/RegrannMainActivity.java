@@ -819,17 +819,17 @@ public class RegrannMainActivity extends AppCompatActivity {
     }
 
 
-    private void checkForInstagramURLinClipboard() {
+        private void checkForInstagramURLinClipboard() {
 
-        ClipboardManager clipboard = (ClipboardManager) getSystemService(CLIPBOARD_SERVICE);
+            ClipboardManager clipboard = (ClipboardManager) getSystemService(CLIPBOARD_SERVICE);
 
-        ClipData clipData = clipboard != null ? clipboard.getPrimaryClip() : null;
+            ClipData clipData = clipboard != null ? clipboard.getPrimaryClip() : null;
 
-        if (clipData != null) {
+            if (clipData != null) {
 
-            try {
-                final ClipData.Item item = clipData.getItemAt(0);
-                String text = item.coerceToText(RegrannMainActivity.this).toString();
+                try {
+                    final ClipData.Item item = clipData.getItemAt(0);
+                    String text = item.coerceToText(RegrannMainActivity.this).toString();
                 ClipData clip = ClipData.newPlainText("message", "");
                 clipboard.setPrimaryClip(clip);
 

@@ -136,7 +136,6 @@ import java.util.Objects;
 import java.util.Random;
 import java.util.concurrent.ExecutionException;
 
-import io.presage.Presage;
 import ly.img.android.pesdk.PhotoEditorSettingsList;
 import ly.img.android.pesdk.assets.filter.basic.FilterPackBasic;
 import ly.img.android.pesdk.assets.font.basic.FontPackBasic;
@@ -584,7 +583,7 @@ public class ShareActivity extends AppCompatActivity implements BaseSliderView.O
             RegrannApp.sendEvent("sc_paiduser");
         } else {
             String app_api_key = "OGY-EF265F412C32";
-            Presage.getInstance().start(app_api_key, this);
+         //   Presage.getInstance().start(app_api_key, this);
         }
 
 
