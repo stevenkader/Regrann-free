@@ -41,6 +41,7 @@ import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.Display;
 import android.view.Gravity;
+import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -1766,6 +1767,15 @@ Log.i("Ogury", "on ad displayed");
 
 
     @Override
+    public boolean onKeyUp(int keyCode, KeyEvent objEvent) {
+        if (keyCode == KeyEvent.KEYCODE_BACK) {
+            onBackPressed();
+            return true;
+        }
+        return super.onKeyUp(keyCode, objEvent);
+    }
+
+    @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.action_removeads:
@@ -1812,13 +1822,19 @@ Log.i("Ogury", "on ad displayed");
 
 
     @Override
+    public boolean onSupportNavigateUp() {
+        onBackPressed();
+        return true;
+    }
+
+
+    @Override
     public void onBackPressed() {
         try {
 
-            if (!noAds && isAutoSave)
-                return;
 
             super.onBackPressed();
+            finish();
 
             //   overridePendingTransition(R.anim.slide_up_anim, R.anim.slide_down_anim);
 
@@ -3415,21 +3431,6 @@ Log.i("Ogury", "on ad displayed");
                             currentURL = urlIn;
                         }
                     }, 500);
-
-
-                    final Handler handler = new Handler();
-                    handler.postDelayed(new Runnable() {
-                        @Override
-                        public void run() {
-
-                            if (alreadyFinished == false) {
-                                Log.d("app5", "webpage not found");
-                                showErrorToast("Webpage not seen", getString(R.string.therewasproblem), true);
-
-                            } else
-                                Log.d("app5", "webpage  found");
-                        }
-                    }, 7000);
 
 
                 }
@@ -5108,7 +5109,7 @@ Log.i("Ogury", "on ad displayed");
 
             if (isVideo) {
                 share.setType("video/*");
-                share.putExtra(Intent.EXTRA_STREAM, Uri.fromFile(tempVideoFile));
+                share.putExtra(Intent.EXTRA_STREAM, Uri.fromFile(new File(Util.getTempVideoFilePath())));
             } else {
                 share.putExtra(Intent.EXTRA_STREAM, Uri.fromFile(tempFile));
 
