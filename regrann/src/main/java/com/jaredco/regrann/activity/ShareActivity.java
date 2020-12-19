@@ -101,6 +101,8 @@ import com.jaredco.regrann.R;
 import com.jaredco.regrann.model.InstaItem;
 import com.jaredco.regrann.sqlite.KeptListAdapter;
 import com.jaredco.regrann.util.Util;
+import com.ogury.sdk.Ogury;
+import com.ogury.sdk.OguryConfiguration;
 import com.potyvideo.slider.library.Animations.DescriptionAnimation;
 import com.potyvideo.slider.library.SliderLayout;
 import com.potyvideo.slider.library.SliderTypes.BaseSliderView;
@@ -584,7 +586,9 @@ public class ShareActivity extends AppCompatActivity implements BaseSliderView.O
             RegrannApp.sendEvent("sc_paiduser");
         } else {
             String app_api_key = "OGY-EF265F412C32";
-         //   Presage.getInstance().start(app_api_key, this);
+            OguryConfiguration.Builder oguryConfigurationBuilder = new OguryConfiguration.Builder(this, app_api_key);
+            Ogury.start(oguryConfigurationBuilder.build());
+            //   Presage.getInstance().start(app_api_key, this);
         }
 
 
@@ -1037,7 +1041,7 @@ public class ShareActivity extends AppCompatActivity implements BaseSliderView.O
             noAds = true;
 
         //    if (BuildConfig.DEBUG)
-        //      noAds = false;
+        //     noAds = false;
 
 
         setContentView(R.layout.activity_share_main);
@@ -3070,6 +3074,17 @@ Log.i("Ogury", "on ad displayed");
     }
 
 
+    private void copyCaptionToClipboard() {
+        String caption = Util.prepareCaption(title, author, _this.getApplication().getApplicationContext(), caption_suffix, false);
+
+
+        ClipboardManager clipboard = (ClipboardManager) getSystemService(CLIPBOARD_SERVICE);
+        ClipData clip = ClipData.newPlainText("Post caption", caption);
+
+        Objects.requireNonNull(clipboard).setPrimaryClip(clip);
+    }
+
+
     private void downloadSinglePhotoFromURL(String url) {
         try {
             Bitmap bitmap = null;
@@ -3291,6 +3306,7 @@ Log.i("Ogury", "on ad displayed");
 
     }
 
+    private String urlFinished = " ";
 
     private void processHTML(String html) {
         try {
@@ -3316,11 +3332,11 @@ Log.i("Ogury", "on ad displayed");
 
             //<meta property="og:site_name" content="Parler" />
 
-            if (html.indexOf("content=\"Parler\"") > 0) {
-                if ((html.indexOf("og:video") > -1) || (html.indexOf("mc-article--image") > -1))
-                    processParler(html);
-                return;
-            }
+            //    if (html.indexOf("content=\"Parler\"") > 0) {
+            //       if ((html.indexOf("og:video") > -1) || (html.indexOf("mc-article--image") > -1))
+            //          processParler(html);
+            //     return;
+            //   }
 
 
             Log.d("app5", "in 3206 :" + start_shortcode_media);
@@ -3354,11 +3370,12 @@ Log.i("Ogury", "on ad displayed");
 
             @JavascriptInterface
             public void showHTML(String html) {
-
+                alreadyFinished = true;
                 processHTML(html);
 
 
             }
+
 
         }
 
@@ -3382,7 +3399,7 @@ Log.i("Ogury", "on ad displayed");
                     webview.getSettings().setJavaScriptEnabled(true);
                     webview.addJavascriptInterface(new MyJavaScriptInterface(ShareActivity.this), "HtmlViewer");
                     webview.getSettings().setLoadWithOverviewMode(true);
-                    webview.getSettings().setDomStorageEnabled(true);
+
 
                     webview.setWebViewClient(new WebViewClient() {
 
@@ -3396,22 +3413,32 @@ Log.i("Ogury", "on ad displayed");
 
                         @Override
                         public boolean shouldOverrideUrlLoading(WebView view, String url) {
+                            Log.d("app5", "in page should override " + url);
                             view.loadUrl(url);
                             return true;
                         }
 
 
+                        /**
+                         * Javascript-accessible callback for declaring when a page has loaded.
+                         */
+
 
                         @Override
                         public void onPageFinished(WebView view, String url) {
 
-                            Log.d("app5", "in page finisihed " + url);
-                            if (!alreadyFinished) {
-                                Log.d("app5", "in already finisihed" + url);
+
+                            if (!urlFinished.equals(url)) {
                                 webview.loadUrl("javascript:window.HtmlViewer.showHTML" +
                                         "('<html>'+document.getElementsByTagName('html')[0].innerHTML+'</html>');");
+
                             }
-                            alreadyFinished = true;
+
+                            urlFinished = url;
+
+                            super.onPageFinished(view, url);
+
+                            Log.d("app5", "in page finisihed " + url);
 
 
                         }
@@ -3426,8 +3453,9 @@ Log.i("Ogury", "on ad displayed");
                         @Override
                         public void run() {
                             Log.d("app5", "Clear cache and load url : " + urlIn);
-                            webview.clearCache(true);
+                          //  webview.clearCache(true);
                             webview.loadUrl(urlIn);
+
                             currentURL = urlIn;
                         }
                     }, 500);
@@ -5091,7 +5119,7 @@ Log.i("Ogury", "on ad displayed");
 
                 caption = txt;
                 share.putExtra(Intent.EXTRA_TEXT, caption);
-                clearClipboard();
+              //  clearClipboard();
 
 
             } else {
@@ -5102,7 +5130,7 @@ Log.i("Ogury", "on ad displayed");
 
                 share.putExtra(Intent.EXTRA_TEXT, caption);
 
-                clearClipboard();
+             //   clearClipboard();
 
             }
 
@@ -5165,6 +5193,8 @@ Log.i("Ogury", "on ad displayed");
 
                 RegrannApp.sendEvent("sc_sharebtn");
 
+
+                copyCaptionToClipboard();
 
                 shareWithChooser();
 
