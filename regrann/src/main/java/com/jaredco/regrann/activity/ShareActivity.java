@@ -15,6 +15,7 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
+import android.content.pm.ResolveInfo;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -41,7 +42,6 @@ import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.Display;
 import android.view.Gravity;
-import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -1054,6 +1054,10 @@ public class ShareActivity extends AppCompatActivity implements BaseSliderView.O
         long prevAdShown = preferences.getLong("instagramAdShownTime", 0);
 
 
+        if (!isPackageInstalled(_this, "com.snapchat.android"))
+            findViewById(R.id.snapchat).setVisibility(View.GONE);
+
+
         showInterstitial = !noAds;
 
         //      if (BuildConfig.DEBUG)
@@ -1770,14 +1774,6 @@ Log.i("Ogury", "on ad displayed");
     }
 
 
-    @Override
-    public boolean onKeyUp(int keyCode, KeyEvent objEvent) {
-        if (keyCode == KeyEvent.KEYCODE_BACK) {
-            onBackPressed();
-            return true;
-        }
-        return super.onKeyUp(keyCode, objEvent);
-    }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
@@ -1826,25 +1822,16 @@ Log.i("Ogury", "on ad displayed");
 
 
     @Override
-    public boolean onSupportNavigateUp() {
-        onBackPressed();
-        return true;
+    public void onBackPressed() {
+        if (shouldAllowBack()) {
+            super.onBackPressed();
+        } else {
+            // doSomething();
+        }
     }
 
-
-    @Override
-    public void onBackPressed() {
-        try {
-
-
-            super.onBackPressed();
-            finish();
-
-            //   overridePendingTransition(R.anim.slide_up_anim, R.anim.slide_down_anim);
-
-
-        } catch (Exception e) {
-        }
+    private boolean shouldAllowBack() {
+        return true;
     }
 
 
@@ -3475,6 +3462,17 @@ Log.i("Ogury", "on ad displayed");
     }
 
 
+    public static boolean isPackageInstalled(Context context, String packageName) {
+        final PackageManager packageManager = context.getPackageManager();
+        Intent intent = packageManager.getLaunchIntentForPackage(packageName);
+        if (intent == null) {
+            return false;
+        }
+        List<ResolveInfo> list = packageManager.queryIntentActivities(intent, PackageManager.MATCH_DEFAULT_ONLY);
+        return !list.isEmpty();
+    }
+
+
     private void clearClipboard() {
         try {
             ClipboardManager clipboard = (ClipboardManager) getSystemService(CLIPBOARD_SERVICE);
@@ -3537,21 +3535,21 @@ Log.i("Ogury", "on ad displayed");
     }
 
 
+
     public void onClickSnapChat(View v) {
+
 
         copyTempToSave();
 
-        Intent intent = this.getPackageManager().getLaunchIntentForPackage("com.instagram.android");
+        Intent intent = this.getPackageManager().getLaunchIntentForPackage("com.snapchat.android");
         String caption = Util.prepareCaption(title, author, _this.getApplication().getApplicationContext(), caption_suffix, tiktokLink);
 
 
         if (intent != null) {
             Intent shareIntent = new Intent();
             shareIntent.setAction(Intent.ACTION_SEND);
-            shareIntent.setPackage("com.instagram.android");
-            //  shareIntent.setClassName("com.instagram.android",instagram_activity);
 
-
+            shareIntent.setPackage("com.snapchat.android");
             shareIntent.setClassName(
                     "com.snapchat.android",
                     "com.snapchat.android.LandingPageActivity");
@@ -3559,22 +3557,27 @@ Log.i("Ogury", "on ad displayed");
 
             shareIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_NO_ANIMATION);
 
+            try {
 
-            startActivity(shareIntent);
+                startActivity(shareIntent);
 
+                final Handler handler = new Handler();
+                handler.postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
 
-            final Handler handler = new Handler();
-            handler.postDelayed(new Runnable() {
-                @Override
-                public void run() {
-
-                    try {
-                        finish();
-                    } catch (Exception e) {
-                        Log.d("app5", "on finish");
+                        try {
+                            finish();
+                        } catch (Exception e) {
+                            Log.d("app5", "on finish");
+                        }
                     }
-                }
-            }, 2000);
+                }, 2000);
+
+            } catch (Exception e) {
+
+                Toast.makeText(_this, "Snapchat Not Installed", Toast.LENGTH_LONG).show();
+            }
 
 
         }
@@ -4363,7 +4366,6 @@ Log.i("Ogury", "on ad displayed");
 
 
             if (isVideo) {
-                long referenceId = intent.getLongExtra(DownloadManager.EXTRA_DOWNLOAD_ID, -1);
 
 
                 removeProgressDialog();

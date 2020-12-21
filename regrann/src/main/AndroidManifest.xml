@@ -28,6 +28,7 @@
         android:normalScreens="true"
         android:smallScreens="true" />
 
+
     <application
         android:name=".activity.RegrannApp"
         android:hardwareAccelerated="true"
@@ -40,7 +41,7 @@
         tools:replace="android:name">
 
 
-        <provider
+    <provider
             android:name="androidx.core.content.FileProvider"
             android:authorities="com.jaredco.regrann"
             android:exported="false"
