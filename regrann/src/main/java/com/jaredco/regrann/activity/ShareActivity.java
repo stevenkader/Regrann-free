@@ -1058,6 +1058,10 @@ public class ShareActivity extends AppCompatActivity implements BaseSliderView.O
             findViewById(R.id.snapchat).setVisibility(View.GONE);
 
 
+        if (!isPackageInstalled(_this, "com.tumblr"))
+            findViewById(R.id.tumblr).setVisibility(View.GONE);
+
+
         showInterstitial = !noAds;
 
         //      if (BuildConfig.DEBUG)
@@ -2827,11 +2831,12 @@ Log.i("Ogury", "on ad displayed");
                             findViewById(R.id.btnEditor).setVisibility(View.GONE);
 
 
+                            findViewById(R.id.tumblr).setVisibility(View.GONE);
                             findViewById(R.id.snapchat).setVisibility(View.GONE);
                             postlater.setVisibility(View.GONE);
 
 
-                            btnInstagramstories.setVisibility(View.GONE);
+                            //     btnInstagramstories.setVisibility(View.GONE);
 
                             btnCurrentToFeed.setVisibility(View.VISIBLE);
                             //       btnCurrentToStory.setVisibility((View.VISIBLE));
@@ -3069,6 +3074,8 @@ Log.i("Ogury", "on ad displayed");
         ClipData clip = ClipData.newPlainText("Post caption", caption);
 
         Objects.requireNonNull(clipboard).setPrimaryClip(clip);
+
+        Toast.makeText(_this, "Caption copied to clipboard. Paste where needed", Toast.LENGTH_SHORT).show();
     }
 
 
@@ -3535,14 +3542,15 @@ Log.i("Ogury", "on ad displayed");
     }
 
 
-
     public void onClickSnapChat(View v) {
 
 
         copyTempToSave();
 
         Intent intent = this.getPackageManager().getLaunchIntentForPackage("com.snapchat.android");
-        String caption = Util.prepareCaption(title, author, _this.getApplication().getApplicationContext(), caption_suffix, tiktokLink);
+
+
+        copyCaptionToClipboard();
 
 
         if (intent != null) {
@@ -3577,6 +3585,75 @@ Log.i("Ogury", "on ad displayed");
             } catch (Exception e) {
 
                 Toast.makeText(_this, "Snapchat Not Installed", Toast.LENGTH_LONG).show();
+            }
+
+
+        }
+
+    }
+
+
+    public void onClickTumblr(View v) {
+
+
+        copyTempToSave();
+
+        Intent intent = this.getPackageManager().getLaunchIntentForPackage("com.tumblr");
+
+
+        if (intent != null) {
+            Intent shareIntent = new Intent();
+            shareIntent.setAction(Intent.ACTION_SEND);
+
+            shareIntent.setPackage("com.tumblr");
+            shareIntent.setClassName(
+                    "com.tumblr",
+                    "com.tumblr.creation.receiver.ShareActivity");
+
+
+            shareIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_NO_ANIMATION);
+
+            copyCaptionToClipboard();
+
+            if (isVideo) {
+                shareIntent.setType("video/*");
+                File t = new File(Util.getTempVideoFilePath());
+                shareIntent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
+                Uri uri = Uri.fromFile(t);
+                _this.grantUriPermission(
+                        "com.tumblr", uri, Intent.FLAG_GRANT_READ_URI_PERMISSION);
+
+                shareIntent.putExtra(Intent.EXTRA_STREAM, uri);
+            } else {
+                Log.d("app5", "tempfile :  " + tempFile.toString());
+                Uri uri = Uri.fromFile(tempFile);
+
+                _this.grantUriPermission(
+                        "com.tumblr", uri, Intent.FLAG_GRANT_READ_URI_PERMISSION);
+                shareIntent.putExtra(Intent.EXTRA_STREAM, uri);
+
+                shareIntent.setType("image/jpeg");
+            }
+            try {
+
+                startActivity(shareIntent);
+
+                final Handler handler = new Handler();
+                handler.postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+
+                        try {
+                            finish();
+                        } catch (Exception e) {
+                            Log.d("app5", "on finish");
+                        }
+                    }
+                }, 2000);
+
+            } catch (Exception e) {
+
+                Toast.makeText(_this, "Tumblr Not Installed", Toast.LENGTH_LONG).show();
             }
 
 
@@ -5357,7 +5434,10 @@ Log.i("Ogury", "on ad displayed");
                 if (isMulti) {
 
 
-                    showMultiDialog();
+                    if (btnStoriesClicked)
+                        sendMultiPhotosToStories();
+                    else
+                        showMultiDialog();
 
 
                     return;
@@ -5458,6 +5538,140 @@ Log.i("Ogury", "on ad displayed");
 
     }
 
+
+    private void sendMultiPhotosToStories() {
+
+        try {
+
+            RegrannApp.sendEvent("MultiToStories");
+            // flurryAgent.logEvent("Instagram button pressed");
+            // FlurryAgent.logEvent("Click Instagram");
+            Intent intent = this.getPackageManager().getLaunchIntentForPackage("com.instagram.android");
+            String caption = Util.prepareCaption(title, author, _this.getApplication().getApplicationContext(), caption_suffix, tiktokLink);
+
+
+            if (intent != null) {
+                Intent shareIntent = new Intent();
+                shareIntent.setAction(Intent.ACTION_SEND_MULTIPLE);
+                shareIntent.setPackage("com.instagram.android");
+                //  shareIntent.setClassName("com.instagram.android",instagram_activity);
+
+                if (btnStoriesClicked) {
+                    RegrannApp.sendEvent("ClickStoriesBtn", "", "");
+                    shareIntent.setClassName(
+                            "com.instagram.android",
+                            "com.instagram.share.handleractivity.MultiStoryShareHandlerActivity");
+                }
+
+
+                shareIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_NO_ANIMATION);
+
+
+                ClipboardManager clipboard = (ClipboardManager) getSystemService(CLIPBOARD_SERVICE);
+                ClipData clip = ClipData.newPlainText("Post caption", caption);
+                Objects.requireNonNull(clipboard).setPrimaryClip(clip);
+
+
+                ArrayList<Uri> uriList = getListOfMultiPhotos();
+
+                if (uriList == null) {
+                    showErrorToast("error", "There was a problem.", true);
+                    return;
+                }
+
+                shareIntent.setAction(Intent.ACTION_SEND_MULTIPLE);
+                shareIntent.putParcelableArrayListExtra(Intent.EXTRA_STREAM, uriList);
+                shareIntent.setFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
+                shareIntent.setType("*/*");
+
+
+                int numWarnings = preferences.getInt("captionWarning", 0);
+
+                Log.d("regrann", "Numwarnings : " + numWarnings);
+
+                startActivity(Intent.createChooser(shareIntent, "Choose"));
+
+                //startActivity(shareIntent);
+
+
+                final Handler handler = new Handler();
+                handler.postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+
+                        try {
+                            finish();
+                        } catch (Exception e) {
+                            Log.d("app5", "on finish");
+                        }
+                    }
+                }, 2000);
+
+
+            } else {
+                // bring user to the market to download the app.
+
+                intent = new Intent(Intent.ACTION_VIEW);
+                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                intent.setData(Uri.parse("market://details?id=" + "com.instagram.android"));
+                startActivity(intent);
+            }
+
+        } catch (Exception e) {
+            showErrorToast(e.getMessage(), getString(R.string.therewasproblem));
+
+        }
+        // FlurryAgent.onEndSession(serviceCtx);
+    }
+
+
+    private ArrayList<Uri> getListOfMultiPhotos() {
+
+
+        //     Thread thread = new Thread(new Runnable() {
+        //       @Override
+        //     public void run() {
+        try {
+            if (regrannMultiPostFolder != null) {
+
+                File dir = new File(regrannMultiPostFolder);
+                if (dir.isDirectory()) {
+                    String[] children = dir.list();
+
+                    final ArrayList<Uri> imageUris = new ArrayList<>(children.length);
+
+
+                    for (int i = 0; i < children.length; i++) {
+                        try {
+
+                            if (!children[i].contains("nomedia")) {
+
+
+                                File theDir = new File(Environment.getExternalStorageDirectory(), Environment.DIRECTORY_PICTURES +
+                                        Util.RootDirectoryMultiPhoto + children[i]);
+
+                                Log.d("app5", theDir.toString());
+
+                                imageUris.add(Uri.fromFile(theDir));
+                            }
+
+
+                        } catch (Exception e) {
+                            int i4 = 1;
+                        }
+
+                    }
+                    return imageUris;
+
+                }
+            }
+        } catch (Exception e) {
+        }
+
+        return null;
+
+
+    }
 
     private void sendToInstagam() {
 
