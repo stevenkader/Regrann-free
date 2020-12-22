@@ -42,6 +42,7 @@ import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.Display;
 import android.view.Gravity;
+import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -55,7 +56,6 @@ import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.MediaController;
 import android.widget.ProgressBar;
 import android.widget.SeekBar;
 import android.widget.TextView;
@@ -316,6 +316,21 @@ public class ShareActivity extends AppCompatActivity implements BaseSliderView.O
 
     final private int REQUEST_CODE_ASK_MULTIPLE_PERMISSIONS = 124;
 
+    @Override
+    public boolean onKeyUp(int keyCode, KeyEvent event) {
+        /*
+         * without call to super onBackPress() will not be called when
+         * keyCode == KeyEvent.KEYCODE_BACK
+         */
+        return super.onKeyUp(keyCode, event);
+    }
+
+    @Override
+    public void onBackPressed() {
+        finish();
+        super.onBackPressed();
+        // your code.
+    }
 
     public void queryPurchases() {
         Runnable queryToExecute = new Runnable() {
@@ -1807,6 +1822,11 @@ Log.i("Ogury", "on ad displayed");
 
                 return true;
 
+            case android.R.id.home:
+                //finish();
+                onBackPressed();
+                return true;
+
             default:
                 // If we got here, the user's action was not recognized.
                 // Invoke the superclass to handle it.
@@ -1825,18 +1845,6 @@ Log.i("Ogury", "on ad displayed");
     }
 
 
-    @Override
-    public void onBackPressed() {
-        if (shouldAllowBack()) {
-            super.onBackPressed();
-        } else {
-            // doSomething();
-        }
-    }
-
-    private boolean shouldAllowBack() {
-        return true;
-    }
 
 
     /* Checks if external storage is available for read and write */
@@ -2673,17 +2681,17 @@ Log.i("Ogury", "on ad displayed");
                                     checkForRatingRequest();
 
 
-                                    if (isVideo) {
+/**                                    if (isVideo) {
 
 
-                                        VideoView v = findViewById(R.id.videoview);
-                                        v.setVideoURI(Uri.parse(videoURL));
-                                        v.setVisibility(View.VISIBLE);
-                                        MediaController controller = new MediaController(_this);
-                                        Handler handler = new Handler();
-                                        handler.postDelayed(
-                                                new Runnable() {
-                                                    public void run() {
+ VideoView v = findViewById(R.id.videoview);
+ v.setVideoURI(Uri.parse(videoURL));
+ v.setVisibility(View.VISIBLE);
+ MediaController controller = new MediaController(_this);
+ Handler handler = new Handler();
+ handler.postDelayed(
+ new Runnable() {
+ public void run() {
                                                         controller.show(0);
                                                     }
                                                 },
@@ -2693,22 +2701,25 @@ Log.i("Ogury", "on ad displayed");
 
                                         v.setOnPreparedListener(
                                                 new MediaPlayer.OnPreparedListener() {
-                                                    @Override
-                                                    public void onPrepared(MediaPlayer mediaPlayer) {
+                                                    @Override public void onPrepared(MediaPlayer mediaPlayer) {
 
-                                                        v.seekTo(1);
+v.seekTo(1);
 
-                                                    }
-                                                });
+}
+});
 
-                                        LoadVideo();
-                                        //   videoIcon.setVisibility(View.VISIBLE);
-                                    } else {
-                                        previewImage.setImageBitmap(Util.decodeFile(new File(path)));
+ LoadVideo();
+ //   videoIcon.setVisibility(View.VISIBLE);
+ } else {
+ **/
 
-                                        previewImage.setVisibility(View.VISIBLE);
+                                    LoadVideo();
+                                    videoIcon.setVisibility(View.VISIBLE);
+                                    previewImage.setImageBitmap(Util.decodeFile(new File(path)));
 
-                                    }
+                                    previewImage.setVisibility(View.VISIBLE);
+
+                                    //   }
 
 
                                     photoReady = true;
@@ -3300,7 +3311,7 @@ Log.i("Ogury", "on ad displayed");
 
     }
 
-    private String urlFinished = " ";
+    private final String urlFinished = " ";
 
     private void processHTML(String html) {
         try {
@@ -3334,7 +3345,8 @@ Log.i("Ogury", "on ad displayed");
 
 
             Log.d("app5", "in 3206 :" + start_shortcode_media);
-            if (is_private || currentURL.indexOf("instagram.com") > 0) {
+
+            if (html.contains("\"is_private\":true") && currentURL.indexOf("instagram.com") > -1) {
                 processPotentialPrivate();
                 return;
             }
@@ -3354,6 +3366,8 @@ Log.i("Ogury", "on ad displayed");
         }
     }
 
+
+    String trackURL;
 
     public void GET(final String urlIn) {
 
@@ -3409,6 +3423,7 @@ Log.i("Ogury", "on ad displayed");
                         public boolean shouldOverrideUrlLoading(WebView view, String url) {
                             Log.d("app5", "in page should override " + url);
                             view.loadUrl(url);
+                            trackURL = url;
                             return true;
                         }
 
@@ -3421,18 +3436,16 @@ Log.i("Ogury", "on ad displayed");
                         @Override
                         public void onPageFinished(WebView view, String url) {
 
+                            Log.d("app5", url + "   " + urlFinished);
 
-                            if (!urlFinished.equals(url)) {
+                            if (url.equals(trackURL) && alreadyFinished == false) {
+
                                 webview.loadUrl("javascript:window.HtmlViewer.showHTML" +
                                         "('<html>'+document.getElementsByTagName('html')[0].innerHTML+'</html>');");
 
+                                alreadyFinished = true;
+                                Log.d("app5", "in page finisihed " + url);
                             }
-
-                            urlFinished = url;
-
-                            super.onPageFinished(view, url);
-
-                            Log.d("app5", "in page finisihed " + url);
 
 
                         }
@@ -3449,7 +3462,7 @@ Log.i("Ogury", "on ad displayed");
                             Log.d("app5", "Clear cache and load url : " + urlIn);
                           //  webview.clearCache(true);
                             webview.loadUrl(urlIn);
-
+                            trackURL = urlIn;
                             currentURL = urlIn;
                         }
                     }, 500);
@@ -4459,6 +4472,8 @@ Log.i("Ogury", "on ad displayed");
 
                     }
                 } else {
+
+                    photoReady = true;
                     showBottomButtons();
                 }
 
