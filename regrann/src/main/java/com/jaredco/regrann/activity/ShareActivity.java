@@ -2712,13 +2712,14 @@ v.seekTo(1);
  //   videoIcon.setVisibility(View.VISIBLE);
  } else {
  **/
+                                    if (isVideo) {
+                                        LoadVideo();
+                                        videoIcon.setVisibility(View.VISIBLE);
 
-                                    LoadVideo();
-                                    videoIcon.setVisibility(View.VISIBLE);
+                                    }
                                     previewImage.setImageBitmap(Util.decodeFile(new File(path)));
 
                                     previewImage.setVisibility(View.VISIBLE);
-
                                     //   }
 
 
@@ -3609,7 +3610,7 @@ v.seekTo(1);
     public void onClickTumblr(View v) {
 
 
-        copyTempToSave();
+        //  copyTempToSave();
 
         Intent intent = this.getPackageManager().getLaunchIntentForPackage("com.tumblr");
 
