@@ -5262,6 +5262,8 @@ v.seekTo(1);
 
 
             if (v == btndownloadphoto) {
+                copyCaptionToClipboard();
+
 
                 if (isMulti) {
 
@@ -5273,7 +5275,7 @@ v.seekTo(1);
                 }
 
                 RegrannApp.sendEvent("sc_savebtn");
-
+                copyCaptionToClipboard();
 
                 copyTempToSave();
 
