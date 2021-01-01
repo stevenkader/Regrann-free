@@ -49,6 +49,7 @@ import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.webkit.CookieManager;
 import android.webkit.JavascriptInterface;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
@@ -3438,7 +3439,7 @@ v.seekTo(1);
                         public void onPageFinished(WebView view, String url) {
 
                             Log.d("app5", url + "   " + urlFinished);
-
+                            CookieManager.getInstance().flush();
                             if (url.equals(trackURL) && alreadyFinished == false) {
 
                                 webview.loadUrl("javascript:window.HtmlViewer.showHTML" +

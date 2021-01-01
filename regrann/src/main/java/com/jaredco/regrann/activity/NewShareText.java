@@ -44,34 +44,34 @@ public class NewShareText extends Activity {
 
                             try {
 
-                             //   if ((text.contains("ig.me") || text.contains("vm.tiktok")|| text.contains("instagram.com/reel/") || text.contains("instagram.com/tv/")) || (text.contains("/p/") && text.contains("instagram.com"))) {
-                                    text = text.substring(text.indexOf("https://"));
+                               if (text.contains("instagram.com/reel/") || text.contains("instagram.com/tv/") || (text.contains("/p/") && text.contains("instagram.com"))) {
+                                   text = text.substring(text.indexOf("https://"));
 
-                                    Intent i;
-                                    i = new Intent(_this, ShareActivity.class);
+                                   Intent i;
+                                   i = new Intent(_this, ShareActivity.class);
 
 
-  // String uri=imgDirPath+"/"+path;
-                                    i.putExtra("mediaUrl", text);
-                                    i.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
-                                    i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                                   // String uri=imgDirPath+"/"+path;
+                                   i.putExtra("mediaUrl", text);
+                                   i.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
+                                   i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
 
                                     System.out.println("***media url " + text);
-                                    startActivity(i);
+                                   startActivity(i);
 
 
-                                finish();
+                                   finish();
 
-                                overridePendingTransition(R.anim.slide_up_anim, R.anim.slide_down_anim);
+                                   overridePendingTransition(R.anim.slide_up_anim, R.anim.slide_down_anim);
 
-                                RegrannApp.sendEvent("NewShareTextMethod", "count", "");
-
-
-                                //  } else {
-                                //     showErrorToast("Error", "Regrann doesn't support his share link.");
+                                   RegrannApp.sendEvent("NewShareTextMethod", "count", "");
 
 
-                                // }
+                               } else {
+                                   showErrorToast("Error", "Regrann doesn't support his share link.");
+
+
+                               }
 
 
                             } catch (Exception e) {
