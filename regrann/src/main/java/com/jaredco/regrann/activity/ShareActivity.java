@@ -14,6 +14,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.SharedPreferences;
+import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
 import android.database.Cursor;
@@ -1794,7 +1795,6 @@ Log.i("Ogury", "on ad displayed");
     }
 
 
-
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
@@ -1844,8 +1844,6 @@ Log.i("Ogury", "on ad displayed");
 
 
     }
-
-
 
 
     /* Checks if external storage is available for read and write */
@@ -2693,16 +2691,16 @@ Log.i("Ogury", "on ad displayed");
  handler.postDelayed(
  new Runnable() {
  public void run() {
-                                                        controller.show(0);
-                                                    }
-                                                },
-                                                100);
-                                        controller.setMediaPlayer(v);
-                                        v.setMediaController(controller);
+ controller.show(0);
+ }
+ },
+ 100);
+ controller.setMediaPlayer(v);
+ v.setMediaController(controller);
 
-                                        v.setOnPreparedListener(
-                                                new MediaPlayer.OnPreparedListener() {
-                                                    @Override public void onPrepared(MediaPlayer mediaPlayer) {
+ v.setOnPreparedListener(
+ new MediaPlayer.OnPreparedListener() {
+@Override public void onPrepared(MediaPlayer mediaPlayer) {
 
 v.seekTo(1);
 
@@ -3241,12 +3239,78 @@ v.seekTo(1);
             prepareForSingleVideo(videoURL);
         else if (photoURL != null)
             prepareForSinglePhoto(photoURL);
-        else
-            showErrorToast("There was a problem ", "Unable to find a video or photo at this link.", true);
-
+        else {
+            sendDebugInfo(html);
+        }
 
     }
 
+
+    private void sendDebugInfo(String html) {
+
+        //  showErrorToast("There was a problem ", "Unable to find a video or photo at this link.", true);
+        AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(ShareActivity.this);
+
+        // set dialog message
+        alertDialogBuilder.setMessage("There was a problem.  Would you mind emailing the developer with details to help fix it. ")
+                .setCancelable(true).setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int id) {
+                emailSupport(html);
+            }
+
+        })
+                .setNegativeButton("No", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        finish();
+                    }
+                });
+
+        // create alert dialog
+        AlertDialog alertDialog = alertDialogBuilder.create();
+
+        // show it
+        alertDialog.show();
+
+    }
+
+    private void emailSupport(String html) {
+        String version = "";
+
+        try {
+            PackageManager manager = _this.getPackageManager();
+            PackageInfo info = manager.getPackageInfo(
+                    _this.getPackageName(), 0);
+            version = info.versionName;
+        } catch (Exception e) {
+        }
+
+
+        String details = "APP VERSION: " + version
+                + "\nANDROID OS: " + Build.VERSION.RELEASE
+                + "\nMANUFACTURER : " + Build.MANUFACTURER
+                + "\nMODEL : " + Build.MODEL
+                + "\nHTML\n" + html;
+
+
+        Intent intent = new Intent(Intent.ACTION_SEND);
+
+        intent.putExtra(Intent.EXTRA_EMAIL, new String[]{"support@jaredco.com"});
+        intent.putExtra(Intent.EXTRA_TEXT, "\n\n\n\n" + details);
+
+
+        intent.putExtra(Intent.EXTRA_SUBJECT, "Reporting issue with Regrann Free - Just Click Send");
+
+
+        intent.setType("message/rfc822");
+
+        Toast.makeText(_this, "Preparing email", Toast.LENGTH_LONG).show();
+        startActivity(Intent.createChooser(intent, "Select Email Sending App :"));
+
+
+        RegrannApp.sendEvent("main_email_support");
+
+
+    }
 
     private void processParler(String html) {
         Document doc = Jsoup.parse(html);
@@ -3288,8 +3352,8 @@ v.seekTo(1);
         if (photoURL != null)
             prepareForSinglePhoto(photoURL);
         else
-            showErrorToast("There was a problem ", "Unable to find a video or photo at this link.", true);
-
+            //showErrorToast("There was a problem ", "Unable to find a video or photo at this link.", true);
+            sendDebugInfo(html);
 
     }
 
@@ -3360,8 +3424,9 @@ v.seekTo(1);
 
                 return;
             } else
-                showErrorToast("There was a problem ", "Unable to find any photos or videos at this link", true);
 
+                // showErrorToast("There was a problem ", "Unable to find any photos or videos at this link", true);
+                sendDebugInfo(html);
 
         } catch (Exception e) {
             showErrorToast("There was a problem ", "There was a problem : " + html, true);
@@ -3413,6 +3478,11 @@ v.seekTo(1);
 
                     webview.setWebViewClient(new WebViewClient() {
 
+                        @SuppressWarnings("deprecation")
+                        @Override
+                        public void onReceivedError(WebView view, int errorCode, String description, String failingUrl) {
+                            Log.e(TAG, errorCode + " : " + description + " at " + failingUrl);
+                        }
 
                         @Override
                         public void onPageStarted(WebView view, String url,
@@ -3440,7 +3510,8 @@ v.seekTo(1);
 
                             Log.d("app5", url + "   " + urlFinished);
                             CookieManager.getInstance().flush();
-                            if (url.equals(trackURL) && alreadyFinished == false) {
+                            Log.d("app5", "Progress : " + webview.getProgress() + " ");
+                            if (webview.getProgress() == 100 && url.equals(trackURL) && alreadyFinished == false) {
 
                                 webview.loadUrl("javascript:window.HtmlViewer.showHTML" +
                                         "('<html>'+document.getElementsByTagName('html')[0].innerHTML+'</html>');");
@@ -3462,7 +3533,7 @@ v.seekTo(1);
                         @Override
                         public void run() {
                             Log.d("app5", "Clear cache and load url : " + urlIn);
-                          //  webview.clearCache(true);
+                            //  webview.clearCache(true);
                             webview.loadUrl(urlIn);
                             trackURL = urlIn;
                             currentURL = urlIn;
@@ -5215,7 +5286,7 @@ v.seekTo(1);
 
                 caption = txt;
                 share.putExtra(Intent.EXTRA_TEXT, caption);
-              //  clearClipboard();
+                //  clearClipboard();
 
 
             } else {
@@ -5226,7 +5297,7 @@ v.seekTo(1);
 
                 share.putExtra(Intent.EXTRA_TEXT, caption);
 
-             //   clearClipboard();
+                //   clearClipboard();
 
             }
 
