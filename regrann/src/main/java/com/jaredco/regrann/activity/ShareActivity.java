@@ -2757,8 +2757,8 @@ v.seekTo(1);
         Log.d("app5", "Json is private");
         AlertDialog.Builder builder = new AlertDialog.Builder(ShareActivity.this);
 
-        builder.setTitle("This media is from a Private User");
-        builder.setMessage("To repost private media you need to login to Instagram again within Regrann.  The app will not see your username or password");
+        builder.setTitle("Please login to Instagram");
+        builder.setMessage("To repost certain media you need to login to Instagram again within Regrann.  The app will not see your username or password");
 
         builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
 
@@ -3240,7 +3240,7 @@ v.seekTo(1);
         else if (photoURL != null)
             prepareForSinglePhoto(photoURL);
         else {
-            sendDebugInfo(html);
+            processPotentialPrivate();
         }
 
     }
@@ -3353,7 +3353,7 @@ v.seekTo(1);
             prepareForSinglePhoto(photoURL);
         else
             //showErrorToast("There was a problem ", "Unable to find a video or photo at this link.", true);
-            sendDebugInfo(html);
+            processPotentialPrivate();
 
     }
 
@@ -3426,7 +3426,7 @@ v.seekTo(1);
             } else
 
                 // showErrorToast("There was a problem ", "Unable to find any photos or videos at this link", true);
-                sendDebugInfo(html);
+                processPotentialPrivate();
 
         } catch (Exception e) {
             showErrorToast("There was a problem ", "There was a problem : " + html, true);
@@ -3447,7 +3447,6 @@ v.seekTo(1);
             public void showHTML(String html) {
                 alreadyFinished = true;
                 processHTML(html);
-
 
             }
 
@@ -3474,7 +3473,6 @@ v.seekTo(1);
                     webview.getSettings().setJavaScriptEnabled(true);
                     webview.addJavascriptInterface(new MyJavaScriptInterface(ShareActivity.this), "HtmlViewer");
                     webview.getSettings().setLoadWithOverviewMode(true);
-
 
                     webview.setWebViewClient(new WebViewClient() {
 
