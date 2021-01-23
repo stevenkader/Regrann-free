@@ -1,9 +1,9 @@
 <component name="libraryTable">
   <library name="Gradle: ly.img.android.sdk.ui.mobile_ui:sticker:8.0.0@aar">
     <CLASSES>
-      <root url="jar://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/f53570c9be1d2fcfffacb56869df6455/jetified-sticker-8.0.0/jars/classes.jar!/" />
-      <root url="file://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/f53570c9be1d2fcfffacb56869df6455/jetified-sticker-8.0.0/res" />
-      <root url="file://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/f53570c9be1d2fcfffacb56869df6455/jetified-sticker-8.0.0/AndroidManifest.xml" />
+      <root url="jar://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/ed26eee43da1098cacacd15b8dc7f724/jetified-sticker-8.0.0/jars/classes.jar!/" />
+      <root url="file://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/ed26eee43da1098cacacd15b8dc7f724/jetified-sticker-8.0.0/AndroidManifest.xml" />
+      <root url="file://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/ed26eee43da1098cacacd15b8dc7f724/jetified-sticker-8.0.0/res" />
     </CLASSES>
     <JAVADOC />
     <SOURCES />

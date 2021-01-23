@@ -1,9 +1,9 @@
 <component name="libraryTable">
   <library name="Gradle: ly.img.android.sdk.ui.mobile_ui:adjustment:8.0.0@aar">
     <CLASSES>
-      <root url="jar://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/4de5d3310636bd71fa50ca61d7dbe2b5/jetified-adjustment-8.0.0/jars/classes.jar!/" />
-      <root url="file://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/4de5d3310636bd71fa50ca61d7dbe2b5/jetified-adjustment-8.0.0/res" />
-      <root url="file://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/4de5d3310636bd71fa50ca61d7dbe2b5/jetified-adjustment-8.0.0/AndroidManifest.xml" />
+      <root url="jar://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/abac672ee9ad33862f759d2dfdd57a05/jetified-adjustment-8.0.0/jars/classes.jar!/" />
+      <root url="file://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/abac672ee9ad33862f759d2dfdd57a05/jetified-adjustment-8.0.0/AndroidManifest.xml" />
+      <root url="file://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/abac672ee9ad33862f759d2dfdd57a05/jetified-adjustment-8.0.0/res" />
     </CLASSES>
     <JAVADOC />
     <SOURCES />

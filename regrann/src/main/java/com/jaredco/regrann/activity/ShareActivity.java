@@ -2750,7 +2750,7 @@ v.seekTo(1);
 
     }
 
-
+    boolean isStoryURL = false;
     int totalMultiToDownload = 0;
 
     private void processPotentialPrivate() {
@@ -2758,7 +2758,14 @@ v.seekTo(1);
         AlertDialog.Builder builder = new AlertDialog.Builder(ShareActivity.this);
 
         builder.setTitle("Please login to Instagram");
-        builder.setMessage("To repost certain media you need to login to Instagram again within Regrann.  The app will not see your username or password");
+
+        if (isStoryURL) {
+            RegrannApp.sendEvent("story_req_login", "", "");
+            builder.setMessage("To repost stories you need to login to Instagram again within Regrann.  The app will not see your username or password");
+
+        } else {
+            builder.setMessage("To repost certain media you need to login to Instagram again within Regrann.  The app will not see your username or password");
+        }
 
         builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
 
@@ -3005,8 +3012,8 @@ v.seekTo(1);
             postExecute("multi");
             return;
         } catch (Exception e) {
-
-            showErrorToast("#5a - " + e.getMessage(), getString(R.string.porblemfindingphoto), true);
+            processPotentialPrivate();
+            //    showErrorToast("#5a - " + e.getMessage(), getString(R.string.porblemfindingphoto), true);
 
             return;
         }
@@ -3136,8 +3143,8 @@ v.seekTo(1);
 
 
         } catch (Exception e) {
-
-            showErrorToast("#5b - " + e.getMessage(), getString(R.string.porblemfindingphoto), true);
+            processPotentialPrivate();
+            // showErrorToast("#5b - " + e.getMessage(), getString(R.string.porblemfindingphoto), true);
 
             return;
         }
@@ -3379,10 +3386,67 @@ v.seekTo(1);
 
     private final String urlFinished = " ";
 
+    private void processHTMLforStories(String html) {
+        Log.d("app5", "in processHTML for Stories ");
+        isStoryURL = true;
+
+        RegrannApp.sendEvent("story_attempted", "", "");
+        runOnUiThread(new Runnable() {
+            public void run() {
+
+                findViewById(R.id.browser).setVisibility(View.GONE);
+
+            }
+        });
+        int endPos;
+        int startPos = html.indexOf("srcset");
+
+        if (startPos > -1) {
+            endPos = html.indexOf(" ", startPos);
+            url = html.substring((startPos + 8), endPos);
+
+            url = url.replaceAll("&amp;", "&");
+            Log.d("app5", "MediaURL : " + url);
+
+
+        }
+
+        isVideo = false;
+        // check for video
+        startPos = html.indexOf("<video class");
+
+        if (startPos > -1) {
+            isVideo = true;
+            startPos = html.indexOf("src=", startPos);
+            endPos = html.indexOf(">", startPos);
+            videoURL = html.substring((startPos + 5), endPos - 1);
+
+            videoURL = videoURL.replaceAll("&amp;", "&");
+            Log.d("app5", "VideoURL : " + videoURL);
+
+        }
+
+        startPos = trackURL.indexOf("stories");
+        endPos = trackURL.indexOf("/", startPos + 9);
+
+        author = trackURL.substring(startPos + 8, endPos);
+        Log.d("app5", "author = " + author);
+
+        if (url != null) {
+            RegrannApp.sendEvent("story_found", "", "");
+            downloadSinglePhotoFromURL(url);
+        } else
+            processPotentialPrivate();
+
+
+        postExecute("");
+    }
+
     private void processHTML(String html) {
         try {
 
             Log.d("app5", "in showhtml ");
+
             int start_shortcode_media = html.indexOf("shortcode_media");
 
             if (start_shortcode_media > -1) {
@@ -3446,7 +3510,13 @@ v.seekTo(1);
             @JavascriptInterface
             public void showHTML(String html) {
                 alreadyFinished = true;
-                processHTML(html);
+                //  Log.d("app5", html);
+
+                if (trackURL.contains("stories")) {
+                    processHTMLforStories(html);
+                } else
+                    processHTML(html);
+
 
             }
 
@@ -3458,6 +3528,11 @@ v.seekTo(1);
 
             runOnUiThread(new Runnable() {
                 public void run() {
+
+
+                    if (urlIn.contains("stories")) {
+                        findViewById(R.id.browser).setVisibility(View.VISIBLE);
+                    }
 
                     Log.d("app5", "I am the UI thread ");
 
@@ -3473,6 +3548,7 @@ v.seekTo(1);
                     webview.getSettings().setJavaScriptEnabled(true);
                     webview.addJavascriptInterface(new MyJavaScriptInterface(ShareActivity.this), "HtmlViewer");
                     webview.getSettings().setLoadWithOverviewMode(true);
+
 
                     webview.setWebViewClient(new WebViewClient() {
 
@@ -3511,8 +3587,33 @@ v.seekTo(1);
                             Log.d("app5", "Progress : " + webview.getProgress() + " ");
                             if (webview.getProgress() == 100 && url.equals(trackURL) && alreadyFinished == false) {
 
-                                webview.loadUrl("javascript:window.HtmlViewer.showHTML" +
-                                        "('<html>'+document.getElementsByTagName('html')[0].innerHTML+'</html>');");
+                                if (urlIn.contains("stories")) {
+                                    final Handler handler = new Handler();
+                                    handler.postDelayed(new Runnable() {
+                                        @Override
+                                        public void run() {
+                                            Log.d("app5", "Press tap to play");
+                                            webview.loadUrl("javascript: document.getElementsByClassName('_42FBe')[0].click();");
+
+                                        }
+                                    }, 1000);
+                                }
+
+                                int delay = 500;
+
+                                if (urlIn.contains("stories")) {
+                                    delay = 2000;
+                                }
+                                final Handler handler1 = new Handler();
+                                handler1.postDelayed(new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        Log.d("app5", "grab HTML");
+                                        webview.loadUrl("javascript:window.HtmlViewer.showHTML" +
+                                                "('<html>'+document.getElementsByTagName('html')[0].innerHTML+'</html>');");
+
+                                    }
+                                }, delay);
 
                                 alreadyFinished = true;
                                 Log.d("app5", "in page finisihed " + url);

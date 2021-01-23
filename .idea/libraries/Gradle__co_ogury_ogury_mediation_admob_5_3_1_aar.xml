@@ -1,9 +1,10 @@
 <component name="libraryTable">
   <library name="Gradle: co.ogury:ogury-mediation-admob:5.3.1@aar">
     <CLASSES>
-      <root url="jar://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/8035f13ede7fc19cd8a871e40b2530d4/jetified-ogury-mediation-admob-5.3.1/jars/classes.jar!/" />
       <root url="file://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/8035f13ede7fc19cd8a871e40b2530d4/jetified-ogury-mediation-admob-5.3.1/res" />
-      <root url="file://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/8035f13ede7fc19cd8a871e40b2530d4/jetified-ogury-mediation-admob-5.3.1/AndroidManifest.xml" />
+      <root url="jar://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/62df14479459960f154a095254ddd198/jetified-ogury-mediation-admob-5.3.1/jars/classes.jar!/" />
+      <root url="file://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/62df14479459960f154a095254ddd198/jetified-ogury-mediation-admob-5.3.1/res" />
+      <root url="file://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/62df14479459960f154a095254ddd198/jetified-ogury-mediation-admob-5.3.1/AndroidManifest.xml" />
     </CLASSES>
     <JAVADOC />
     <SOURCES />
