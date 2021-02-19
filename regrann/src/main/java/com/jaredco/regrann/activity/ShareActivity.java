@@ -69,6 +69,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.core.app.ActivityCompat;
+import androidx.core.content.FileProvider;
 import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 
 import com.android.billingclient.api.AcknowledgePurchaseParams;
@@ -2009,14 +2010,7 @@ Log.i("Ogury", "on ad displayed");
                     startActivity(intent);
                 } catch (Exception e) {
 
-                    final Intent shareIntent = new Intent();
-                    shareIntent.setAction(Intent.ACTION_SEND);
-                    shareIntent.setPackage("com.instagram.android");
 
-                    shareIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_NO_ANIMATION);
-
-
-                    startActivity(shareIntent);
                 }
                 final Handler handler = new Handler();
                 handler.postDelayed(new Runnable() {
@@ -2067,35 +2061,48 @@ Log.i("Ogury", "on ad displayed");
                             shareIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_NO_ANIMATION);
 
 
-                            String caption = Util.prepareCaption(title, author, caption_suffix, _this.getApplication().getApplicationContext(), tiktokLink);
-
-                            shareIntent.putExtra(Intent.EXTRA_TEXT, caption);
-
+                            String caption = Util.prepareCaption(title, author, _this.getApplication().getApplicationContext(), caption_suffix, false);
 
                             ClipboardManager clipboard = (ClipboardManager) getSystemService(CLIPBOARD_SERVICE);
                             ClipData clip = ClipData.newPlainText("Post caption", caption);
                             Objects.requireNonNull(clipboard).setPrimaryClip(clip);
 
 
+                            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+                                shareIntent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
+                            }
+
+
+                            Uri MediaURI;
+
+
                             if (isVideo) {
                                 shareIntent.setType("video/*");
                                 File t = new File(Util.getTempVideoFilePath());
-                                shareIntent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
-                                Uri uri = Uri.fromFile(t);
-                                _this.grantUriPermission(
-                                        "com.instagram.android", uri, Intent.FLAG_GRANT_READ_URI_PERMISSION);
 
-                                shareIntent.putExtra(Intent.EXTRA_STREAM, uri);
+
+                                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+                                    MediaURI = FileProvider.getUriForFile(_this, getApplicationContext().getPackageName() + ".provider", t);
+                                } else {
+                                    MediaURI = Uri.fromFile(t);
+                                }
+
+
                             } else {
                                 Log.d("app5", "tempfile :  " + tempFile.toString());
-                                Uri uri = Uri.fromFile(tempFile);
 
-                                _this.grantUriPermission(
-                                        "com.instagram.android", uri, Intent.FLAG_GRANT_READ_URI_PERMISSION);
-                                shareIntent.putExtra(Intent.EXTRA_STREAM, uri);
+
+                                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+                                    MediaURI = FileProvider.getUriForFile(_this, getApplicationContext().getPackageName() + ".provider", tempFile);
+                                } else {
+                                    MediaURI = Uri.fromFile(tempFile);
+                                }
+
 
                                 shareIntent.setType("image/jpeg");
                             }
+                            shareIntent.putExtra(Intent.EXTRA_STREAM, MediaURI);
+
 
                             int numWarnings = preferences.getInt("captionWarning", 0);
 
@@ -3800,25 +3807,43 @@ v.seekTo(1);
 
             copyCaptionToClipboard();
 
+
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+                shareIntent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
+            }
+
+
+            Uri MediaURI;
+
+
             if (isVideo) {
                 shareIntent.setType("video/*");
                 File t = new File(Util.getTempVideoFilePath());
-                shareIntent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
-                Uri uri = Uri.fromFile(t);
-                _this.grantUriPermission(
-                        "com.tumblr", uri, Intent.FLAG_GRANT_READ_URI_PERMISSION);
 
-                shareIntent.putExtra(Intent.EXTRA_STREAM, uri);
+
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+                    MediaURI = FileProvider.getUriForFile(this, getApplicationContext().getPackageName() + ".provider", t);
+                } else {
+                    MediaURI = Uri.fromFile(t);
+                }
+
+
             } else {
                 Log.d("app5", "tempfile :  " + tempFile.toString());
-                Uri uri = Uri.fromFile(tempFile);
 
-                _this.grantUriPermission(
-                        "com.tumblr", uri, Intent.FLAG_GRANT_READ_URI_PERMISSION);
-                shareIntent.putExtra(Intent.EXTRA_STREAM, uri);
+
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+                    MediaURI = FileProvider.getUriForFile(this, getApplicationContext().getPackageName() + ".provider", tempFile);
+                } else {
+                    MediaURI = Uri.fromFile(tempFile);
+                }
+
 
                 shareIntent.setType("image/jpeg");
             }
+            shareIntent.putExtra(Intent.EXTRA_STREAM, MediaURI);
+
+
             try {
 
                 startActivity(shareIntent);
@@ -5898,27 +5923,40 @@ v.seekTo(1);
                 ClipData clip = ClipData.newPlainText("Post caption", caption);
                 Objects.requireNonNull(clipboard).setPrimaryClip(clip);
 
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+                    shareIntent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
+                }
+
+
+                Uri MediaURI;
+
 
                 if (isVideo) {
                     shareIntent.setType("video/*");
                     File t = new File(Util.getTempVideoFilePath());
-                    shareIntent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
-                    Uri uri = Uri.fromFile(t);
-                    _this.grantUriPermission(
-                            "com.instagram.android", uri, Intent.FLAG_GRANT_READ_URI_PERMISSION);
 
-                    shareIntent.putExtra(Intent.EXTRA_STREAM, uri);
+
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+                        MediaURI = FileProvider.getUriForFile(this, getApplicationContext().getPackageName() + ".provider", t);
+                    } else {
+                        MediaURI = Uri.fromFile(t);
+                    }
+
+
                 } else {
                     Log.d("app5", "tempfile :  " + tempFile.toString());
-                    Uri uri = Uri.fromFile(tempFile);
 
-                    _this.grantUriPermission(
-                            "com.instagram.android", uri, Intent.FLAG_GRANT_READ_URI_PERMISSION);
-                    shareIntent.putExtra(Intent.EXTRA_STREAM, uri);
+
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+                        MediaURI = FileProvider.getUriForFile(this, getApplicationContext().getPackageName() + ".provider", tempFile);
+                    } else {
+                        MediaURI = Uri.fromFile(tempFile);
+                    }
+
 
                     shareIntent.setType("image/jpeg");
                 }
-
+                shareIntent.putExtra(Intent.EXTRA_STREAM, MediaURI);
 
                 int numWarnings = preferences.getInt("captionWarning", 0);
 

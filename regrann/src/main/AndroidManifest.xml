@@ -43,8 +43,8 @@
 
     <provider
             android:name="androidx.core.content.FileProvider"
-            android:authorities="com.jaredco.regrann"
-            android:exported="false"
+        android:authorities="com.jaredco.regrann.provider"
+        android:exported="false"
             android:grantUriPermissions="true">
             <meta-data
                 android:name="android.support.FILE_PROVIDER_PATHS"

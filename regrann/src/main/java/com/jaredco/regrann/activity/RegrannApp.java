@@ -1,4 +1,4 @@
-package com.jaredco.regrann.activity;
+    package com.jaredco.regrann.activity;
 
 import android.app.Application;
 import android.content.Context;
