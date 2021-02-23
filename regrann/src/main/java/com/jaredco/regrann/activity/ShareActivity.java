@@ -3600,27 +3600,38 @@ v.seekTo(1);
                                         @Override
                                         public void run() {
                                             Log.d("app5", "Press tap to play");
+                                            webview.loadUrl("javascript: document.getElementsByClassName('sqdOP')[0].click();");
                                             webview.loadUrl("javascript: document.getElementsByClassName('_42FBe')[0].click();");
 
+
+                                            final Handler handler1 = new Handler();
+                                            handler1.postDelayed(new Runnable() {
+                                                @Override
+                                                public void run() {
+                                                    Log.d("app5", "grab HTML");
+                                                    webview.loadUrl("javascript:window.HtmlViewer.showHTML" +
+                                                            "('<html>'+document.getElementsByTagName('html')[0].innerHTML+'</html>');");
+
+                                                }
+                                            }, 1000);
                                         }
-                                    }, 1000);
+                                    }, 3000);
+                                } else {
+
+                                    int delay = 500;
+
+                                    final Handler handler1 = new Handler();
+                                    handler1.postDelayed(new Runnable() {
+                                        @Override
+                                        public void run() {
+                                            Log.d("app5", "grab HTML");
+                                            webview.loadUrl("javascript:window.HtmlViewer.showHTML" +
+                                                    "('<html>'+document.getElementsByTagName('html')[0].innerHTML+'</html>');");
+
+                                        }
+                                    }, delay);
+
                                 }
-
-                                int delay = 500;
-
-                                if (urlIn.contains("stories")) {
-                                    delay = 2000;
-                                }
-                                final Handler handler1 = new Handler();
-                                handler1.postDelayed(new Runnable() {
-                                    @Override
-                                    public void run() {
-                                        Log.d("app5", "grab HTML");
-                                        webview.loadUrl("javascript:window.HtmlViewer.showHTML" +
-                                                "('<html>'+document.getElementsByTagName('html')[0].innerHTML+'</html>');");
-
-                                    }
-                                }, delay);
 
                                 alreadyFinished = true;
                                 Log.d("app5", "in page finisihed " + url);
