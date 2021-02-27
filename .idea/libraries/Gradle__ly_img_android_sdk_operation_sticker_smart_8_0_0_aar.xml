@@ -1,9 +1,6 @@
 <component name="libraryTable">
   <library name="Gradle: ly.img.android.sdk.operation:sticker-smart:8.0.0@aar">
     <CLASSES>
-      <root url="file://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/d5d4a252913c452a701b7bafa9c2e5cb/jetified-sticker-smart-8.0.0/res" />
-      <root url="jar://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/d5d4a252913c452a701b7bafa9c2e5cb/jetified-sticker-smart-8.0.0/jars/classes.jar!/" />
-      <root url="file://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/d5d4a252913c452a701b7bafa9c2e5cb/jetified-sticker-smart-8.0.0/AndroidManifest.xml" />
       <root url="jar://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/fe6dc0d639690836e41922ccd7ed6f93/jetified-sticker-smart-8.0.0/jars/classes.jar!/" />
       <root url="file://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/fe6dc0d639690836e41922ccd7ed6f93/jetified-sticker-smart-8.0.0/res" />
       <root url="file://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/fe6dc0d639690836e41922ccd7ed6f93/jetified-sticker-smart-8.0.0/AndroidManifest.xml" />

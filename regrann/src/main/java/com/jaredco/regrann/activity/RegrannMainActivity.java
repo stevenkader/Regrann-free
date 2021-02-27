@@ -44,7 +44,6 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.analytics.FirebaseAnalytics;
 import com.google.firebase.remoteconfig.FirebaseRemoteConfig;
 import com.google.firebase.remoteconfig.FirebaseRemoteConfigSettings;
-import com.jaredco.regrann.BuildConfig;
 import com.jaredco.regrann.R;
 import com.jaredco.regrann.service.ClipboardListenerService;
 import com.jaredco.regrann.sqlite.KeptListAdapter;
@@ -219,14 +218,12 @@ public class RegrannMainActivity extends AppCompatActivity {
 
             final FirebaseRemoteConfig mFirebaseRemoteConfig = FirebaseRemoteConfig.getInstance();
 
-            mFirebaseRemoteConfig.setDefaults(R.xml.remote_config_defaults);
+            mFirebaseRemoteConfig.setDefaultsAsync(R.xml.remote_config_defaults);
             preferences = PreferenceManager.getDefaultSharedPreferences(this.getApplication().getApplicationContext());
 
             int minFetch = 3600 * 24;
 
-            if (BuildConfig.DEBUG) {
-                minFetch = 0;
-            }
+
             FirebaseRemoteConfigSettings configSettings = new FirebaseRemoteConfigSettings.Builder()
                     .setMinimumFetchIntervalInSeconds(minFetch)
                     .build();
@@ -466,8 +463,7 @@ public class RegrannMainActivity extends AppCompatActivity {
         }
 
 
-        if (!BuildConfig.DEBUG)
-            invalidateOptionsMenu();
+        invalidateOptionsMenu();
 
 
     }

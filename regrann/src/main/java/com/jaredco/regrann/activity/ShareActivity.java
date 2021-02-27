@@ -624,7 +624,7 @@ public class ShareActivity extends AppCompatActivity implements BaseSliderView.O
 
             final FirebaseRemoteConfig mFirebaseRemoteConfig = FirebaseRemoteConfig.getInstance();
 
-            mFirebaseRemoteConfig.setDefaults(R.xml.remote_config_defaults);
+            mFirebaseRemoteConfig.setDefaultsAsync(R.xml.remote_config_defaults);
             preferences = PreferenceManager.getDefaultSharedPreferences(this.getApplication().getApplicationContext());
 
             int minFetch = 3600 * 24;

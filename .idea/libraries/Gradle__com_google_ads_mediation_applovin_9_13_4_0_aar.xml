@@ -4,10 +4,9 @@
       <root url="jar://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/f187879b4662c0fc47663a1b237df793/jetified-applovin-9.13.4.0/annotations.zip!/" />
     </ANNOTATIONS>
     <CLASSES>
-      <root url="file://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/ba69481730869b7fe3dcbf8a9f4d48b0/jetified-applovin-9.13.4.0/res" />
-      <root url="file://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/f187879b4662c0fc47663a1b237df793/jetified-applovin-9.13.4.0/AndroidManifest.xml" />
       <root url="jar://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/f187879b4662c0fc47663a1b237df793/jetified-applovin-9.13.4.0/jars/classes.jar!/" />
       <root url="file://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/f187879b4662c0fc47663a1b237df793/jetified-applovin-9.13.4.0/res" />
+      <root url="file://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/f187879b4662c0fc47663a1b237df793/jetified-applovin-9.13.4.0/AndroidManifest.xml" />
     </CLASSES>
     <JAVADOC />
     <SOURCES>

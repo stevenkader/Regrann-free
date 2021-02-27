@@ -1,11 +1,8 @@
 <component name="libraryTable">
   <library name="Gradle: ly.img.android.sdk.ui.mobile_ui:filter:8.0.0@aar">
     <CLASSES>
-      <root url="file://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/4315d7a9f4f5c2a9823f2911deb3b946/jetified-filter-8.0.0/res" />
-      <root url="jar://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/4315d7a9f4f5c2a9823f2911deb3b946/jetified-filter-8.0.0/jars/classes.jar!/" />
-      <root url="file://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/4315d7a9f4f5c2a9823f2911deb3b946/jetified-filter-8.0.0/AndroidManifest.xml" />
-      <root url="file://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/ce4bda384194eba35de819f6dea127af/jetified-filter-8.0.0/res" />
       <root url="jar://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/ce4bda384194eba35de819f6dea127af/jetified-filter-8.0.0/jars/classes.jar!/" />
+      <root url="file://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/ce4bda384194eba35de819f6dea127af/jetified-filter-8.0.0/res" />
       <root url="file://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/ce4bda384194eba35de819f6dea127af/jetified-filter-8.0.0/AndroidManifest.xml" />
     </CLASSES>
     <JAVADOC />

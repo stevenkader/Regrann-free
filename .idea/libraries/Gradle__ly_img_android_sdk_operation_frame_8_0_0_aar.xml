@@ -1,9 +1,6 @@
 <component name="libraryTable">
   <library name="Gradle: ly.img.android.sdk.operation:frame:8.0.0@aar">
     <CLASSES>
-      <root url="file://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/bfb34f45b9ec2d8c17dd9b5d473f1989/jetified-frame-8.0.0/res" />
-      <root url="jar://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/bfb34f45b9ec2d8c17dd9b5d473f1989/jetified-frame-8.0.0/jars/classes.jar!/" />
-      <root url="file://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/bfb34f45b9ec2d8c17dd9b5d473f1989/jetified-frame-8.0.0/AndroidManifest.xml" />
       <root url="jar://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/df2245ac9b9405018776668e76ca1347/jetified-frame-8.0.0/jars/classes.jar!/" />
       <root url="file://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/df2245ac9b9405018776668e76ca1347/jetified-frame-8.0.0/res" />
       <root url="file://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/df2245ac9b9405018776668e76ca1347/jetified-frame-8.0.0/AndroidManifest.xml" />

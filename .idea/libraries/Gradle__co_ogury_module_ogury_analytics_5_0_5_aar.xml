@@ -1,0 +1,11 @@
+<component name="libraryTable">
+  <library name="Gradle: co.ogury.module:ogury-analytics:5.0.5@aar">
+    <CLASSES>
+      <root url="jar://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/44c9d11cd5fdeff3d5efe6000c639517/jetified-ogury-analytics-5.0.5/jars/classes.jar!/" />
+      <root url="file://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/44c9d11cd5fdeff3d5efe6000c639517/jetified-ogury-analytics-5.0.5/res" />
+      <root url="file://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/44c9d11cd5fdeff3d5efe6000c639517/jetified-ogury-analytics-5.0.5/AndroidManifest.xml" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>
