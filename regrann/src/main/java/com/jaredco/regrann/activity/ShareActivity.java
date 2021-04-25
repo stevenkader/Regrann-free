@@ -104,8 +104,6 @@ import com.jaredco.regrann.R;
 import com.jaredco.regrann.model.InstaItem;
 import com.jaredco.regrann.sqlite.KeptListAdapter;
 import com.jaredco.regrann.util.Util;
-import com.ogury.sdk.Ogury;
-import com.ogury.sdk.OguryConfiguration;
 import com.potyvideo.slider.library.Animations.DescriptionAnimation;
 import com.potyvideo.slider.library.SliderLayout;
 import com.potyvideo.slider.library.SliderTypes.BaseSliderView;
@@ -603,9 +601,9 @@ public class ShareActivity extends AppCompatActivity implements BaseSliderView.O
 
             RegrannApp.sendEvent("sc_paiduser");
         } else {
-            String app_api_key = "OGY-EF265F412C32";
-            OguryConfiguration.Builder oguryConfigurationBuilder = new OguryConfiguration.Builder(this, app_api_key);
-            Ogury.start(oguryConfigurationBuilder.build());
+            //  String app_api_key = "OGY-EF265F412C32";
+            //  OguryConfiguration.Builder oguryConfigurationBuilder = new OguryConfiguration.Builder(this, app_api_key);
+            //  Ogury.start(oguryConfigurationBuilder.build());
             //   Presage.getInstance().start(app_api_key, this);
         }
 
@@ -2764,15 +2762,11 @@ v.seekTo(1);
         Log.d("app5", "Json is private");
         AlertDialog.Builder builder = new AlertDialog.Builder(ShareActivity.this);
 
-        builder.setTitle("Please login to Instagram");
+        builder.setTitle("Link your Instagram account to Regrann!");
 
-        if (isStoryURL) {
-            RegrannApp.sendEvent("story_req_login", "", "");
-            builder.setMessage("To repost stories you need to login to Instagram again within Regrann.  The app will not see your username or password");
 
-        } else {
-            builder.setMessage("To repost certain media you need to login to Instagram again within Regrann.  The app will not see your username or password");
-        }
+        builder.setMessage("To repost certain media you need to authorize & link your Instagram account. Click OK and then you will be able to on the next screen.  Only need to do this one time.");
+
 
         builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
 

@@ -62,8 +62,8 @@ android {
         applicationId "com.jaredco.regrann"
         minSdkVersion 21
         targetSdkVersion 29
-        versionCode 470
-        versionName "10.10"
+        versionCode 472
+        versionName "10.12"
 
         multiDexEnabled true
         resValue 'string', 'pesdk_version', "v$pesdk_version"
@@ -121,9 +121,7 @@ repositories {
         url 'https://maven.google.com'
     }
 
-    maven {
-        url 'https://maven.ogury.co'
-    }
+
     maven {
         url  "https://adcolony.bintray.com/AdColony"
     }
@@ -151,10 +149,7 @@ dependencies {
     implementation fileTree(include: ['*.*'], dir: 'libs')
 
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
-    implementation 'co.ogury:ogury-sdk:5.+'
 
-    // if you are using a play-services-ads version 17.2.0 or higher
-    implementation 'co.ogury:ogury-mediation-admob:5.+'
 
     implementation 'androidx.appcompat:appcompat:1.2.0'
     implementation 'commons-io:commons-io:2.5'

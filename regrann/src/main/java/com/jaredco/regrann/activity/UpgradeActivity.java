@@ -307,7 +307,7 @@ public class UpgradeActivity extends AppCompatActivity {
 
                     List<String> skuList = new ArrayList<>();
                     // skuList.add("remove_ads");
-                    skuList.add("remove_ads_299");
+                    skuList.add("full_version");
 
                     SkuDetailsParams.Builder params = SkuDetailsParams.newBuilder();
                     params.setSkusList(skuList).setType(BillingClient.SkuType.INAPP);

@@ -80,7 +80,7 @@
 
         <activity
             android:name=".activity.ShareActivity"
-            android:excludeFromRecents="true"
+
             android:label="Regrann Post"
             android:launchMode="singleTask"
             android:theme="@style/Theme.Transparent.Fullscreen" />

@@ -4,6 +4,9 @@
       <root url="jar://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/93f7b0843d66d4f5cab8b25bd9f2c577/jetified-overlay-8.0.0/jars/classes.jar!/" />
       <root url="file://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/93f7b0843d66d4f5cab8b25bd9f2c577/jetified-overlay-8.0.0/res" />
       <root url="file://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/93f7b0843d66d4f5cab8b25bd9f2c577/jetified-overlay-8.0.0/AndroidManifest.xml" />
+      <root url="jar://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/f970af6aa952c6a699f96ccc88725dae/jetified-overlay-8.0.0/jars/classes.jar!/" />
+      <root url="file://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/f970af6aa952c6a699f96ccc88725dae/jetified-overlay-8.0.0/res" />
+      <root url="file://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/f970af6aa952c6a699f96ccc88725dae/jetified-overlay-8.0.0/AndroidManifest.xml" />
     </CLASSES>
     <JAVADOC />
     <SOURCES />
