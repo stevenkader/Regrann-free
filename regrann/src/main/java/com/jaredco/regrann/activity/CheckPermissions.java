@@ -167,6 +167,10 @@ public class CheckPermissions extends AppCompatActivity {
                     i.putExtra("mediaUrl", getIntent().getStringExtra("mediaUrl"));
                     startActivity(i);
 
+                } else {
+                    // Do something in response to button click
+                    Intent myIntent = new Intent(_this, LoginRequestActivity.class);
+                    _this.startActivity(myIntent);
                 }
 
 

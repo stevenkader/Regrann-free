@@ -1,12 +1,9 @@
 <component name="libraryTable">
   <library name="Gradle: ly.img.android:authorization:7.1.0.4@aar">
     <CLASSES>
-      <root url="jar://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/79859d81c752adef351030fc3939fea2/jetified-authorization-7.1.0.4/jars/classes.jar!/" />
-      <root url="file://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/79859d81c752adef351030fc3939fea2/jetified-authorization-7.1.0.4/res" />
-      <root url="file://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/79859d81c752adef351030fc3939fea2/jetified-authorization-7.1.0.4/AndroidManifest.xml" />
-      <root url="file://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/c07a67bbc5c12c449cd4187feae75c5a/jetified-authorization-7.1.0.4/AndroidManifest.xml" />
-      <root url="file://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/c07a67bbc5c12c449cd4187feae75c5a/jetified-authorization-7.1.0.4/res" />
-      <root url="jar://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/c07a67bbc5c12c449cd4187feae75c5a/jetified-authorization-7.1.0.4/jars/classes.jar!/" />
+      <root url="jar://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/456998264c1863e9d0b4f6da9dc46369/jetified-authorization-7.1.0.4/jars/classes.jar!/" />
+      <root url="file://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/456998264c1863e9d0b4f6da9dc46369/jetified-authorization-7.1.0.4/res" />
+      <root url="file://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/456998264c1863e9d0b4f6da9dc46369/jetified-authorization-7.1.0.4/AndroidManifest.xml" />
     </CLASSES>
     <JAVADOC />
     <SOURCES />

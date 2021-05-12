@@ -1,12 +1,9 @@
 <component name="libraryTable">
   <library name="Gradle: ly.img.android.sdk.ui.mobile_ui:sticker:8.0.0@aar">
     <CLASSES>
-      <root url="jar://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/75abf8839f1cf543453ad81cdd36ae20/jetified-sticker-8.0.0/jars/classes.jar!/" />
-      <root url="file://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/75abf8839f1cf543453ad81cdd36ae20/jetified-sticker-8.0.0/res" />
-      <root url="file://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/75abf8839f1cf543453ad81cdd36ae20/jetified-sticker-8.0.0/AndroidManifest.xml" />
-      <root url="file://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/dd4f28c040213ba9be99a6a09cbb1d1f/jetified-sticker-8.0.0/res" />
-      <root url="file://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/dd4f28c040213ba9be99a6a09cbb1d1f/jetified-sticker-8.0.0/AndroidManifest.xml" />
-      <root url="jar://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/dd4f28c040213ba9be99a6a09cbb1d1f/jetified-sticker-8.0.0/jars/classes.jar!/" />
+      <root url="jar://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/965381d6a8cc479e5f6882405e7e0ea1/jetified-sticker-8.0.0/jars/classes.jar!/" />
+      <root url="file://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/965381d6a8cc479e5f6882405e7e0ea1/jetified-sticker-8.0.0/res" />
+      <root url="file://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/965381d6a8cc479e5f6882405e7e0ea1/jetified-sticker-8.0.0/AndroidManifest.xml" />
     </CLASSES>
     <JAVADOC />
     <SOURCES />

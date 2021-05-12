@@ -1,12 +1,9 @@
 <component name="libraryTable">
   <library name="Gradle: ly.img.android.sdk.ui.mobile_ui:focus:8.0.0@aar">
     <CLASSES>
-      <root url="jar://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/2f79dd0e52111fec05d9626412de51a7/jetified-focus-8.0.0/jars/classes.jar!/" />
-      <root url="file://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/2f79dd0e52111fec05d9626412de51a7/jetified-focus-8.0.0/res" />
-      <root url="file://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/2f79dd0e52111fec05d9626412de51a7/jetified-focus-8.0.0/AndroidManifest.xml" />
-      <root url="file://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/688dd1688891fc1f3a27582ea2942b82/jetified-focus-8.0.0/AndroidManifest.xml" />
-      <root url="jar://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/688dd1688891fc1f3a27582ea2942b82/jetified-focus-8.0.0/jars/classes.jar!/" />
-      <root url="file://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/688dd1688891fc1f3a27582ea2942b82/jetified-focus-8.0.0/res" />
+      <root url="jar://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/b2ee666f313e1a59014f33e3ed1cf6a7/jetified-focus-8.0.0/jars/classes.jar!/" />
+      <root url="file://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/b2ee666f313e1a59014f33e3ed1cf6a7/jetified-focus-8.0.0/res" />
+      <root url="file://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/b2ee666f313e1a59014f33e3ed1cf6a7/jetified-focus-8.0.0/AndroidManifest.xml" />
     </CLASSES>
     <JAVADOC />
     <SOURCES />

@@ -1,12 +1,9 @@
 <component name="libraryTable">
   <library name="Gradle: ly.img.android.sdk.ui.mobile_ui:overlay:8.0.0@aar">
     <CLASSES>
-      <root url="jar://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/807b98648dd89f80ae0c570d95c8e02b/jetified-overlay-8.0.0/jars/classes.jar!/" />
-      <root url="file://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/807b98648dd89f80ae0c570d95c8e02b/jetified-overlay-8.0.0/res" />
-      <root url="file://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/807b98648dd89f80ae0c570d95c8e02b/jetified-overlay-8.0.0/AndroidManifest.xml" />
-      <root url="file://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/e5ef0fef5331178762c043ac58adb0c2/jetified-overlay-8.0.0/AndroidManifest.xml" />
-      <root url="file://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/e5ef0fef5331178762c043ac58adb0c2/jetified-overlay-8.0.0/res" />
-      <root url="jar://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/e5ef0fef5331178762c043ac58adb0c2/jetified-overlay-8.0.0/jars/classes.jar!/" />
+      <root url="jar://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/8163b2fcd186f4c62a57adde2eb52e17/jetified-overlay-8.0.0/jars/classes.jar!/" />
+      <root url="file://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/8163b2fcd186f4c62a57adde2eb52e17/jetified-overlay-8.0.0/res" />
+      <root url="file://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/8163b2fcd186f4c62a57adde2eb52e17/jetified-overlay-8.0.0/AndroidManifest.xml" />
     </CLASSES>
     <JAVADOC />
     <SOURCES />

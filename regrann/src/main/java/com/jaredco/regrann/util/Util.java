@@ -31,6 +31,26 @@ public class Util {
         return currentTempVideoFileName;
     }
 
+
+    public static String getTempPhotoFilePathForMulti(String fname) {
+        File file = new File(Environment.getExternalStorageDirectory(), Environment.DIRECTORY_PICTURES);
+        Log.d("app5", " getTempvideofilepath : " + file.toString() + RootDirectoryPhoto + fname);
+        return file.toString() + RootDirectoryMultiPhoto + fname;
+
+    }
+
+
+    public static String getTempVideoFilePath(boolean isMulti) {
+
+        if (isMulti == false) {
+            return getTempVideoFilePath();
+        }
+
+        File file = new File(Environment.getExternalStorageDirectory(), Environment.DIRECTORY_PICTURES);
+        Log.d("app5", " getTempvideofilepath : " + file.toString() + RootDirectoryPhoto + currentTempVideoFileName);
+        return file.toString() + RootDirectoryMultiPhoto + currentTempVideoFileName;
+    }
+
     public static String getTempVideoFilePath() {
 
         File file = new File(Environment.getExternalStorageDirectory(), Environment.DIRECTORY_DOWNLOADS);

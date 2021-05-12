@@ -1,12 +1,9 @@
 <component name="libraryTable">
   <library name="Gradle: ly.img.android.sdk.ui.mobile_ui:text:8.0.0@aar">
     <CLASSES>
-      <root url="jar://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/79e313cbaf6aa4e6065c475ae6d00270/jetified-text-8.0.0/jars/classes.jar!/" />
-      <root url="file://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/79e313cbaf6aa4e6065c475ae6d00270/jetified-text-8.0.0/res" />
-      <root url="file://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/79e313cbaf6aa4e6065c475ae6d00270/jetified-text-8.0.0/AndroidManifest.xml" />
-      <root url="jar://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/4a72408711cc7eb6fa22693c4ae94cd2/jetified-text-8.0.0/jars/classes.jar!/" />
-      <root url="file://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/4a72408711cc7eb6fa22693c4ae94cd2/jetified-text-8.0.0/res" />
-      <root url="file://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/4a72408711cc7eb6fa22693c4ae94cd2/jetified-text-8.0.0/AndroidManifest.xml" />
+      <root url="jar://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/578da1e0c045ab02c851eb0096b001fa/jetified-text-8.0.0/jars/classes.jar!/" />
+      <root url="file://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/578da1e0c045ab02c851eb0096b001fa/jetified-text-8.0.0/res" />
+      <root url="file://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/578da1e0c045ab02c851eb0096b001fa/jetified-text-8.0.0/AndroidManifest.xml" />
     </CLASSES>
     <JAVADOC />
     <SOURCES />

@@ -1,9 +1,9 @@
 <component name="libraryTable">
   <library name="Gradle: ly.img.android.sdk.assets:overlay-basic:8.0.0@aar">
     <CLASSES>
-      <root url="jar://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/2146cc3f8f02f5b3a34ebdaaf99f58be/jetified-overlay-basic-8.0.0/jars/classes.jar!/" />
-      <root url="file://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/2146cc3f8f02f5b3a34ebdaaf99f58be/jetified-overlay-basic-8.0.0/res" />
-      <root url="file://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/2146cc3f8f02f5b3a34ebdaaf99f58be/jetified-overlay-basic-8.0.0/AndroidManifest.xml" />
+      <root url="jar://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/e8e65c194b0818f7d871df4ade220c8e/jetified-overlay-basic-8.0.0/jars/classes.jar!/" />
+      <root url="file://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/e8e65c194b0818f7d871df4ade220c8e/jetified-overlay-basic-8.0.0/res" />
+      <root url="file://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/e8e65c194b0818f7d871df4ade220c8e/jetified-overlay-basic-8.0.0/AndroidManifest.xml" />
     </CLASSES>
     <JAVADOC />
     <SOURCES />

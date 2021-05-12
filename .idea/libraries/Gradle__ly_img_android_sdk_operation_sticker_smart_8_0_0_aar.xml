@@ -1,12 +1,9 @@
 <component name="libraryTable">
   <library name="Gradle: ly.img.android.sdk.operation:sticker-smart:8.0.0@aar">
     <CLASSES>
-      <root url="jar://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/fe6dc0d639690836e41922ccd7ed6f93/jetified-sticker-smart-8.0.0/jars/classes.jar!/" />
-      <root url="file://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/fe6dc0d639690836e41922ccd7ed6f93/jetified-sticker-smart-8.0.0/res" />
-      <root url="file://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/fe6dc0d639690836e41922ccd7ed6f93/jetified-sticker-smart-8.0.0/AndroidManifest.xml" />
-      <root url="file://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/1f456778b5b4ecf9ff5723d8e8395fbd/jetified-sticker-smart-8.0.0/res" />
-      <root url="jar://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/1f456778b5b4ecf9ff5723d8e8395fbd/jetified-sticker-smart-8.0.0/jars/classes.jar!/" />
-      <root url="file://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/1f456778b5b4ecf9ff5723d8e8395fbd/jetified-sticker-smart-8.0.0/AndroidManifest.xml" />
+      <root url="jar://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/6c12c857999f73961844d00640547f6e/jetified-sticker-smart-8.0.0/jars/classes.jar!/" />
+      <root url="file://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/6c12c857999f73961844d00640547f6e/jetified-sticker-smart-8.0.0/res" />
+      <root url="file://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/6c12c857999f73961844d00640547f6e/jetified-sticker-smart-8.0.0/AndroidManifest.xml" />
     </CLASSES>
     <JAVADOC />
     <SOURCES />

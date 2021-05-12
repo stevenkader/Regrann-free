@@ -38,6 +38,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
 import android.os.Handler;
+import android.os.Looper;
 import android.preference.PreferenceManager;
 import android.util.DisplayMetrics;
 import android.util.Log;
@@ -80,6 +81,12 @@ import com.android.billingclient.api.BillingResult;
 import com.android.billingclient.api.Purchase;
 import com.android.billingclient.api.PurchasesUpdatedListener;
 import com.android.billingclient.api.SkuDetails;
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.StringRequest;
+import com.android.volley.toolbox.Volley;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.resource.bitmap.CenterCrop;
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners;
@@ -99,7 +106,6 @@ import com.google.android.play.core.review.ReviewManagerFactory;
 import com.google.firebase.analytics.FirebaseAnalytics;
 import com.google.firebase.remoteconfig.FirebaseRemoteConfig;
 import com.google.firebase.remoteconfig.FirebaseRemoteConfigSettings;
-import com.jaredco.regrann.BuildConfig;
 import com.jaredco.regrann.R;
 import com.jaredco.regrann.model.InstaItem;
 import com.jaredco.regrann.sqlite.KeptListAdapter;
@@ -139,6 +145,8 @@ import java.util.List;
 import java.util.Objects;
 import java.util.Random;
 import java.util.concurrent.ExecutionException;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 import ly.img.android.pesdk.PhotoEditorSettingsList;
 import ly.img.android.pesdk.assets.filter.basic.FilterPackBasic;
@@ -161,7 +169,7 @@ import static com.jaredco.regrann.R.id.slider;
 import static java.lang.Thread.sleep;
 
 
-public class ShareActivity extends AppCompatActivity implements BaseSliderView.OnSliderClickListener, ViewPagerEx.OnPageChangeListener, OnClickListener, OnCompletionListener, OnPreparedListener {
+public class ShareActivity extends AppCompatActivity implements VolleyRequestListener, BaseSliderView.OnSliderClickListener, ViewPagerEx.OnPageChangeListener, OnClickListener, OnCompletionListener, OnPreparedListener {
     int buttonWidth;
     private ImageView postlater;
     private ImageView btnCurrentToFeed;
@@ -589,9 +597,6 @@ public class ShareActivity extends AppCompatActivity implements BaseSliderView.O
 
         noAds = preferences.getBoolean("removeAds", false);
 
-        if (BuildConfig.DEBUG) {
-            //   noAds = false;
-        }
 
 
         showInterstitial = !noAds;
@@ -627,9 +632,7 @@ public class ShareActivity extends AppCompatActivity implements BaseSliderView.O
 
             int minFetch = 3600 * 24;
 
-            if (BuildConfig.DEBUG) {
-                minFetch = 0;
-            }
+
             FirebaseRemoteConfigSettings configSettings = new FirebaseRemoteConfigSettings.Builder()
                     .setMinimumFetchIntervalInSeconds(minFetch)
                     .build();
@@ -2545,11 +2548,81 @@ Log.i("Ogury", "on ad displayed");
     static int k;
 
 
+    private VolleyRequestListener listener;
+
+
     private void startProcessURL(String url) {
+        listener = this;
+
+        // Instantiate the RequestQueue.
+        RequestQueue queue = Volley.newRequestQueue(this);
+        //https://www.instagram.com/p/COrMliPAp2Z/
+        // String url ="https://www.instagram.com/p/CIv7jPVljT_/?p=23233__a=1";
+        // String url = "https://www.instagram.com/p/CMP2Cpup3Sx6AkDUAO2KMrILpc_v617A1u67K40/?p=23233__a=1";
+        getJSONQueryFromInstagramURL(url, listener);
+
+        // GET(url);
 
 
-        GET(url);
+    }
 
+
+    private void getJSONQueryFromInstagramURL(String url, VolleyRequestListener listener) {
+
+        // Instantiate the RequestQueue.
+        RequestQueue queue = Volley.newRequestQueue(this);
+        //https://www.instagram.com/p/COrMliPAp2Z/
+        // String url ="https://www.instagram.com/p/CIv7jPVljT_/?p=23233__a=1";
+        // String url = "https://www.instagram.com/p/CMP2Cpup3Sx6AkDUAO2KMrILpc_v617A1u67K40/?p=23233__a=1";
+
+        String final_url = url.substring(0, url.indexOf("?"));
+        final_url = final_url + "?__a=1";
+
+        // Request a string response from the provided URL.
+        StringRequest stringRequest = new StringRequest(Request.Method.GET, final_url,
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+
+                        listener.onDataLoaded(response, "");
+                    }
+                }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+
+                listener.onDataLoaded("ERROR", url);
+                //  textView.setText("That didn't work!");
+            }
+        });
+
+// Add the request to the RequestQueue.
+        queue.add(stringRequest);
+    }
+
+    @Override
+    public void onObjectReady(String title) {
+
+    }
+
+    @Override
+    public void onDataLoaded(String volleyReturn, String url) {
+        Log.d("app5", "VOLLEY : " + volleyReturn);
+
+        if (volleyReturn.equals("ERROR"))
+            GET(url);
+
+        else {
+            try {
+                JSONObject json = new JSONObject(volleyReturn);
+                JSONObject graphQlObject = json.getJSONObject("graphql");
+
+                JSONObject shortCode_media_object = graphQlObject.getJSONObject("shortcode_media");
+
+                processJSON(shortCode_media_object.toString());
+            } catch (Exception e) {
+                GET(url);
+            }
+        }
 
     }
 
@@ -2759,6 +2832,10 @@ v.seekTo(1);
     int totalMultiToDownload = 0;
 
     private void processPotentialPrivate() {
+
+        if (alreadyStartedErrorDialog)
+            return;
+
         Log.d("app5", "Json is private");
         AlertDialog.Builder builder = new AlertDialog.Builder(ShareActivity.this);
 
@@ -3013,12 +3090,15 @@ v.seekTo(1);
             postExecute("multi");
             return;
         } catch (Exception e) {
-            processPotentialPrivate();
-            //    showErrorToast("#5a - " + e.getMessage(), getString(R.string.porblemfindingphoto), true);
+            //  processPotentialPrivate();
+            showErrorToast("#5a - " + e.getMessage(), getString(R.string.porblemfindingphoto), true);
 
             return;
         }
     }
+
+
+    private boolean alreadyStartedErrorDialog = false;
 
     private void processJSON(String jsonRes) {
 
@@ -3079,9 +3159,6 @@ v.seekTo(1);
 
         downloadSinglePhotoFromURL(url);
 
-
-        postExecute("");
-
     }
 
 
@@ -3099,56 +3176,79 @@ v.seekTo(1);
 
 
     private void downloadSinglePhotoFromURL(String url) {
-        try {
-            Bitmap bitmap = null;
-            try {
-                URL imageurl = new URL(url);
-                originalBitmapBeforeNoCrop = BitmapFactory.decodeStream(imageurl.openConnection().getInputStream());
-                bitmap = originalBitmapBeforeNoCrop;
-            } catch (Throwable e) {
-                showErrorToast("Out of memory", "Sorry not enough memory to continue", true);
 
-            }
+        ExecutorService executor = Executors.newSingleThreadExecutor();
+        Handler handler = new Handler(Looper.getMainLooper());
+
+        executor.execute(new Runnable() {
+            @Override
+            public void run() {
+
+                //Background work here
 
 
-            try {
-                if (preferences.getBoolean("watermark_checkbox", false) ||
-                        preferences.getBoolean("custom_watermark", false)) {
-                    Point p = new Point(10, (bitmap != null ? bitmap.getHeight() : 0) - 10);
-                    int textSize = 20;
-                    if (bitmap.getHeight() > 640)
-                        textSize = 50;
-                    bitmap = mark(bitmap, author, p, Color.YELLOW, 180, textSize, false);
+                try {
+                    Bitmap bitmap = null;
+                    try {
+                        URL imageurl = new URL(url);
+                        originalBitmapBeforeNoCrop = BitmapFactory.decodeStream(imageurl.openConnection().getInputStream());
+                        bitmap = originalBitmapBeforeNoCrop;
+                    } catch (Exception e) {
+
+                        showErrorToast("Out of memory", "Sorry not enough memory to continue", true);
+
+                    }
+
+
+                    try {
+                        if (preferences.getBoolean("watermark_checkbox", false) ||
+                                preferences.getBoolean("custom_watermark", false)) {
+                            Point p = new Point(10, (bitmap != null ? bitmap.getHeight() : 0) - 10);
+                            int textSize = 20;
+                            if (bitmap.getHeight() > 640)
+                                textSize = 50;
+                            bitmap = mark(bitmap, author, p, Color.YELLOW, 180, textSize, false);
+                        }
+                    } catch (Exception e99) {
+
+                    }
+
+
+                    ByteArrayOutputStream bytes = new ByteArrayOutputStream();
+                    bitmap.compress(Bitmap.CompressFormat.JPEG, 99, bytes);
+
+                    lastDownloadedFile = tempFile;
+
+
+                    FileOutputStream fo = new FileOutputStream(tempFile);
+                    fo.write(bytes.toByteArray());
+
+                    // remember close de FileOutput
+                    fo.close();
+
+
+                    RegrannApp.sendEvent("sc_photo");
+
+                    showBottomButtons();
+
+
+                } catch (Exception e) {
+
+                    showErrorToast("#5b - " + e.getMessage(), getString(R.string.porblemfindingphoto), true);
+
+                    return;
                 }
-            } catch (Exception e99) {
 
+                handler.post(new Runnable() {
+                    @Override
+                    public void run() {
+                        //UI Thread work here
+                        postExecute("");
+                    }
+                });
             }
+        });
 
-
-            ByteArrayOutputStream bytes = new ByteArrayOutputStream();
-            bitmap.compress(Bitmap.CompressFormat.JPEG, 99, bytes);
-
-            lastDownloadedFile = tempFile;
-
-
-            FileOutputStream fo = new FileOutputStream(tempFile);
-            fo.write(bytes.toByteArray());
-
-            // remember close de FileOutput
-            fo.close();
-
-
-            RegrannApp.sendEvent("sc_photo");
-
-            showBottomButtons();
-
-
-        } catch (Exception e) {
-            processPotentialPrivate();
-            // showErrorToast("#5b - " + e.getMessage(), getString(R.string.porblemfindingphoto), true);
-
-            return;
-        }
 
     }
 
@@ -3370,7 +3470,7 @@ v.seekTo(1);
 
         downloadSinglePhotoFromURL(photoURL);
 
-        postExecute("");
+
 
     }
 
@@ -3436,11 +3536,14 @@ v.seekTo(1);
         if (url != null) {
             RegrannApp.sendEvent("story_found", "", "");
             downloadSinglePhotoFromURL(url);
-        } else
-            processPotentialPrivate();
+        } else {
+            showErrorToast("#3528", getString(R.string.porblemfindingphoto), true);
+            //  processPotentialPrivate();
+
+        }
 
 
-        postExecute("");
+
     }
 
     private void processHTML(String html) {
@@ -3458,7 +3561,7 @@ v.seekTo(1);
                 final String json = html.substring((start_shortcode_media + 17), end_pos);
 
 
-                Log.d("app5", "JSON : ");
+                Log.d("app5", "JSON : " + json);
 
                 // found Instagram JSON
                 processJSON(json);
@@ -3490,8 +3593,8 @@ v.seekTo(1);
                 return;
             } else
 
-                // showErrorToast("There was a problem ", "Unable to find any photos or videos at this link", true);
-                processPotentialPrivate();
+                showErrorToast("There was a problem ", "Unable to find any photos or videos at this link", true);
+            // processPotentialPrivate();
 
         } catch (Exception e) {
             showErrorToast("There was a problem ", "There was a problem : " + html, true);
@@ -4089,7 +4192,7 @@ v.seekTo(1);
             public void run() {
                 try {
 
-
+                    alreadyStartedErrorDialog = true;
                     try {
                         if (pd != null) {
                             if (pd.isShowing()) {
@@ -5577,17 +5680,18 @@ v.seekTo(1);
                         public void run() {
                             try {
                                 if (Objects.requireNonNull(mDemoSlider.getCurrentSlider().getBundle().get("is_video")).toString() == "false") {
-                                    //   downloadSinglePhotoToTemp(Objects.requireNonNull(mDemoSlider.getCurrentSlider().getBundle().get("url")).toString());
+                                    //  Log.d("app5", mDemoSlider.getCurrentSlider().getBundle().get("fname").toString());
                                     tempFile = new File(mDemoSlider.getCurrentSlider().getBundle().get("fname").toString());
                                     isVideo = false;
                                 } else {
 
                                     isVideo = true;
-                                    tempVideoFile = new File(mDemoSlider.getCurrentSlider().getBundle().get("fname").toString());
+                                    //  tempVideoFile = new File(mDemoSlider.getCurrentSlider().getBundle().get("fname").toString());
+                                    Util.setTempVideoFileName(mDemoSlider.getCurrentSlider().getBundle().get("fname").toString());
                                 }
-                                isMulti = false;
+                                sendToInstagam();
 
-                                onClick(btnInstagram);
+                                //   onClick(btnInstagram);
 
                             } catch (Exception e) {
                             }
@@ -5938,7 +6042,7 @@ v.seekTo(1);
 
                 if (isVideo) {
                     shareIntent.setType("video/*");
-                    File t = new File(Util.getTempVideoFilePath());
+                    File t = new File(Util.getTempVideoFilePath(isMulti));
 
 
                     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {

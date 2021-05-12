@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
-    android:background="@color/colorPrimary"
+    android:background="@color/White"
     android:fitsSystemWindows="true">
 
 
@@ -17,59 +17,58 @@
         app:popupTheme="@style/ThemeOverlay.AppCompat.Dark" />
 
 
+    <Button
+        android:id="@+id/btnSkip"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom"
+        android:layout_marginBottom="1px"
+        android:onClick="OnClickSkipBTN"
+        android:text="Skip this step until later" />
+
     <LinearLayout
+        android:id="@+id/linearLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"
-        android:layout_gravity="center_vertical"
+        android:layout_gravity="center_horizontal|center_vertical"
         android:layout_marginLeft="10dp"
-        android:layout_marginRight="10dp"
 
+        android:layout_marginRight="10dp"
         android:layout_marginBottom="10dp"
+        android:gravity="center_horizontal"
         android:orientation="vertical"
         android:padding="10dp">
 
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:gravity="center"
-            android:text="@string/we_need_permissions"
 
-            android:textColor="#FDFCFC"
-            android:textSize="24sp"
+        <TextView
+            android:id="@+id/textView2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="20px"
+            android:text="To repost private media and stories the app needs to conect to Instagram"
+            android:textAlignment="center"
+            android:textSize="18sp"
             android:textStyle="bold" />
 
-        <TextView
-
+        <ImageView
+            android:id="@+id/imageView4"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="30dp"
-            android:textStyle="bold"
-            android:gravity="center_horizontal"
-            android:text="@string/access_to_photos_media_and_files"
-            android:textColor="#FFFFFF"
-            android:textSize="16sp" />
+            android:layout_height="151dp"
+            android:layout_marginTop="20px"
+            android:onClick="OnClickLoginBTN"
+            app:srcCompat="@drawable/logintoinstagram" />
 
         <TextView
-
-            android:layout_width="match_parent"
+            android:id="@+id/textView"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-
+            android:layout_marginTop="30px"
             android:gravity="center_horizontal"
-            android:text="@string/needed_for_temp_files_to_send_to_instagram"
-            android:textColor="#FFFFFF"
-            android:textSize="14sp" />
-
-
-        <Button
-            android:id="@+id/goBtn"
-            style="@style/Widget.AppCompat.Button.Colored"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="20dp"
-            android:layout_marginBottom="20dp"
-            android:text="@string/approve_permissions" />
+            android:text="Do not use Facebook to connect, it doesn't work."
+            android:textSize="16sp"
+            android:textStyle="bold" />
 
     </LinearLayout>
 

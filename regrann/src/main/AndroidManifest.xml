@@ -95,6 +95,11 @@
             android:name=".activity.CheckPermissions"
             android:label="Regrann - Permissions"
             android:screenOrientation="portrait" />
+
+        <activity
+            android:name=".activity.LoginRequestActivity"
+            android:label="Regrann - Connect to Instagram"
+            android:screenOrientation="portrait" />
         <activity
             android:name=".activity.InstagramLogin"
             android:label="Regrann - Login to Instagram"
