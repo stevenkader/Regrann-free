@@ -984,12 +984,9 @@ public class ShareActivity extends AppCompatActivity implements VolleyRequestLis
                     if (!getIntent().getBooleanExtra("fromExtension", false)) {
                         Log.d("mediaURL", iv.getStringExtra("mediaUrl"));
                         String url = iv.getStringExtra("mediaUrl");
-                        // String result = GET (t);
-                        if (tiktokLink)
-                            FetchDownloadUrlService.startFetchDownloadUrlService(_this, url);
 
-                        else
-                            startProcessURL(url);
+
+                        startProcessURL(url);
 
                     } else {
 
@@ -2552,7 +2549,15 @@ Log.i("Ogury", "on ad displayed");
 
 
     private void startProcessURL(String url) {
+
+        if (url.contains("stories")) {
+            GET(url);
+            return;
+
+        }
+
         listener = this;
+
 
         // Instantiate the RequestQueue.
         RequestQueue queue = Volley.newRequestQueue(this);
