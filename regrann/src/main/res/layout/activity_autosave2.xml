@@ -1,6 +1,7 @@
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:custom="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
     android:background="#ee4b4b4b"
@@ -75,9 +76,11 @@
 
 
             <WebView
-                android:id="@+id/browser2"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
+                android:alpha="0"
+                android:id="@+id/browser2"
+                tools:ignore="WebViewLayout"
                 android:visibility="gone" />
 
         </LinearLayout>

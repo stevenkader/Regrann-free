@@ -24,7 +24,6 @@ import android.util.Log;
 
 import androidx.core.app.NotificationCompat;
 
-import com.google.android.gms.ads.InterstitialAd;
 import com.jaredco.regrann.R;
 import com.jaredco.regrann.activity.RegrannApp;
 import com.jaredco.regrann.activity.SettingsActivityForeground;
@@ -37,9 +36,6 @@ public class ClipboardListenerService extends Service {
     public static final String MY_SERVICE = "com.jaredco.regrann.service.ClipboardListenerService";
     private ClipboardManager cliboardManager;
     String currentApp = "";
-
-    public static InterstitialAd mInterstitialAd = null;
-    public static InterstitialAd mInstagramBtnInterstitial = null;
 
     private static OnPrimaryClipChangedListener clipListener = null;
     public static final String NOTIFICATION_CHANNEL_ID = "10001";

@@ -81,6 +81,7 @@ import com.android.billingclient.api.BillingResult;
 import com.android.billingclient.api.Purchase;
 import com.android.billingclient.api.PurchasesUpdatedListener;
 import com.android.billingclient.api.SkuDetails;
+import com.android.volley.DefaultRetryPolicy;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
@@ -223,7 +224,7 @@ public class ShareActivity extends AppCompatActivity implements VolleyRequestLis
 
     private static final String BASE_64_ENCODED_PUBLIC_KEY = "MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEA4eVlDAKokhC8AZEdsUsKkFJSvsX+d+J8zclWZ25ADxZYOjE+syRGRZo/dBnt5q5YgC4TmyDdF6UFqZ09mlFvwkpU03X+AJP7JadT2bz1jwELBrjsHVlpOFFMwzXrmmBScGybllC+9BBHbnZQDCTRa81GKTdMDSoV/9ez+fdmYy8uCYEOMJ0bCx1eRA3wHMKWiOx5RKoCqBn8PnNOH6JbuXSZOWc762Pkz1tUr2cSuuW7RotgnsMT02jvyALLVcCDiq+yVoRmHrPQCSgcm3Olwc5WjkBoAQMsvy9hn/dyL8a3MtUY0HBI8tN7VJ/r9yhs2JiXCf3jcmd80qF51XJyoQIDAQAB";
 
-    private static final String TAG = ShareActivity.class.getName();
+    private static final String TAG = "app5";
 
     boolean isVine = false;
     //   private PubnativeFeedBanner mFeedBanner;
@@ -586,7 +587,22 @@ public class ShareActivity extends AppCompatActivity implements VolleyRequestLis
 
         preferences = PreferenceManager.getDefaultSharedPreferences(_this.getApplication().getApplicationContext());
         isVine = getIntent().getBooleanExtra("vine", false);
+/**
+ if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.M) {
 
+ ConnectivityManager connectivityManager = (ConnectivityManager) RegrannApp._this.getSystemService(Context.CONNECTIVITY_SERVICE);
+
+ for (Network net : connectivityManager.getAllNetworks()) {
+
+ NetworkInfo networkInfo = connectivityManager.getNetworkInfo(net);
+
+ if (networkInfo.getType() == ConnectivityManager.TYPE_WIFI) {
+ connectivityManager.bindProcessToNetwork(net);
+ break;
+ }
+ }
+ }
+ **/
 
         //   if ( text.contains("vm.tiktok")) {
         //      i.putExtra("tiktok", true);
@@ -596,7 +612,6 @@ public class ShareActivity extends AppCompatActivity implements VolleyRequestLis
 
 
         noAds = preferences.getBoolean("removeAds", false);
-
 
 
         showInterstitial = !noAds;
@@ -2286,6 +2301,8 @@ Log.i("Ogury", "on ad displayed");
     private Bitmap mark(Bitmap src, String watermark, Point location, int color, int alpha,
                         int size, boolean underline) {
         Bitmap result = null;
+
+
         try {
 
 
@@ -2548,7 +2565,17 @@ Log.i("Ogury", "on ad displayed");
     private VolleyRequestListener listener;
 
 
+    static boolean alreadyTriedGET = false;
     private void startProcessURL(String url) {
+
+        alreadyTriedGET = false;
+        currentURL = url;
+
+        if (!isNetworkAvailable()) {
+            showErrorToast("", _this.getString(R.string.noInternet), true);
+            return;
+
+        }
 
         if (url.contains("stories")) {
             GET(url);
@@ -2571,11 +2598,14 @@ Log.i("Ogury", "on ad displayed");
 
     }
 
+    static String initialURL;
 
     private void getJSONQueryFromInstagramURL(String url, VolleyRequestListener listener) {
 
+        initialURL = url;
         // Instantiate the RequestQueue.
         RequestQueue queue = Volley.newRequestQueue(this);
+
         //https://www.instagram.com/p/COrMliPAp2Z/
         // String url ="https://www.instagram.com/p/CIv7jPVljT_/?p=23233__a=1";
         // String url = "https://www.instagram.com/p/CMP2Cpup3Sx6AkDUAO2KMrILpc_v617A1u67K40/?p=23233__a=1";
@@ -2589,17 +2619,20 @@ Log.i("Ogury", "on ad displayed");
                     @Override
                     public void onResponse(String response) {
 
-                        listener.onDataLoaded(response, "");
+                        listener.onDataLoaded(response, initialURL);
                     }
                 }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
 
-                listener.onDataLoaded("ERROR", url);
+                listener.onDataLoaded("ERROR", initialURL);
                 //  textView.setText("That didn't work!");
             }
         });
 
+        stringRequest.setRetryPolicy(new DefaultRetryPolicy(12000,
+                1,
+                DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
 // Add the request to the RequestQueue.
         queue.add(stringRequest);
     }
@@ -2840,6 +2873,11 @@ v.seekTo(1);
 
         if (alreadyStartedErrorDialog)
             return;
+
+        if (alreadyTriedGET == false) {
+            GET(currentURL);
+            return;
+        }
 
         Log.d("app5", "Json is private");
         AlertDialog.Builder builder = new AlertDialog.Builder(ShareActivity.this);
@@ -3205,17 +3243,20 @@ v.seekTo(1);
                     }
 
 
-                    try {
-                        if (preferences.getBoolean("watermark_checkbox", false) ||
-                                preferences.getBoolean("custom_watermark", false)) {
-                            Point p = new Point(10, (bitmap != null ? bitmap.getHeight() : 0) - 10);
-                            int textSize = 20;
-                            if (bitmap.getHeight() > 640)
-                                textSize = 50;
-                            bitmap = mark(bitmap, author, p, Color.YELLOW, 180, textSize, false);
-                        }
-                    } catch (Exception e99) {
+                    if (isVideo == false) {
 
+                        try {
+                            if (preferences.getBoolean("watermark_checkbox", false) ||
+                                    preferences.getBoolean("custom_watermark", false)) {
+                                Point p = new Point(10, (bitmap != null ? bitmap.getHeight() : 0) - 10);
+                                int textSize = 20;
+                                if (bitmap.getHeight() > 640)
+                                    textSize = 50;
+                                bitmap = mark(bitmap, author, p, Color.YELLOW, 180, textSize, false);
+                            }
+                        } catch (Exception e99) {
+
+                        }
                     }
 
 
@@ -3476,7 +3517,6 @@ v.seekTo(1);
         downloadSinglePhotoFromURL(photoURL);
 
 
-
     }
 
 
@@ -3499,8 +3539,12 @@ v.seekTo(1);
         RegrannApp.sendEvent("story_attempted", "", "");
         runOnUiThread(new Runnable() {
             public void run() {
+                if (isAutoSave | isQuickKeep | isQuickPost)
+                    findViewById(R.id.browser2).setVisibility(View.GONE);
 
-                findViewById(R.id.browser).setVisibility(View.GONE);
+                else
+                    findViewById(R.id.browser).setVisibility(View.GONE);
+
 
             }
         });
@@ -3542,11 +3586,10 @@ v.seekTo(1);
             RegrannApp.sendEvent("story_found", "", "");
             downloadSinglePhotoFromURL(url);
         } else {
-            showErrorToast("#3528", getString(R.string.porblemfindingphoto), true);
-            //  processPotentialPrivate();
+            //showErrorToast("#3528", getString(R.string.porblemfindingphoto), true);
+            processPotentialPrivate();
 
         }
-
 
 
     }
@@ -3596,10 +3639,12 @@ v.seekTo(1);
                 processNonInstagramURL(html);
 
                 return;
-            } else
+            } else {
+                // showErrorToast("There was a problem ", "Unable to find any photos or videos at this link", true);
 
-                showErrorToast("There was a problem ", "Unable to find any photos or videos at this link", true);
-            // processPotentialPrivate();
+                processPotentialPrivate();
+
+            }
 
         } catch (Exception e) {
             showErrorToast("There was a problem ", "There was a problem : " + html, true);
@@ -3610,6 +3655,8 @@ v.seekTo(1);
     String trackURL;
 
     public void GET(final String urlIn) {
+
+        alreadyTriedGET = true;
 
         class MyJavaScriptInterface {
 
@@ -3640,7 +3687,11 @@ v.seekTo(1);
 
 
                     if (urlIn.contains("stories")) {
-                        findViewById(R.id.browser).setVisibility(View.VISIBLE);
+                        if (isAutoSave | isQuickKeep | isQuickPost)
+                            findViewById(R.id.browser2).setVisibility(View.VISIBLE);
+
+                        else
+                            findViewById(R.id.browser).setVisibility(View.VISIBLE);
                     }
 
                     Log.d("app5", "I am the UI thread ");
@@ -3677,8 +3728,10 @@ v.seekTo(1);
                         @Override
                         public boolean shouldOverrideUrlLoading(WebView view, String url) {
                             Log.d("app5", "in page should override " + url);
-                            view.loadUrl(url);
-                            trackURL = url;
+                            if (url.startsWith("https:")) {
+                                view.loadUrl(url);
+                                trackURL = url;
+                            }
                             return true;
                         }
 
@@ -4574,6 +4627,8 @@ v.seekTo(1);
 
             String fname = fnames[0];
 
+            if (fname.endsWith("mp4"))
+                return "";
 
             try {
                 Bitmap bitmap = null;
@@ -4681,6 +4736,7 @@ v.seekTo(1);
                     DownloadManager.Query q = new DownloadManager.Query();
                     q.setFilterById(extras.getLong(DownloadManager.EXTRA_DOWNLOAD_ID));
                     Cursor c = downloadManager.query(q);
+
 
                     if (c.moveToFirst()) {
                         int status = c.getInt(c.getColumnIndex(DownloadManager.COLUMN_STATUS));
@@ -5003,7 +5059,6 @@ v.seekTo(1);
     private void copyAllMultiToSave() {
 
 
-        clearClipboard();
         new LongOperation().execute("");
 
 
@@ -5239,8 +5294,6 @@ v.seekTo(1);
 
             Long currTime = System.currentTimeMillis();
 
-
-            clearClipboard();
 
             String fname;
             Toast toast;

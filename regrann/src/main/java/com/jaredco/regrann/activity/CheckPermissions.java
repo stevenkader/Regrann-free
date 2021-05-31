@@ -94,7 +94,7 @@ public class CheckPermissions extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
-
+      //  checkPermissions(false);
 
 
     }

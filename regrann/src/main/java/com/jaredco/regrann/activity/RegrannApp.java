@@ -103,6 +103,7 @@ public class RegrannApp extends Application {
                 .build();
         MobileAds.setRequestConfiguration(requestConfiguration);
 
+
         // AdSettings.addTestDevice("24a1e03e-2ea4-4de2-8b4e-bc7fbf4599ed");
 
         MobileAds.initialize(this, new OnInitializationCompleteListener() {
