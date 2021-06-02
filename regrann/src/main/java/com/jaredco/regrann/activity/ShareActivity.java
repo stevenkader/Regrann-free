@@ -2583,6 +2583,11 @@ Log.i("Ogury", "on ad displayed");
 
         }
 
+        if (url.contains("reel")) {
+            url = url.replace("reel", "p");
+
+        }
+
         listener = this;
 
 
@@ -3768,9 +3773,9 @@ v.seekTo(1);
                                                             "('<html>'+document.getElementsByTagName('html')[0].innerHTML+'</html>');");
 
                                                 }
-                                            }, 1000);
+                                            }, 2000);
                                         }
-                                    }, 3000);
+                                    }, 2000);
                                 } else {
 
                                     int delay = 500;
