@@ -72,7 +72,7 @@
                 android:textStyle="bold"
                 android:layout_height="wrap_content"
                 android:gravity="clip_horizontal|center|center_horizontal"
-                android:text="50% On Sale"
+                android:text="On Sale - 50% Off"
                 android:textAlignment="center"
                 android:textColor="#FFFFFF"
                 android:textSize="20sp" />

@@ -154,7 +154,7 @@ By clicking "Confirm", you consent to the use of anonymous data (like your count
 
     <string name="upgrade_header_text">Upgrade to Premium</string>
 
-    <string name="upgrade_features">No Ads\nQuick Save at Full Speed\nQuick Post\nAll Future Features\nPriority Support by Developer\n100% Risk Free - Refund Anytime</string>
+    <string name="upgrade_features">No Ads\nFaster Display\nQuick Save\nQuick Post\nAll Future Features\nPriority Support by Developer\n100% Risk Free - Refund Anytime</string>
     <string name="upgrade_button_text">Upgrade Now</string>
     <string name="auto_saving">Quick Saving......</string>
 

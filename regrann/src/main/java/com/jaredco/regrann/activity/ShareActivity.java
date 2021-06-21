@@ -2656,12 +2656,27 @@ Log.i("Ogury", "on ad displayed");
 
         else {
             try {
+
+
                 JSONObject json = new JSONObject(volleyReturn);
                 JSONObject graphQlObject = json.getJSONObject("graphql");
 
                 JSONObject shortCode_media_object = graphQlObject.getJSONObject("shortcode_media");
 
-                processJSON(shortCode_media_object.toString());
+
+                if (showInterstitial) {
+                    final Handler handler1 = new Handler();
+                    handler1.postDelayed(new Runnable() {
+                        @Override
+                        public void run() {
+                            processJSON(shortCode_media_object.toString());
+                        }
+                    }, 2000);
+                } else {
+                    processJSON(shortCode_media_object.toString());
+                }
+
+
             } catch (Exception e) {
                 GET(url);
             }
