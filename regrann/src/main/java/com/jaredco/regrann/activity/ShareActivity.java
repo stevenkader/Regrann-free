@@ -93,12 +93,18 @@ import com.bumptech.glide.load.resource.bitmap.CenterCrop;
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners;
 import com.bumptech.glide.request.FutureTarget;
 import com.bumptech.glide.request.RequestOptions;
+import com.google.android.gms.ads.AdError;
 import com.google.android.gms.ads.AdListener;
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdSize;
 import com.google.android.gms.ads.AdView;
 import com.google.android.gms.ads.InterstitialAd;
+import com.google.android.gms.ads.LoadAdError;
 import com.google.android.gms.ads.formats.UnifiedNativeAd;
+import com.google.android.gms.ads.rewarded.RewardItem;
+import com.google.android.gms.ads.rewarded.RewardedAd;
+import com.google.android.gms.ads.rewarded.RewardedAdCallback;
+import com.google.android.gms.ads.rewarded.RewardedAdLoadCallback;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.play.core.review.ReviewInfo;
@@ -139,10 +145,12 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.nio.channels.FileChannel;
 import java.nio.file.Files;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 import java.util.Objects;
 import java.util.Random;
 import java.util.concurrent.ExecutionException;
@@ -191,7 +199,7 @@ public class ShareActivity extends AppCompatActivity implements VolleyRequestLis
     private String uriStr;
     private ConstraintLayout mainUI;
     ImageView previewImage;
-
+    private RewardedAd rewardedAd;
     private AdView adBannerView;
 
     boolean readyToHideSpinner = false;
@@ -612,6 +620,28 @@ public class ShareActivity extends AppCompatActivity implements VolleyRequestLis
 
 
         noAds = preferences.getBoolean("removeAds", false);
+        String rewardDate = preferences.getString("rewardDate", "");
+
+        Date c = Calendar.getInstance().getTime();
+
+
+        SimpleDateFormat df = new SimpleDateFormat("dd-MMM-yyyy", Locale.getDefault());
+        String formattedDate = df.format(c);
+
+        if (rewardDate.equals(formattedDate)) {
+            noAds = true;
+            Log.d("app5", "Setting noAds to True ... same day");
+        } else if (rewardDate.equals("") == false) {
+            SharedPreferences.Editor editor = preferences.edit();
+            editor.putBoolean("removeAds", false);
+            noAds = false;
+
+
+            editor.putString("rewardDate", "");
+
+            editor.commit();
+
+        }
 
 
         showInterstitial = !noAds;
@@ -1429,6 +1459,28 @@ public class ShareActivity extends AppCompatActivity implements VolleyRequestLis
         try {
 
             if (showInterstitial) {
+
+                rewardedAd = new RewardedAd(this,
+                        "ca-app-pub-8534786486141147/9531798831");
+
+                RewardedAdLoadCallback adLoadCallback = new RewardedAdLoadCallback() {
+                    @Override
+                    public void onRewardedAdLoaded() {
+                        // Ad successfully loaded.
+                        Log.d("app5", "rewarded ad loaded : " + rewardedAd.isLoaded());
+                        Log.d("app5", "rewarded ad loaded : " + rewardedAd.isLoaded());
+                        Log.d("app5", "rewarded ad loaded : " + rewardedAd.isLoaded());
+                    }
+
+                    @Override
+                    public void onRewardedAdFailedToLoad(LoadAdError adError) {
+                        // Ad failed to load.
+                        Log.d("app5", "rewarded ad failed : " + adError.getMessage());
+                    }
+                };
+                rewardedAd.loadAd(new AdRequest.Builder().build(), adLoadCallback);
+
+
                 mInterstitialAd = new InterstitialAd(this);
                 mInterstitialAd.setAdUnitId("ca-app-pub-8534786486141147/7512440239");
 
@@ -1738,7 +1790,7 @@ Log.i("Ogury", "on ad displayed");
         int numWarnings = preferences.getInt("multiWarning", 0);
 
 
-        if (numWarnings < 8) {
+        if (numWarnings < 4) {
 
             Log.d("regrann", "Numwarnings  2 : " + numWarnings);
             numWarnings++;
@@ -2121,11 +2173,8 @@ Log.i("Ogury", "on ad displayed");
 
                             if (numWarnings < 3 && inputMediaType == 0) {
 
-                                numWarnings++;
-                                SharedPreferences.Editor editor = preferences.edit();
-                                editor.putInt("captionWarning", numWarnings);
+                                addToNumSessions();
 
-                                editor.apply();
 
                                 showPasteDialog(shareIntent);
 
@@ -2213,6 +2262,20 @@ Log.i("Ogury", "on ad displayed");
             alertDialog.show();
         } catch (Exception e) {
         }
+
+    }
+
+
+    private void addToNumSessions() {
+
+        int numWarnings = preferences.getInt("captionWarning", 0);
+
+
+        numWarnings++;
+        SharedPreferences.Editor editor = preferences.edit();
+        editor.putInt("captionWarning", numWarnings);
+
+        editor.commit();
 
     }
 
@@ -5241,8 +5304,10 @@ v.seekTo(1);
 
             //    numWarnings = 5;
 
-            if (numWarnings < 4)
+            if (numWarnings < 3) {
+                addToNumSessions();
                 return;
+            }
 
 
             if (showInterstitial) {
@@ -5440,7 +5505,8 @@ v.seekTo(1);
             int numWarnings = sharedPref.getInt("countOfRuns", 0);
 
 
-            if (numWarnings < 4) {
+            if (numWarnings < 3) {
+                addToNumSessions();
                 return;
             }
 
@@ -5850,7 +5916,7 @@ v.seekTo(1);
 
                 if (numWarnings < 3) {
 
-
+                    addToNumSessions();
                     sendToInstagam();
 
 
@@ -5862,11 +5928,120 @@ v.seekTo(1);
 
                         RegrannApp.sendEvent("sc_admob8_needed");
 
-                        if (mInterstitialAd.isLoaded()) {
-                            mInterstitialAd.show();
-
-
+                        if (mInterstitialAd.isLoaded() || rewardedAd.isLoaded()) {
                             RegrannApp.sendEvent("sc_admob8_shown");
+
+
+                            String lastRewardDeniedDate = preferences.getString("lastRewardDeniedDate", "");
+                            Date c = Calendar.getInstance().getTime();
+                            SimpleDateFormat df = new SimpleDateFormat("dd-MMM-yyyy", Locale.getDefault());
+                            String currentDate = df.format(c);
+
+                            if (rewardedAd.isLoaded() == false || lastRewardDeniedDate.equals(currentDate)) {
+                                if (mInterstitialAd.isLoaded()) {
+                                    Log.d("app5", "showing insterstial 5945");
+                                    mInterstitialAd.show();
+                                }
+                                return;
+                            }
+
+
+                            AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(ShareActivity.this);
+
+                            // flurryAgent.logEvent("Rating Good or Bad Dialog");
+                            // set dialog message
+                            alertDialogBuilder.setIcon(R.drawable.ic_launcher);
+                            alertDialogBuilder.setTitle("Reward Option");
+                            alertDialogBuilder.setMessage("Want to get a free upgrade for the rest of the day, just click OK to watch a short video").setCancelable(false)
+                                    .setNegativeButton("No", new DialogInterface.OnClickListener() {
+                                        public void onClick(DialogInterface dialog, int id) {
+                                            // if this button is clicked, just close
+                                            // the dialog box and do nothing
+
+                                            SharedPreferences.Editor editor = preferences.edit();
+
+                                            Date c = Calendar.getInstance().getTime();
+
+
+                                            SimpleDateFormat df = new SimpleDateFormat("dd-MMM-yyyy", Locale.getDefault());
+                                            String formattedDate = df.format(c);
+                                            editor.putString("lastRewardDeniedDate", formattedDate);
+
+                                            editor.commit();
+
+                                            RegrannApp.sendEvent("sc_rewardvideo_DENIED");
+                                            if (mInterstitialAd.isLoaded()) {
+                                                Log.d("app5", "showing 5976 5945");
+
+                                                mInterstitialAd.show();
+                                            }
+
+                                            dialog.cancel();
+                                            return;
+                                        }
+                                    })
+                                    .setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+                                        public void onClick(DialogInterface dialog, int id) {
+                                            // if this button is clicked, close
+                                            // current activity
+                                            // flurryAgent.logEvent("Good Selected");
+
+                                            RegrannApp.sendEvent("sc_rewardvideo_OK");
+
+
+                                            RewardedAdCallback adCallback = new RewardedAdCallback() {
+                                                @Override
+                                                public void onRewardedAdOpened() {
+                                                    // Ad opened.
+                                                    Log.d("app5", "rewarded opened");
+
+                                                }
+
+                                                @Override
+                                                public void onRewardedAdClosed() {
+                                                    // Ad closed.
+                                                    Log.d("app5", "rewarded closed");
+                                                    sendToInstagam();
+                                                }
+
+                                                @Override
+                                                public void onUserEarnedReward(@NonNull RewardItem reward) {
+                                                    // User earned reward.
+                                                    Log.d("app5", "earned reward ");
+                                                    SharedPreferences.Editor editor = preferences.edit();
+                                                    editor.putBoolean("removeAds", true);
+                                                    Date c = Calendar.getInstance().getTime();
+
+
+                                                    SimpleDateFormat df = new SimpleDateFormat("dd-MMM-yyyy", Locale.getDefault());
+                                                    String formattedDate = df.format(c);
+                                                    editor.putString("rewardDate", formattedDate);
+                                                    editor.putString("lastRewardDeniedDate", "");
+                                                    editor.commit();
+
+                                                    //  sendToInstagam();
+
+                                                }
+
+                                                @Override
+                                                public void onRewardedAdFailedToShow(AdError adError) {
+                                                    // Ad failed to display.
+                                                    Log.d("app5", "rewarded failed to display");
+                                                    sendToInstagam();
+                                                }
+                                            };
+                                            rewardedAd.show(_this, adCallback);
+
+
+                                            dialog.cancel();
+                                        }
+                                    });
+
+                            // create alert dialog
+                            AlertDialog rewardDialog = alertDialogBuilder.create();
+
+                            // show it
+                            rewardDialog.show();
 
 
                         } else {
@@ -6006,7 +6181,7 @@ v.seekTo(1);
                             Log.d("app5", "on finish");
                         }
                     }
-                }, 2000);
+                }, 250);
 
 
             } else {
@@ -6152,31 +6327,29 @@ v.seekTo(1);
                 if (numWarnings < 3 && inputMediaType == 0) {
 
                     Log.d("regrann", "Numwarnings  2 : " + numWarnings);
-                    numWarnings++;
-                    SharedPreferences.Editor editor = preferences.edit();
-                    editor.putInt("captionWarning", numWarnings);
 
-                    editor.commit();
+                    addToNumSessions();
+
 
                     showPasteDialog(shareIntent);
 
                 } else {
 
+
                     startActivity(shareIntent);
-
-
                     final Handler handler = new Handler();
                     handler.postDelayed(new Runnable() {
                         @Override
                         public void run() {
 
                             try {
+
                                 finish();
                             } catch (Exception e) {
                                 Log.d("app5", "on finish");
                             }
                         }
-                    }, 2000);
+                    }, 250);
 
 
                 }

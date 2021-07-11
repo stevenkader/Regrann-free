@@ -1,9 +1,9 @@
 <component name="libraryTable">
   <library name="Gradle: ly.img.android.sdk.assets:font-shared:8.0.0@aar">
     <CLASSES>
-      <root url="jar://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/5b4151dd0c5bad4af4250fdbdf0ef1fa/jetified-font-shared-8.0.0/jars/classes.jar!/" />
-      <root url="file://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/5b4151dd0c5bad4af4250fdbdf0ef1fa/jetified-font-shared-8.0.0/res" />
-      <root url="file://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/5b4151dd0c5bad4af4250fdbdf0ef1fa/jetified-font-shared-8.0.0/AndroidManifest.xml" />
+      <root url="jar://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/05940d156ea57b2b6e4bafb93f8cd489/jetified-font-shared-8.0.0/jars/classes.jar!/" />
+      <root url="file://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/05940d156ea57b2b6e4bafb93f8cd489/jetified-font-shared-8.0.0/res" />
+      <root url="file://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/05940d156ea57b2b6e4bafb93f8cd489/jetified-font-shared-8.0.0/AndroidManifest.xml" />
     </CLASSES>
     <JAVADOC />
     <SOURCES />

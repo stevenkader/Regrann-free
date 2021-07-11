@@ -104,7 +104,7 @@ public class UpgradeActivity extends AppCompatActivity {
                                     RegrannApp.sendEvent("query_purchase_foundpurchase", "", "");
                                     SharedPreferences.Editor editor = preferences.edit();
                                     editor.putBoolean("removeAds", true);
-
+                                    editor.putString("rewardDate", "");
                                     editor.commit();
 
 
@@ -261,7 +261,7 @@ public class UpgradeActivity extends AppCompatActivity {
 
                                 SharedPreferences.Editor editor = preferences.edit();
                                 editor.putBoolean("removeAds", true);
-
+                                editor.putString("rewardDate", "");
                                 editor.commit();
 
                                 billingClient.acknowledgePurchase(acknowledgePurchaseParams, acknowledgePurchaseResponseListener);
@@ -398,7 +398,7 @@ public class UpgradeActivity extends AppCompatActivity {
         if (false) {
             SharedPreferences.Editor editor = preferences.edit();
             editor.putBoolean("removeAds", true);
-
+            editor.putString("rewardDate", "");
             editor.commit();
             return;
         }
