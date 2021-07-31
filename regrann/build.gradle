@@ -62,8 +62,8 @@ android {
         applicationId "com.jaredco.regrann"
         minSdkVersion 21
         targetSdkVersion 29
-        versionCode 497
-        versionName "10.43"
+        versionCode 500
+        versionName "10.45"
 
         multiDexEnabled true
         resValue 'string', 'pesdk_version', "v$pesdk_version"
@@ -162,7 +162,7 @@ dependencies {
     // implementation 'com.daimajia.slider:library:1.1.5@aar'
     implementation 'androidx.multidex:multidex:2.0.1'
     implementation 'com.google.firebase:firebase-core:18.0.2'
-    implementation 'com.google.android.gms:play-services-ads:19.5.0'
+    implementation 'com.google.android.gms:play-services-ads:20.2.0'
 
     implementation 'com.google.android.play:core:1.10.0'
 

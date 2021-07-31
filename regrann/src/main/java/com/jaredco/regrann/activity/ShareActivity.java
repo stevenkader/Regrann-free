@@ -56,7 +56,6 @@ import android.webkit.JavascriptInterface;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.Button;
-import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
@@ -94,17 +93,15 @@ import com.bumptech.glide.load.resource.bitmap.RoundedCorners;
 import com.bumptech.glide.request.FutureTarget;
 import com.bumptech.glide.request.RequestOptions;
 import com.google.android.gms.ads.AdError;
-import com.google.android.gms.ads.AdListener;
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdSize;
 import com.google.android.gms.ads.AdView;
-import com.google.android.gms.ads.InterstitialAd;
+import com.google.android.gms.ads.FullScreenContentCallback;
 import com.google.android.gms.ads.LoadAdError;
 import com.google.android.gms.ads.formats.UnifiedNativeAd;
-import com.google.android.gms.ads.rewarded.RewardItem;
+import com.google.android.gms.ads.interstitial.InterstitialAd;
+import com.google.android.gms.ads.interstitial.InterstitialAdLoadCallback;
 import com.google.android.gms.ads.rewarded.RewardedAd;
-import com.google.android.gms.ads.rewarded.RewardedAdCallback;
-import com.google.android.gms.ads.rewarded.RewardedAdLoadCallback;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.play.core.review.ReviewInfo;
@@ -179,7 +176,7 @@ import static java.lang.Thread.sleep;
 
 
 public class ShareActivity extends AppCompatActivity implements VolleyRequestListener, BaseSliderView.OnSliderClickListener, ViewPagerEx.OnPageChangeListener, OnClickListener, OnCompletionListener, OnPreparedListener {
-    int buttonWidth;
+
     private ImageView postlater;
     private ImageView btnCurrentToFeed;
     private ImageView btnCurrentToStory;
@@ -1107,6 +1104,11 @@ public class ShareActivity extends AppCompatActivity implements VolleyRequestLis
 
         setContentView(R.layout.activity_share_main);
 
+        //   View decorView = getWindow().getDecorView();
+// Hide the status bar.
+        //  int uiOptions = View.SYSTEM_UI_FLAG_FULLSCREEN;
+        //  decorView.setSystemUiVisibility(uiOptions);
+
 
         Toolbar myToolbar = findViewById(R.id.my_toolbar);
         setSupportActionBar(myToolbar);
@@ -1130,7 +1132,7 @@ public class ShareActivity extends AppCompatActivity implements VolleyRequestLis
 
         if (showInterstitial) {
             initAdinCube();
-            AddBannerAd(findViewById(R.id.adFrameLayout));
+            //  AddBannerAd(findViewById(R.id.adFrameLayout));
             //   findViewById(R.id.fl_adplaceholder).setVisibility(View.VISIBLE);
             //  refreshAd();
         }
@@ -1460,154 +1462,99 @@ public class ShareActivity extends AppCompatActivity implements VolleyRequestLis
 
             if (showInterstitial) {
 
-                rewardedAd = new RewardedAd(this,
-                        "ca-app-pub-8534786486141147/9531798831");
+                rewardedAd = null;
+                /**
+                 rewardedAd = new RewardedAd(this,
+                 "ca-app-pub-8534786486141147/9531798831");
 
-                RewardedAdLoadCallback adLoadCallback = new RewardedAdLoadCallback() {
-                    @Override
-                    public void onRewardedAdLoaded() {
-                        // Ad successfully loaded.
-                        Log.d("app5", "rewarded ad loaded : " + rewardedAd.isLoaded());
-                        Log.d("app5", "rewarded ad loaded : " + rewardedAd.isLoaded());
-                        Log.d("app5", "rewarded ad loaded : " + rewardedAd.isLoaded());
-                    }
-
-                    @Override
-                    public void onRewardedAdFailedToLoad(LoadAdError adError) {
-                        // Ad failed to load.
-                        Log.d("app5", "rewarded ad failed : " + adError.getMessage());
-                    }
-                };
-                rewardedAd.loadAd(new AdRequest.Builder().build(), adLoadCallback);
-
-
-                mInterstitialAd = new InterstitialAd(this);
-                mInterstitialAd.setAdUnitId("ca-app-pub-8534786486141147/7512440239");
-
-
-                boolean show_midrect = preferences.getBoolean("show_midrect", true);
-
-                if (false) {
-
-
+                 RewardedAdLoadCallback adLoadCallback = new RewardedAdLoadCallback() {
+                @Override public void onRewardedAdLoaded() {
+                // Ad successfully loaded.
+                Log.d("app5", "rewarded ad loaded : " + rewardedAd.isLoaded());
+                Log.d("app5", "rewarded ad loaded : " + rewardedAd.isLoaded());
+                Log.d("app5", "rewarded ad loaded : " + rewardedAd.isLoaded());
                 }
 
-/**
- try {
+                @Override public void onRewardedAdFailedToLoad(LoadAdError adError) {
+                // Ad failed to load.
+                Log.d("app5", "rewarded ad failed : " + adError.getMessage());
+                }
+                };
+                 **/
+
+                // Load reward ad
+                //  rewardedAd.loadAd(new AdRequest.Builder().build(), adLoadCallback);
 
 
- AdConfig adConfig = new AdConfig("d966f410-ef78-0137-14e5-0242ac120003");
- final OguryThumbnailAd floatingAd = new OguryThumbnailAd(ShareActivity.this, adConfig);
- floatingAd.load(250, 140);
+                AdRequest adRequest = new AdRequest.Builder().build();
 
+                RegrannApp.sendEvent("gms_ad_request_load");
+                InterstitialAd.load(this, "ca-app-pub-8534786486141147/7512440239", adRequest,
+                        new InterstitialAdLoadCallback() {
+                            @Override
+                            public void onAdLoaded(@NonNull InterstitialAd interstitialAd) {
+                                // The mInterstitialAd reference will be null until
+                                // an ad is loaded.
+                                mInterstitialAd = interstitialAd;
+                                Log.i(TAG, "onAdLoaded");
+                                RegrannApp.sendEvent("gms_ad_loaded");
 
- Display display = getWindowManager().getDefaultDisplay();
- Point size = new Point();
- display.getSize(size);
- int width = size.x / 2;
- int height = size.y;
+                                mInterstitialAd.setFullScreenContentCallback(new FullScreenContentCallback() {
+                                    @Override
+                                    public void onAdDismissedFullScreenContent() {
+                                        // Called when fullscreen content is dismissed.
+                                        Log.d("TAG", "The ad was dismissed.");
+                                        RegrannApp.sendEvent("gms_ad_dismissed");
+                                        if (autoSaving || isMulti) {
+                                            autoSaving = false;
+                                            finish();
+                                        }
 
- Log.d("ogury", "" + width + "  :  " + height);
+                                        if ((instagramBtnClicked && isMulti == false) || (currentToFeedBtnPressed)) {
+                                            sendToInstagam();
 
- floatingAd.setCallback(new OguryThumbnailAdCallback() {
-@Override public void onAdNotLoaded() {
-Log.i("Ogury", "on ad not loaded");
-}
+                                        }
+                                    }
 
-@Override public void onAdLoaded() {
-Log.i("Ogury", "on ad loaded");
-if (floatingAd.isLoaded()) {
+                                    @Override
+                                    public void onAdFailedToShowFullScreenContent(AdError adError) {
+                                        // Called when fullscreen content failed to show.
+                                        Log.d("TAG", "The ad failed to show.");
+                                        RegrannApp.sendEvent("gms_ad_failed_to_show");
+                                        if (autoSaving || isMulti) {
+                                            autoSaving = false;
+                                            finish();
+                                        }
 
+                                        if ((instagramBtnClicked && isMulti == false) || (currentToFeedBtnPressed)) {
+                                            sendToInstagam();
 
-Display display = getWindowManager().getDefaultDisplay();
-Point size = new Point();
-display.getSize(size);
-int width = size.x / 2;
-int height = size.y;
+                                        }
+                                    }
 
-Log.d("ogury", "" + width + "  :  " + height);
+                                    @Override
+                                    public void onAdShowedFullScreenContent() {
+                                        // Called when fullscreen content is shown.
+                                        // Make sure to set your reference to null so you don't
+                                        // show it a second time.
+                                        mInterstitialAd = null;
+                                        Log.d("TAG", "The ad was shown.");
+                                        RegrannApp.sendEvent("gms_ad_was_shown");
+                                    }
+                                });
+                            }
 
+                            @Override
+                            public void onAdFailedToLoad(@NonNull LoadAdError loadAdError) {
+                                // Handle the error
+                                Log.i(TAG, loadAdError.getMessage());
+                                RegrannApp.sendEvent("gms_ad_failed_to_load");
+                                mInterstitialAd = null;
 
-floatingAd.show(ShareActivity.this, 20, 450);
-}
-}
+                            }
+                        });
 
-@Override public void onAdNotAvailable() {
-Log.i("Ogury", "on ad not available");
-}
-
-@Override public void onAdAvailable() {
-Log.i("Ogury", "on ad available");
-}
-
-@Override public void onAdError(int code) {
-Log.i("Ogury", "on ad error " + code);
-
-}
-
-@Override public void onAdClosed() {
-Log.i("Ogury", "on ad closed");
-}
-
-@Override public void onAdDisplayed() {
-Log.i("Ogury", "on ad displayed");
-}
-});
-
- } catch (Exception e3) {
- }
- **/
-
-                mInterstitialAd.loadAd(new AdRequest.Builder().build());
-
-                mInterstitialAd.setAdListener(new AdListener() {
-                    @Override
-                    public void onAdLoaded() {
-                        // Code to be executed when an ad finishes loading.
-                    }
-
-                    @Override
-                    public void onAdFailedToLoad(int errorCode) {
-                        // Code to be executed when an ad request fails.
-                    }
-
-                    @Override
-                    public void onAdOpened() {
-                        // Code to be executed when the ad is displayed.
-                    }
-
-                    @Override
-                    public void onAdClicked() {
-                        // Code to be executed when the user clicks on an ad.
-                        if (autoSaving) {
-                            autoSaving = false;
-                            finish();
-                        }
-
-
-                    }
-
-                    @Override
-                    public void onAdLeftApplication() {
-                        // Code to be executed when the user has left the app.
-                    }
-
-                    @Override
-                    public void onAdClosed() {
-                        // Code to be executed when the interstitial ad is closed.
-
-
-                        if (autoSaving) {
-                            autoSaving = false;
-                            finish();
-                        }
-
-                        if (instagramBtnClicked) {
-                            sendToInstagam();
-
-                        }
-                    }
-                });
+                boolean show_midrect = preferences.getBoolean("show_midrect", true);
 
 
             }
@@ -1832,7 +1779,24 @@ Log.i("Ogury", "on ad displayed");
 
         } else {
             //    cleanUp();
-            finish();
+
+            if (showInterstitial) {
+
+                RegrannApp.sendEvent("gms_ad_needs_to_show");
+
+                if (mInterstitialAd != null) {
+                    mInterstitialAd.show(_this);
+
+
+                    RegrannApp.sendEvent("gms_ad_show_requested");
+
+
+                }
+            } else {
+                finish();
+            }
+
+
             return;
         }
 
@@ -2015,22 +1979,6 @@ Log.i("Ogury", "on ad displayed");
     }
 
 
-    private void loadBanner() {
-        // Create an ad request. Check your logcat output for the hashed device ID
-        // to get test ads on a physical device, e.g.,
-        // "Use AdRequest.Builder.addTestDevice("ABCDE0123") to get test ads on this
-        // device."
-        AdRequest adRequest =
-                new AdRequest.Builder().addTestDevice(AdRequest.DEVICE_ID_EMULATOR).addTestDevice("03B8364E84BB1446DA5C8FDFA9A4E356").build();
-
-        AdSize adSize = getAdSize();
-        // Step 4 - Set the adaptive ad size on the ad view.
-        adBannerView.setAdSize(adSize);
-
-
-        // Step 5 - Start loading the ad in the background.
-        adBannerView.loadAd(adRequest);
-    }
 
     private AdSize getAdSize() {
         // Step 2 - Determine the screen width (less decorations) to use for the ad width.
@@ -2048,13 +1996,7 @@ Log.i("Ogury", "on ad displayed");
     }
 
 
-    private void AddBannerAd(FrameLayout frameContainer) {
-        // Step 1 - Create an AdView and set the ad unit ID on it.
-        adBannerView = new AdView(this);
-        adBannerView.setAdUnitId("ca-app-pub-8534786486141147/4655316331");
-        frameContainer.addView(adBannerView);
-        loadBanner();
-    }
+
 
     private void showPasteDialog(final Intent intent) {
 
@@ -2083,7 +2025,7 @@ Log.i("Ogury", "on ad displayed");
                     public void run() {
                         finish();
                     }
-                }, 2000);
+                }, 500);
                 dialog.dismiss();
 
 
@@ -2186,7 +2128,7 @@ Log.i("Ogury", "on ad displayed");
                                     public void run() {
                                         finish();
                                     }
-                                }, 2000);
+                                }, 500);
 
                             }
 
@@ -2712,7 +2654,7 @@ Log.i("Ogury", "on ad displayed");
 
     @Override
     public void onDataLoaded(String volleyReturn, String url) {
-        Log.d("app5", "VOLLEY : " + volleyReturn);
+        // Log.d("app5", "VOLLEY : " + volleyReturn);
 
         if (volleyReturn.equals("ERROR"))
             GET(url);
@@ -2720,27 +2662,18 @@ Log.i("Ogury", "on ad displayed");
         else {
             try {
 
-
+                Log.d("app5", "Volley ok!");
                 JSONObject json = new JSONObject(volleyReturn);
                 JSONObject graphQlObject = json.getJSONObject("graphql");
 
                 JSONObject shortCode_media_object = graphQlObject.getJSONObject("shortcode_media");
 
 
-                if (showInterstitial) {
-                    final Handler handler1 = new Handler();
-                    handler1.postDelayed(new Runnable() {
-                        @Override
-                        public void run() {
-                            processJSON(shortCode_media_object.toString());
-                        }
-                    }, 2000);
-                } else {
-                    processJSON(shortCode_media_object.toString());
-                }
+                processJSON(shortCode_media_object.toString());
 
 
             } catch (Exception e) {
+                Log.d("app5", "Volley Error : " + e.getMessage());
                 GET(url);
             }
         }
@@ -3381,9 +3314,8 @@ v.seekTo(1);
 
     }
 
-    private void showBottomButtons() {
 
-
+    private void setBottomButtonsVisible() {
         runOnUiThread(new Runnable() {
             public void run() {
                 try {
@@ -3394,6 +3326,66 @@ v.seekTo(1);
 
             }
         });
+    }
+
+    private void showBottomButtons() {
+
+
+        if (showInterstitial) {
+            if (mInterstitialAd != null) {
+                Log.d("app5", "Ad Ready - Showing Bottom Buttons");
+                setBottomButtonsVisible();
+            } else {
+
+                if (mInterstitialAd != null) {
+                    Log.d("app5", "Ad Ready - Showing Bottom Buttons");
+                    setBottomButtonsVisible();
+                    return;
+                } else {
+                    {
+
+                        Handler handler2 = new Handler(Looper.getMainLooper());
+                        handler2.postDelayed(new Runnable() {
+                            @Override
+                            public void run() {
+                                Log.d("app5", "Ad Not Ready - wait  1 sec");
+
+                                if (mInterstitialAd != null) {
+                                    Log.d("app5", "Ad Ready - Showing Bottom Buttons");
+                                    setBottomButtonsVisible();
+                                    return;
+                                } else {
+
+                                    Handler handler2 = new Handler(Looper.getMainLooper());
+                                    handler2.postDelayed(new Runnable() {
+                                        @Override
+                                        public void run() {
+                                            Log.d("app5", "Ad Not Ready - Showing Bottom Buttons");
+                                            setBottomButtonsVisible();
+                                            return;
+                                        }
+                                    }, 1500);
+
+                                }
+
+
+                            }
+                        }, 1000);
+
+                    }
+
+
+                }
+
+            }
+        }
+
+
+        if (showInterstitial == false) {
+            setBottomButtonsVisible();
+        }
+
+
     }
 
 
@@ -5221,6 +5213,7 @@ v.seekTo(1);
                             t.setText("Quick Save Done");
 
 
+
                             final Handler handler = new Handler();
                             handler.postDelayed(new Runnable() {
                                 @Override
@@ -5228,15 +5221,14 @@ v.seekTo(1);
                                     Log.d("app5", "remove spinner 4663");
                                     spinner.setVisibility(View.GONE);
 
-
-                                    RegrannApp.sendEvent("sc_admob8_needed");
-
-
-                                    if (mInterstitialAd.isLoaded()) {
-                                        mInterstitialAd.show();
+                                    RegrannApp.sendEvent("gms_ad_needs_to_show");
 
 
-                                        RegrannApp.sendEvent("sc_admob8_shown");
+                                    if (mInterstitialAd != null) {
+                                        mInterstitialAd.show(_this);
+
+                                        RegrannApp.sendEvent("gms_ad_show_requested");
+
 
                                         autoSaving = true;
 
@@ -5268,31 +5260,11 @@ v.seekTo(1);
 
             changeSaveButton();
 
-            if (showInterstitial) {
 
-                final Handler handler = new Handler();
-                handler.postDelayed(new Runnable() {
-                    @Override
-                    public void run() {
-
-                        removeProgressDialog();
-                        Toast toast = Toast.makeText(ShareActivity.this, "Saving multi-post complete.", Toast.LENGTH_LONG);
-                        toast.setGravity(Gravity.CENTER_VERTICAL, 0, 0);
-                        toast.show();
-                    }
-                }, 3000);
-
-
-            } else {
-
-
-                removeProgressDialog();
-                Toast toast = Toast.makeText(ShareActivity.this, "Saving multi-post complete.", Toast.LENGTH_LONG);
-                toast.setGravity(Gravity.CENTER_VERTICAL, 0, 0);
-                toast.show();
-
-
-            }
+            removeProgressDialog();
+            Toast toast = Toast.makeText(ShareActivity.this, "Saving multi-post complete.", Toast.LENGTH_LONG);
+            toast.setGravity(Gravity.CENTER_VERTICAL, 0, 0);
+            toast.show();
 
 
             //    Toast toast = Toast.makeText(ShareActivity.this, "Saving multi-post photos and videos.", Toast.LENGTH_LONG);
@@ -5312,22 +5284,15 @@ v.seekTo(1);
 
             if (showInterstitial) {
 
-                final Handler handler = new Handler();
-                handler.postDelayed(new Runnable() {
-                    @Override
-                    public void run() {
+
+                RegrannApp.sendEvent("gms_ad_needs_to_show");
+
+                if (mInterstitialAd != null) {
+                    mInterstitialAd.show(_this);
 
 
-                        RegrannApp.sendEvent("sc_admob8_needed");
-
-                        if (mInterstitialAd.isLoaded()) {
-                            mInterstitialAd.show();
-
-
-                            RegrannApp.sendEvent("sc_admob8_shown");
-                        }
-                    }
-                }, 1000);
+                    RegrannApp.sendEvent("gms_ad_show_requested");
+                }
 
 
             }
@@ -5460,6 +5425,9 @@ v.seekTo(1);
                             TextView t = findViewById(R.id.autosaveText);
                             t.setText("Quick Save Done");
 
+                            int delay = 2000;
+                            if (mInterstitialAd != null)
+                                delay = 500;
 
                             final Handler handler = new Handler();
                             handler.postDelayed(new Runnable() {
@@ -5469,18 +5437,19 @@ v.seekTo(1);
                                     spinner.setVisibility(View.GONE);
 
 
-                                    RegrannApp.sendEvent("sc_admob8_needed");
+                                    RegrannApp.sendEvent("gms_ad_needs_to_show");
 
-                                    if (mInterstitialAd.isLoaded()) {
-                                        mInterstitialAd.show();
+                                    if (mInterstitialAd != null) {
+                                        mInterstitialAd.show(_this);
+
                                         autoSaving = true;
 
-                                        RegrannApp.sendEvent("sc_admob8_shown");
+                                        RegrannApp.sendEvent("gms_ad_show_requested");
                                     } else
                                         finish();
 
                                 }
-                            }, 1000);
+                            }, delay);
 
 
                         }
@@ -5513,13 +5482,13 @@ v.seekTo(1);
 
             if (showInterstitial) {
 
-                RegrannApp.sendEvent("sc_admob8_needed");
+                RegrannApp.sendEvent("gms_ad_needs_to_show");
 
-                if (mInterstitialAd.isLoaded()) {
-                    mInterstitialAd.show();
+                if (mInterstitialAd != null) {
+                    mInterstitialAd.show(_this);
 
 
-                    RegrannApp.sendEvent("sc_admob8_shown");
+                    RegrannApp.sendEvent("gms_ad_show_requested");
 
 
                 }
@@ -5700,6 +5669,8 @@ v.seekTo(1);
 
     }
 
+    private boolean currentToFeedBtnPressed = false;
+
     @Override
     public void onClick(View v) {
         try {
@@ -5815,7 +5786,7 @@ v.seekTo(1);
 
 
             if (v == btnCurrentToFeed) {
-
+                currentToFeedBtnPressed = true;
                 RegrannApp.sendEvent("sc_current_to_feed");
 
                 if (isMulti) {
@@ -5833,7 +5804,27 @@ v.seekTo(1);
                                     //  tempVideoFile = new File(mDemoSlider.getCurrentSlider().getBundle().get("fname").toString());
                                     Util.setTempVideoFileName(mDemoSlider.getCurrentSlider().getBundle().get("fname").toString());
                                 }
-                                sendToInstagam();
+
+                                // reset isMulti to false so we after ad sendToInstagram will be called
+
+                                if (showInterstitial) {
+
+                                    RegrannApp.sendEvent("gms_ad_needs_to_show");
+
+                                    if (mInterstitialAd != null) {
+                                        mInterstitialAd.show(_this);
+
+
+                                        RegrannApp.sendEvent("gms_ad_show_requested");
+
+
+                                    } else {
+                                        sendToInstagam();
+                                    }
+                                } else {
+
+                                    sendToInstagam();
+                                }
 
                                 //   onClick(btnInstagram);
 
@@ -5926,10 +5917,8 @@ v.seekTo(1);
                     //    diff = 8 ;
                     if (showInterstitial) {
 
-                        RegrannApp.sendEvent("sc_admob8_needed");
-
-                        if (mInterstitialAd.isLoaded() || rewardedAd.isLoaded()) {
-                            RegrannApp.sendEvent("sc_admob8_shown");
+                        RegrannApp.sendEvent("gms_ad_needs_to_show");
+                        if (mInterstitialAd != null || rewardedAd != null) {
 
 
                             String lastRewardDeniedDate = preferences.getString("lastRewardDeniedDate", "");
@@ -5937,14 +5926,16 @@ v.seekTo(1);
                             SimpleDateFormat df = new SimpleDateFormat("dd-MMM-yyyy", Locale.getDefault());
                             String currentDate = df.format(c);
 
-                            if (rewardedAd.isLoaded() == false || lastRewardDeniedDate.equals(currentDate)) {
-                                if (mInterstitialAd.isLoaded()) {
+                            // if (rewardedAd.isLoaded() == false || lastRewardDeniedDate.equals(currentDate)) {
+                            if (1 == 1) {
+                                if (mInterstitialAd != null) {
+                                    RegrannApp.sendEvent("gms_ad_show_requested");
                                     Log.d("app5", "showing insterstial 5945");
-                                    mInterstitialAd.show();
+                                    mInterstitialAd.show(_this);
                                 }
                                 return;
                             }
-
+                            RegrannApp.sendEvent("sc_admob8_reward_shown");
 
                             AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(ShareActivity.this);
 
@@ -5970,10 +5961,9 @@ v.seekTo(1);
                                             editor.commit();
 
                                             RegrannApp.sendEvent("sc_rewardvideo_DENIED");
-                                            if (mInterstitialAd.isLoaded()) {
-                                                Log.d("app5", "showing 5976 5945");
+                                            if (mInterstitialAd != null) {
+                                                mInterstitialAd.show(_this);
 
-                                                mInterstitialAd.show();
                                             }
 
                                             dialog.cancel();
@@ -5988,7 +5978,7 @@ v.seekTo(1);
 
                                             RegrannApp.sendEvent("sc_rewardvideo_OK");
 
-
+/**
                                             RewardedAdCallback adCallback = new RewardedAdCallback() {
                                                 @Override
                                                 public void onRewardedAdOpened() {
@@ -6021,17 +6011,16 @@ v.seekTo(1);
 
                                                     //  sendToInstagam();
 
-                                                }
+}
 
-                                                @Override
-                                                public void onRewardedAdFailedToShow(AdError adError) {
-                                                    // Ad failed to display.
-                                                    Log.d("app5", "rewarded failed to display");
-                                                    sendToInstagam();
-                                                }
-                                            };
-                                            rewardedAd.show(_this, adCallback);
-
+@Override public void onRewardedAdFailedToShow(AdError adError) {
+// Ad failed to display.
+Log.d("app5", "rewarded failed to display");
+sendToInstagam();
+}
+};
+ rewardedAd.show(_this, adCallback);
+ **/
 
                                             dialog.cancel();
                                         }

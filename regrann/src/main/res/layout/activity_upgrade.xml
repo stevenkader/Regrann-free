@@ -36,10 +36,26 @@
             android:layout_gravity="center_horizontal"
             android:layout_marginTop="20dp"
             android:gravity="center_horizontal"
-            android:text="@string/upgrade_header_text"
+            android:text="Upgrade to Premium"
             android:textAlignment="center"
             android:textColor="#FFFFFF"
             android:textSize="24sp"
+            android:textStyle="bold" />
+
+
+        <TextView
+
+            android:layout_width="match_parent"
+
+
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="20dp"
+            android:gravity="center_horizontal"
+            android:text="ONE TIME PAYMENT"
+            android:textAlignment="center"
+            android:textColor="#FFFFFF"
+            android:textSize="20sp"
             android:textStyle="bold" />
 
         <TextView
@@ -72,7 +88,7 @@
                 android:textStyle="bold"
                 android:layout_height="wrap_content"
                 android:gravity="clip_horizontal|center|center_horizontal"
-                android:text="On Sale - 50% Off"
+                android:text="On Sale - 50% Off\n\nOne Payment for Lifetime Use\nEven if you change devices"
                 android:textAlignment="center"
                 android:textColor="#FFFFFF"
                 android:textSize="20sp" />
