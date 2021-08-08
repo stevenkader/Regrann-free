@@ -6338,7 +6338,7 @@ sendToInstagam();
                                 Log.d("app5", "on finish");
                             }
                         }
-                    }, 250);
+                    }, 2000);
 
 
                 }
