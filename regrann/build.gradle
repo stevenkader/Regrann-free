@@ -51,8 +51,8 @@ imglyConfig {
 
 
 android {
-    compileSdkVersion 29
-    buildToolsVersion '29.0.3'
+    compileSdkVersion 30
+
 
     dexOptions {
         javaMaxHeapSize "4g"
@@ -61,9 +61,9 @@ android {
     defaultConfig {
         applicationId "com.jaredco.regrann"
         minSdkVersion 21
-        targetSdkVersion 29
-        versionCode 501
-        versionName "10.46"
+        targetSdkVersion 30
+        versionCode 509
+        versionName "10.54"
 
         multiDexEnabled true
         resValue 'string', 'pesdk_version', "v$pesdk_version"

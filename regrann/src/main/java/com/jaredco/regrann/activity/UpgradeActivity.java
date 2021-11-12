@@ -178,7 +178,7 @@ public class UpgradeActivity extends AppCompatActivity {
 
                 try {
 
-                    AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(UpgradeActivity._this);
+                    AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(UpgradeActivity.this);
 
                     // set dialog message
                     alertDialogBuilder.setTitle("Upgrade Complete").setMessage(getString(R.string.purchase_complete)).setCancelable(false).setIcon(R.drawable.ic_launcher).setPositiveButton("Ok", new DialogInterface.OnClickListener() {

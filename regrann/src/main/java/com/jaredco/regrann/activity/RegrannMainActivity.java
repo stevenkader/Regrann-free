@@ -419,7 +419,7 @@ public class RegrannMainActivity extends AppCompatActivity {
         List<String> permissionsNeeded = new ArrayList<String>();
 
         final List<String> permissionsList = new ArrayList<String>();
-        if (!addPermission(permissionsList, Manifest.permission.WRITE_EXTERNAL_STORAGE))
+        if (!addPermission(permissionsList, Manifest.permission.READ_EXTERNAL_STORAGE))
             permissionsNeeded.add("Read SMS");
 
 

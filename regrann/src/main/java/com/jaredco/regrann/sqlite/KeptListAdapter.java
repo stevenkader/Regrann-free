@@ -33,16 +33,16 @@ public class KeptListAdapter extends SQLiteOpenHelper {
 
     private KeptListAdapter(Context ctx) {
 
-        super(ctx, Environment.getExternalStoragePublicDirectory(
-                Environment.DIRECTORY_DOCUMENTS) +  File.separator
-                 + DATABASE_NAME, null, DATABASE_VERSION);
-      //  super(ctx, DATABASE_NAME, null, DATABASE_VERSION);
-        try{
+        super(ctx, ctx.getExternalFilesDir(Environment.DIRECTORY_DOCUMENTS) + "/" +
+                Environment.DIRECTORY_DOCUMENTS + File.separator
+                + DATABASE_NAME, null, DATABASE_VERSION);
+        //  super(ctx, DATABASE_NAME, null, DATABASE_VERSION);
+        try {
             db = this.getWritableDatabase();
             onUpgrade(db, 4, 0);
+        } catch (Exception e) {
+            Log.d("app5", "Error KeptlistAdapter 46 :" + e.getMessage());
         }
-        catch (Exception e)
-        {}
     }
 
 

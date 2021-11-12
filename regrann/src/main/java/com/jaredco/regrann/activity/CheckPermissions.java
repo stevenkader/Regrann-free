@@ -106,7 +106,7 @@ public class CheckPermissions extends AppCompatActivity {
         List<String> permissionsNeeded = new ArrayList<String>();
 
         final List<String> permissionsList = new ArrayList<String>();
-        if (!addPermission(permissionsList, Manifest.permission.WRITE_EXTERNAL_STORAGE))
+        if (!addPermission(permissionsList, Manifest.permission.READ_EXTERNAL_STORAGE))
             permissionsNeeded.add("Read SMS");
 
 
@@ -143,12 +143,12 @@ public class CheckPermissions extends AppCompatActivity {
         if (requestCode == REQUEST_CODE_ASK_MULTIPLE_PERMISSIONS) {
             Map<String, Integer> perms = new HashMap<String, Integer>();
             // Initial
-            perms.put(Manifest.permission.WRITE_EXTERNAL_STORAGE, PackageManager.PERMISSION_GRANTED);
+            perms.put(Manifest.permission.READ_EXTERNAL_STORAGE, PackageManager.PERMISSION_GRANTED);
             //       perms.put(Manifest.permission.RECEIVE_SMS, PackageManager.PERMISSION_GRANTED);
             //      perms.put(android.Manifest.permission.READ_SMS, PackageManager.PERMISSION_GRANTED);
 
 
-            if (perms.get(Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED
+            if (perms.get(Manifest.permission.READ_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED
 
             ) {
                 // All Permissions Granted

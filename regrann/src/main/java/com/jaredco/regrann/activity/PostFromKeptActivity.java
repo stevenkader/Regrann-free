@@ -104,8 +104,7 @@ public class PostFromKeptActivity extends Activity implements OnClickListener, O
                                 Environment.DIRECTORY_PICTURES) + "/regrann_postlater/" + new File(tempFileFullPathName).getName());
 
 
-
-                        FileUtils.copyFile(src,folderDst);
+                        FileUtils.copyFile(src, folderDst);
 
                         if (isVideo) {
 
@@ -215,34 +214,33 @@ public class PostFromKeptActivity extends Activity implements OnClickListener, O
 
                     // flurryAgent.logEvent("Instagram button pressed");
                     // FlurryAgent.logEvent("Click Instagram");
-                    Intent intent = this.getPackageManager().getLaunchIntentForPackage("com.instagram.android");
-                    if (intent != null) {
-                        Intent shareIntent = new Intent();
-                        shareIntent.setAction(Intent.ACTION_SEND);
-                        shareIntent.setPackage("com.instagram.android");
-                        shareIntent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
 
-                        shareIntent.setClassName(
-                                "com.instagram.android",
-                                "com.instagram.share.handleractivity.ShareHandlerActivity");
+                    Intent shareIntent = new Intent();
+                    shareIntent.setAction(Intent.ACTION_SEND);
+                    shareIntent.setPackage("com.instagram.android");
+                    shareIntent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
+
+                    shareIntent.setClassName(
+                            "com.instagram.android",
+                            "com.instagram.share.handleractivity.ShareHandlerActivity");
 
 
-                        shareIntent.putExtra(Intent.EXTRA_TEXT, caption);
-                        ClipboardManager clipboard = (ClipboardManager) getSystemService(CLIPBOARD_SERVICE);
-                        ClipData clip = ClipData.newPlainText("Post caption", caption);
-                        Objects.requireNonNull(clipboard).setPrimaryClip(clip);
+                    shareIntent.putExtra(Intent.EXTRA_TEXT, caption);
+                    ClipboardManager clipboard = (ClipboardManager) getSystemService(CLIPBOARD_SERVICE);
+                    ClipData clip = ClipData.newPlainText("Post caption", caption);
+                    Objects.requireNonNull(clipboard).setPrimaryClip(clip);
 
-                        if (isVideo) {
-                            shareIntent.setType("video/*");
-                            shareIntent.putExtra(Intent.EXTRA_STREAM, Uri.fromFile(tempVideoFile));
-                        } else {
-                            shareIntent.putExtra(Intent.EXTRA_STREAM, Uri.fromFile(tempFile));
-                            shareIntent.setType("image/*");
-                        }
-                        startActivity(shareIntent);
-                        KeptForLaterActivity._this.removeCurrentPhoto();
-                        finish();
+                    if (isVideo) {
+                        shareIntent.setType("video/*");
+                        shareIntent.putExtra(Intent.EXTRA_STREAM, Uri.fromFile(tempVideoFile));
+                    } else {
+                        shareIntent.putExtra(Intent.EXTRA_STREAM, Uri.fromFile(tempFile));
+                        shareIntent.setType("image/*");
                     }
+                    startActivity(shareIntent);
+                    KeptForLaterActivity._this.removeCurrentPhoto();
+                    finish();
+
                 } catch (Exception e) {
                     showErrorToast(e.getMessage(), "Sorry. There was a problem. Please try again later.");
 

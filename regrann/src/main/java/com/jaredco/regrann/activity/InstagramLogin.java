@@ -52,7 +52,7 @@ public class InstagramLogin extends AppCompatActivity implements View.OnClickLis
         webview.setWebViewClient(new WebViewClient());
 
         webview.setLayerType(View.LAYER_TYPE_HARDWARE, null);
-
+        webview.clearCache(true);
 
 
         if (Build.VERSION.SDK_INT >= 21) {
