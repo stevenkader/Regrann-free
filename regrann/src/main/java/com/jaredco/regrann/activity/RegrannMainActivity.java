@@ -1,12 +1,13 @@
 package com.jaredco.regrann.activity;
 
+import static com.jaredco.regrann.activity.RegrannApp.sendEvent;
+import static com.jaredco.regrann.util.Util.getUserCountry;
+
 import android.Manifest;
 import android.app.AlertDialog;
-import android.app.PendingIntent;
 import android.content.ActivityNotFoundException;
 import android.content.ClipData;
 import android.content.ClipboardManager;
-import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -18,17 +19,14 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.preference.PreferenceManager;
-import android.telephony.TelephonyManager;
 import android.util.Log;
 import android.view.View;
 import android.widget.ProgressBar;
-import android.widget.SimpleCursorAdapter;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
-import androidx.core.content.ContextCompat;
 
 import com.android.billingclient.api.AcknowledgePurchaseParams;
 import com.android.billingclient.api.AcknowledgePurchaseResponseListener;
@@ -38,6 +36,7 @@ import com.android.billingclient.api.BillingResult;
 import com.android.billingclient.api.ConsumeParams;
 import com.android.billingclient.api.ConsumeResponseListener;
 import com.android.billingclient.api.Purchase;
+import com.android.billingclient.api.PurchasesResponseListener;
 import com.android.billingclient.api.PurchasesUpdatedListener;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -45,22 +44,17 @@ import com.google.firebase.analytics.FirebaseAnalytics;
 import com.google.firebase.remoteconfig.FirebaseRemoteConfig;
 import com.google.firebase.remoteconfig.FirebaseRemoteConfigSettings;
 import com.jaredco.regrann.R;
-import com.jaredco.regrann.service.ClipboardListenerService;
 import com.jaredco.regrann.sqlite.KeptListAdapter;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Locale;
 
 public class RegrannMainActivity extends AppCompatActivity {
 
-    Intent fileObserverIntent;
+
     SharedPreferences preferences;
     public static RegrannMainActivity _this;
 
-    PendingIntent pendingIntent;
-    private SimpleCursorAdapter dataAdapter;
-    public static String caption_prefix = "Reposted";
 
     boolean firstRun, olderUser;
 
@@ -80,16 +74,16 @@ public class RegrannMainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
 
         String country = getUserCountry(getApplicationContext());
-        Log.d("app", "countr code " + country);
+        Log.d("app5", "countr code " + country);
 
 
         _this = this;
 
 
-          //  IntegrationHelper.validateIntegration(this);
+        //  IntegrationHelper.validateIntegration(this);
 
-     //  MediationTestSuite.launch(RegrannMainActivity.this);
-      //  MediationTestSuite.addTestDevice("B1D20D0F336796629655D59351F179F8");
+        //  MediationTestSuite.launch(RegrannMainActivity.this);
+        //  MediationTestSuite.addTestDevice("B1D20D0F336796629655D59351F179F8");
       //  MediationTestSuite.addTestDevice("03B8364E84BB1446DA5C8FDFA9A4E356");
 
 
@@ -171,41 +165,67 @@ public class RegrannMainActivity extends AppCompatActivity {
 
         billingClient.startConnection(new BillingClientStateListener() {
             @Override
+            public void onBillingServiceDisconnected() {
+
+            }
+
+            @Override
             public void onBillingSetupFinished(BillingResult billingResult) {
                 if (billingResult.getResponseCode() == BillingClient.BillingResponseCode.OK) {
                     // The BillingClient is ready. You can query purchases here.
                     billingReady = true;
 
-                    queryPurchases();
+                    billingClient.queryPurchasesAsync(BillingClient.SkuType.INAPP, new PurchasesResponseListener() {
+                        @Override
+                        public void onQueryPurchasesResponse(@NonNull BillingResult billingResult, @NonNull List<Purchase> list) {
+                            if (billingResult.getResponseCode() == BillingClient.BillingResponseCode.OK) {
+
+                                sendEvent("query_purchases_ok", "", "");
+                                if (list.size() > 0) {
+
+                                    for (Purchase purchase : list) {
+
+                                        if (purchase.getPurchaseState() == Purchase.PurchaseState.PURCHASED) {
+                                            sendEvent("query_purchase_foundpurchase", "", "");
+                                            SharedPreferences.Editor editor = preferences.edit();
+                                            editor.putBoolean("removeAds", true);
+
+                                            editor.commit();
 
 
+                                        }
+                                    }
+                                }
+                                //      Log.i("app5", "Skipped subscription purchases query since they are not supported");
+                            }
 
+                        }
+                    });
                 }
+
+
             }
 
-            @Override
-            public void onBillingServiceDisconnected() {
-                // Try to restart the connection on the next request to
-                // Google Play by calling the startConnection() method.
-            }
+
         });
 
 
+/**
 
+ try {
+ if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.P) {
 
-        try {
-            if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.P) {
+ Intent myService = new Intent(RegrannApp._this, ClipboardListenerService.class);
+ if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+ ContextCompat.startForegroundService(_this, myService);
+ } else {
+ _this.startService(myService);
+ }
+ }
 
-                Intent myService = new Intent(RegrannApp._this, ClipboardListenerService.class);
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-                    ContextCompat.startForegroundService(_this, myService);
-                } else {
-                    _this.startService(myService);
-                }
-            }
-
-        } catch (Exception e) {
-        }
+ } catch (Exception e) {
+ }
+ **/
 
         noAds = preferences.getBoolean("removeAds", false);
 
@@ -397,6 +417,7 @@ public class RegrannMainActivity extends AppCompatActivity {
     public void onClickBtnChangeLogin(View v) {
 
         Intent myIntent = new Intent(RegrannMainActivity.this, InstagramLogin.class);
+        myIntent.putExtra("frommain", true);
         _this.startActivity(myIntent);
 
     }
@@ -419,7 +440,7 @@ public class RegrannMainActivity extends AppCompatActivity {
         List<String> permissionsNeeded = new ArrayList<String>();
 
         final List<String> permissionsList = new ArrayList<String>();
-        if (!addPermission(permissionsList, Manifest.permission.READ_EXTERNAL_STORAGE))
+        if (!addPermission(permissionsList, Manifest.permission.WRITE_EXTERNAL_STORAGE))
             permissionsNeeded.add("Read SMS");
 
 
@@ -517,11 +538,22 @@ public class RegrannMainActivity extends AppCompatActivity {
     }
 
     public void onClickUpgradeButton(View v) {
+        numClicks = 0;
 
-        Intent i = new Intent(_this, UpgradeActivity.class);
-        i.putExtra("from_main_screen", true);
-        startActivity(i);
-        RegrannApp.sendEvent("rmain_upgrade_btn");
+        //  Intent i = new Intent(_this, UpgradeActivity.class);
+        // i.putExtra("from_main_screen", true);
+        //  startActivity(i);
+        //   RegrannApp.sendEvent("rmain_upgrade_btn");
+
+        RegrannApp.sendEvent("rmain_upgrade_btn_clkV2", "", "");
+
+        final String appPackageName = getPackageName(); // getPackageName() from Context or Activity object
+        try {
+            startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("market://details?id=com.nimmble.rgpro")));
+        } catch (android.content.ActivityNotFoundException anfe) {
+            startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("https://play.google.com/store/apps/details?id=com.nimmble.rgpro")));
+        }
+
     }
 
 
@@ -626,60 +658,10 @@ public class RegrannMainActivity extends AppCompatActivity {
 
             } else {
 
-                boolean fromForegroundNotice = getIntent().getBooleanExtra("fromforegroundnotice", false);
 
-                //   Intent i = new Intent(this, SettingsActivity2.class);
-                //  i.putExtra("fromforegroundnotice", fromForegroundNotice);
-                // startActivity(i);
-
-                //  finish();
 
                 showMainScreen();
 
-
-                /**
-                 boolean viewNotice001 = preferences.getBoolean("viewNotice001", false);
-
-                 if (viewNotice001 == false && firstRun == false) {
-
-                 Thread thread = new Thread() {
-
-                @Override public void run() {
-
-                // Block this thread for 2 seconds.
-                try {
-                Thread.sleep(1000);
-                } catch (InterruptedException e) {
-                }
-
-                // After sleep finished blocking, create a Runnable to run on the UI Thread.
-                runOnUiThread(new Runnable() {
-                @Override public void run() {
-
-                SharedPreferences.Editor editor = preferences.edit();
-                editor.putBoolean("viewNotice001", true);
-                editor.commit();
-                Intent intent = new Intent(_this, WebViewActivity.class);
-                intent.putExtra("url", "http://regrann.com/update_news");
-                intent.putExtra("title", "Latest Regrann Information");
-                intent.putExtra("help", true);
-                startActivity(intent);
-
-                Toast.makeText(_this, "Important Regrann Support News For You", Toast.LENGTH_LONG);
-
-                }
-                });
-
-                }
-
-                };
-
-                 // Don't forget to start the thread.
-                 thread.start();
-
-
-                 }
-                 **/
 
 
             }
@@ -711,12 +693,13 @@ public class RegrannMainActivity extends AppCompatActivity {
             findViewById(R.id.btnUpgrade).setVisibility(View.GONE);
 
 
+
     }
 
 
     private void emailSupport() {
         String version  = "";
-
+        numClicks = 0;
         try {
             PackageManager manager = _this.getPackageManager();
             PackageInfo info = manager.getPackageInfo(
@@ -754,7 +737,7 @@ public class RegrannMainActivity extends AppCompatActivity {
     }
 
     public void watchYoutubeVideo(String id) {
-
+        numClicks = 0;
 
         Intent appIntent = new Intent(Intent.ACTION_VIEW, Uri.parse("vnd.youtube:" + id));
         Intent webIntent = new Intent(Intent.ACTION_VIEW,
@@ -799,7 +782,7 @@ public class RegrannMainActivity extends AppCompatActivity {
 
     public void onClickHowToMulti(View view) {
 
-
+        numClicks = 0;
         watchYoutubeVideo(preferences.getString("multipost_videoid", "rikrGCItVSw"));
 
     }
@@ -809,7 +792,7 @@ public class RegrannMainActivity extends AppCompatActivity {
         RegrannApp.sendEvent("rmain_settings_btn");
         // TODO Auto-generated method stub
 
-
+        numClicks = 0;
         startActivity(new Intent(this, SettingsActivity2.class));
 
     }
@@ -832,15 +815,14 @@ public class RegrannMainActivity extends AppCompatActivity {
                 if (text.length() > 18) {
 
                     //    if (text.indexOf("ig.me") > 1 ||text.indexOf("instagram.com/tv/") > 1 || text.indexOf("instagram.com/p/") > 1) {
-                     if ((text.contains("ig.me") || text.contains("vm.tiktok")|| text.contains("instagram.com/reel/") || text.contains("instagram.com/tv/")) || (text.contains("/p/") && text.contains("instagram.com"))) {
+                    if (text.contains("instagram.com")) {
 
                         Intent i;
                         i = new Intent(_this, ShareActivity.class);
 
-                        if ( text.contains("vm.tiktok")) {
+                        if (text.contains("vm.tiktok")) {
                             //   i.putExtra("tiktok", true);
-                        }
-                        else
+                        } else
                             text = text.substring(text.indexOf("https://www.instagram"));
 
 
@@ -864,32 +846,20 @@ public class RegrannMainActivity extends AppCompatActivity {
                 }
 
 
-            } catch (Exception e) {
-            }
-        }
-
-        checkForPostLaterPhotos();
-
-
-    }
-
-
-    public static String getUserCountry(Context context) {
-        try {
-            final TelephonyManager tm = (TelephonyManager) context.getSystemService(Context.TELEPHONY_SERVICE);
-            final String simCountry = tm != null ? tm.getSimCountryIso() : null;
-            if (simCountry != null && simCountry.length() == 2) { // SIM country code is available
-                return simCountry.toLowerCase(Locale.US);
-            } else if (tm.getPhoneType() != TelephonyManager.PHONE_TYPE_CDMA) { // device is not 3G (would be unreliable)
-                String networkCountry = tm.getNetworkCountryIso();
-                if (networkCountry != null && networkCountry.length() == 2) { // network country code is available
-                    return networkCountry.toLowerCase(Locale.US);
+                } catch (Exception e) {
                 }
             }
-        } catch (Exception e) {
+
+            // did we come from the post later screen
+            if (this.getIntent().hasExtra("show_home"))
+                showMainScreen();
+            else
+                checkForPostLaterPhotos();
+
+
         }
-        return null;
-    }
+
+
 
 
 

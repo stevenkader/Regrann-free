@@ -2,11 +2,11 @@
 <resources>
     <string name="mode">Mode</string>
     <string name="app_id" translatable="false">773402562742917</string>
-    <string name="app_name">Regrann</string>
+    <string name="app_name">Repost</string>
 
     <string name="choose_mail_client">Choose Mail Client</string>
     <string name="share_email_no_email_client_installed">No email client installed.</string>
-    <string name="progress_dialog_msg">Regrann : Please wait..</string>
+    <string name="progress_dialog_msg">Repost : Please wait..</string>
     <string name="login">Login</string>
     <string name="postlaterconfirmtoast">Photo kept for posting later.</string>
     <string name="postlaterconfirmtoastvideo">Video kept for posting later.</string>
@@ -14,10 +14,10 @@
     <string name="porblemfindingphoto">There was a problem. Perhaps this photo is from a private user, or network issue.</string>
     <string name="problemfindingvideo">There was a problem. Perhaps this video is from a private user, or network issue.</string>
     <string name="howToTurnOffPostLater">To turn off Quick Post-Later just return here to the settings</string>
-    <string name="HowToTurnOffQuickSave">To turn OFF Quick Save mode, open Regrann by tapping on the app icon</string>
-    <string name="HowToTurnOffQuickPost">To turn OFF Quick Repost mode, open Regrann by tapping on the app icon</string>
+    <string name="HowToTurnOffQuickSave">To turn OFF Quick Save mode, open Repost by tapping on the app icon</string>
+    <string name="HowToTurnOffQuickPost">To turn OFF Quick Repost mode, open Repost by tapping on the app icon</string>
     <string name="quickKeepDescr">Post-Later will automatically be selected, keeping photos and videos for you to post them later and bypassing the Selection Popup window.</string>
-    <string name="quickRepostDescr">Instagram will automatically be selected as the Regrann (repost) destination, bypassing the Selection Popup window.</string>
+    <string name="quickRepostDescr">Instagram will automatically be selected as the Repost (repost) destination, bypassing the Selection Popup window.</string>
     <string name="quickSaveDescr">Photos and videos will automatically be saved to your phone, bypassing the Selection Popup window.</string>
     <string name="defaultModeDescr">A selection popup window will appear allowing you to choose between reposting, keeping to repost later, saving to your phone or sharing with other apps.</string>
     <string name="title_activity_post_photo">Post Photo</string>
@@ -25,7 +25,7 @@
     <string name="text_manage_signature">Customize Post Signature</string>
     <string name="showPostLaterBtn">Show Post-Later Photos</string>
     <string name="AddWatermark">Add watermark for credit</string>
-    <string name="txtChkboxForForeground">The only way to make sure Regrann is always available requires the constant notification (Android forces it).  You can stop the notification but then use Share Link instead of Copy Link from Instagram.</string>
+    <string name="txtChkboxForForeground">The only way to make sure Repost is always available requires the constant notification (Android forces it).  You can stop the notification but then use Share Link instead of Copy Link from Instagram.</string>
     <string name="Operation_Mode">Operation Mode</string>
     <string name="normal_mode">Selection Popup Mode</string>
     <string name="Quick_Repost_Mode">Quick Repost Mode</string>
@@ -35,22 +35,22 @@
     <string name="Post_using_Instagram">Post using Instagram app (default)</string>
     <string name="Kept_photos_desc">Kept photos are posted using the Instagram app. Post’s caption needs to be pasted manually.</string>
     <string name="DirectPost">Direct Post - beta (login required)</string>
-    <string name="Kept_desc2">Kept photos are posted using Regrann upload process. Faster and post’s caption gets automatically added to the post. DOES NOT APPLY TO VIDEOS. Social media share, emoji or tag features are not available yet. To enable this feature, login below to any Instagram account.</string>
+    <string name="Kept_desc2">Kept photos are posted using Repost upload process. Faster and post’s caption gets automatically added to the post. DOES NOT APPLY TO VIDEOS. Social media share, emoji or tag features are not available yet. To enable this feature, login below to any Instagram account.</string>
     <string name="rateText">Please rate the app with 5 stars and help fellow Android users discover it.  Thanks for the support!</string>
-    <string name="rateHowIsExperience">How is your experience so far with Regrann?</string>
+    <string name="rateHowIsExperience">How is your experience so far with Repost?</string>
     <string name="bad">Bad</string>
     <string name="good">Good</string>
-    <string name="mayBeFromPrivateAcct">That photo may be from a private account so it is not possible to Regrann it at this time.</string>
+    <string name="mayBeFromPrivateAcct">That photo may be from a private account so it is not possible to Repost it at this time.</string>
     <string name="noInternet">There is no internet connection. Please check if you are connected and try again.</string>
 
     <string name="downloadingVideo">Downloading Video!</string>
     <string name="Run_Tutorial">Run Tutorial</string>
     <string name="emailSupport">Email Support</string>
     <string name="noEmailClients">There are no email clients installed.</string>
-    <string name="startupStr1">Please take 30 seconds to learn how to use Regrann.\n\nYou will be reposting from the Instagram App.\n\nJust go through the next few screens to see how.</string>
+    <string name="startupStr1">Please take 30 seconds to learn how to use Repost.\n\nYou will be reposting from the Instagram App.\n\nJust go through the next few screens to see how.</string>
     <string name="startupStr2" />
     <string name="visit_support_site">Support on the Web</string>
-    <string name="title_activity_settings2">Regrann Settings</string>
+    <string name="title_activity_settings2">Repost Settings</string>
 
     <!-- Strings related to Settings -->
 
@@ -92,7 +92,7 @@
     <string name="login_success">You are now logged in as</string>
     <string name="the_caption_was_copied_to_the_clipboared">The caption was copied to the clipboard</string>
     <string name="long_press_to_paste_in_instagram">Long press to paste in Instagram.</string>
-    <string name="share_app_buttontext">Tell Friends about Regrann</string>
+    <string name="share_app_buttontext">Tell Friends about Repost</string>
 
     <string name="uploaded_success">Photo has been posted!</string>
     <string name="uploaded_failure">There was a probem uploading!</string>
@@ -102,28 +102,28 @@
     <string name="start_tutorial_buttontext">Start 30 Second Tutorial</string>
     <string name="tutorial_tagline">The #1 repost app worldwide!</string>
     <string name="end_tutorial_buttontext">Try it yourself in Instagram.\nClick on three dots on next screen.</string>
-    <string name="instagram_bug">Instagram might require new permissions to be approved. If Instagram crashes when using Regrann, open Instagram, press on the upload button, upload a photo and accept the permission request. After, you can restart using Regrann.</string>
+    <string name="instagram_bug">Instagram might require new permissions to be approved. If Instagram crashes when using Repost, open Instagram, press on the upload button, upload a photo and accept the permission request. After, you can restart using Repost.</string>
     <string name="instagram_bug_title">You have updated to Android version 6.0 Marshmellow</string>
     <string name="scheduled">Scheduled</string>
     <string name="postBtn">Post</string>
-    <string name="foreground_notification">Regrann is in standby mode. Click for more info. </string>
+    <string name="foreground_notification">Repost is in standby mode. Click for more info. </string>
     <string name="foreground_notification_scheduling">Ready for scheduling.</string>
 
     <string name="facebook_app_id">773402562742917</string>
     <string name="schedule_notif_text">Click here to post.</string>
-    <string name="scheduled_notif_title">Regrann - Scheduled Post</string>
+    <string name="scheduled_notif_title">Repost - Scheduled Post</string>
     <string name="toast_scheduled">Post scheduled.\nYou will be notified at the scheduled time.\nOpen notification to finish the posting.</string>
 
     <string name="paid_settings">Paid Options</string>
-    <string name="remove_regrann">No changes to caption. @Regrann and #regrann will not be added to caption.</string>
-    <string name="remove_regrann_summary">The caption when pasted will not contain @Regrann or #regrann</string>
+    <string name="remove_regrann">No changes to caption. @Repost and #regrann will not be added to caption.</string>
+    <string name="remove_regrann_summary">The caption when pasted will not contain @Repost or #regrann</string>
 
     <string name="warning_about_private_account">Note: You won\'t see \'Copy URL\' on private photos.\nInstagram won\'t provide links of private users.</string>
-    <string name="multi_dialog">To repost multiple images/videos, upload them manually from the Regrann-Multi-Post folder. Paste the caption as usual.</string>
+    <string name="multi_dialog">To repost multiple images/videos, upload them manually from the Repost-Multi-Post folder. Paste the caption as usual.</string>
 
     <string name="accept">Accept</string>
     <string name="eula_string">
-By clicking "Confirm", you consent to the use of anonymous data (like your country) to be used to show relevant ads, and that you are at least 16 years old. You can read the terms in its entirety by clicking on the link in the Google Play app description for Regrann.\n\nWe thank you for installing our app and helping to improve the user experience by clicking "Confirm".
+By clicking "Confirm", you consent to the use of anonymous data (like your country) to be used to show relevant ads, and that you are at least 16 years old. You can read the terms in its entirety by clicking on the link in the Google Play app description for Repost.\n\nWe thank you for installing our app and helping to improve the user experience by clicking "Confirm".
     </string>
     <string name="ad_attribution">Ad</string>
 
@@ -150,11 +150,11 @@ By clicking "Confirm", you consent to the use of anonymous data (like your count
 
 <string name="upgrade_menu">Upgrade</string>
 
-    <string name="upgrade_to_premium">Upgrade to Premium</string>
+    <string name="upgrade_to_premium">Upgrade to Remove Ads</string>
 
-    <string name="upgrade_header_text">Upgrade to Premium\\n\\nONE TIME PAYMENT</string>
+    <string name="upgrade_header_text">Upgrade to Remove Ads\\n\\nONE TIME PAYMENT</string>
 
-    <string name="upgrade_features">No Ads\nFaster Display\nQuick Save\nQuick Post\nAll Future Features\nPriority Support by Developer\n100% Risk Free - Refund Anytime</string>
+    <string name="upgrade_features">No Ads\nPriority Support by Developer\n100% Risk Free - Refund Anytime</string>
     <string name="upgrade_button_text">Upgrade Now</string>
     <string name="auto_saving">Quick Saving......</string>
 
@@ -184,7 +184,7 @@ By clicking "Confirm", you consent to the use of anonymous data (like your count
     <string name="email_for_support">Email for Support</string>
     <string name="purchase_pending">Your purchase is pending and will be processed shortly.</string>
     <string name="purchase_complete">Your purchase is complete.  Thank you.</string>
-    <string name="important_nuse_share_to_then_select_regrann_icon_instead_of_copy_link">Important: Use \'Share To....\' then select Regrann icon instead of Copy Link.</string>
+    <string name="important_nuse_share_to_then_select_regrann_icon_instead_of_copy_link">Important: Use \'Share To....\' then select Repost icon instead of Copy Link.</string>
     <string name="pref_title_custom_watermark">Custom Watermark</string>
     <string name="pref_description_custom_watermark">Your custom image will be displayed on the photo.</string>
 

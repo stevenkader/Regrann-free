@@ -12,14 +12,17 @@
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
     <uses-permission android:name="android.permission.DOWNLOAD_WITHOUT_NOTIFICATION" />
-    <uses-permission android:name="android.permission.GET_ACCOUNTS" />
+
     <uses-permission android:name="com.android.vending.BILLING" />
     <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
     <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
     <uses-permission android:name="android.permission.CHANGE_WIFI_STATE" />
+    <uses-permission
+        android:name="android.permission.CAMERA"
+        tools:node="remove" />
 
     <uses-permission
-        android:name="android.permission.READ_EXTERNAL_STORAGE"
+        android:name="android.permission.WRITE_EXTERNAL_STORAGE"
         tools:remove="android:maxSdkVersion" />
 
     <supports-screens
@@ -32,12 +35,16 @@
     <application
         android:name=".activity.RegrannApp"
         android:hardwareAccelerated="true"
+        android:allowBackup="true"
+
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:networkSecurityConfig="@xml/network_security_config"
         android:theme="@style/AppTheme"
         android:requestLegacyExternalStorage="true"
+        android:preserveLegacyExternalStorage="true"
         android:usesCleartextTraffic="true"
+        android:hasFragileUserData="true"
         tools:replace="android:name">
 
 
@@ -53,7 +60,9 @@
 
         <activity
             android:name=".activity.RegrannMainActivity"
-            android:label="Regrann">
+            android:exported="true"
+            android:label="Repost">
+
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -65,6 +74,7 @@
         </activity>
         <activity
             android:name=".activity.NewShareText"
+            android:exported="true"
             android:theme="@android:style/Theme.Translucent.NoTitleBar">
             <intent-filter>
                 <action android:name="android.intent.action.SEND" />
@@ -74,14 +84,15 @@
                 <data android:mimeType="text/plain" />
             </intent-filter>
         </activity>
+
         <service
             android:name=".activity.FetchDownloadUrlService"
-            android:exported="false" />
+            android:exported="true" />
 
         <activity
             android:name=".activity.ShareActivity"
 
-            android:label="Regrann Post"
+            android:label="Repost"
             android:launchMode="singleTask"
             android:theme="@style/Theme.Transparent.Fullscreen" />
 
@@ -93,16 +104,16 @@
             android:screenOrientation="portrait" />
         <activity
             android:name=".activity.CheckPermissions"
-            android:label="Regrann - Permissions"
+            android:label="Repost - Permissions"
             android:screenOrientation="portrait" />
 
         <activity
             android:name=".activity.LoginRequestActivity"
-            android:label="Regrann - Connect to Instagram"
+            android:label="Repost - Connect to Instagram"
             android:screenOrientation="portrait" />
         <activity
             android:name=".activity.InstagramLogin"
-            android:label="Regrann - Login to Instagram"
+            android:label="Repost - Login to Instagram"
             android:screenOrientation="portrait" />
         <activity
             android:name=".activity.KeptForLaterActivity"
@@ -110,13 +121,9 @@
             android:screenOrientation="portrait" />
         <activity
             android:name=".activity.SettingsActivity2"
-            android:label="Regrann Settings"
+            android:label="Repost Settings"
             android:theme="@style/Pref" />
-        <activity
-            android:name=".activity.SettingsActivityForeground"
-            android:exported="true"
-            android:label="Regrann Settings"
-            android:screenOrientation="portrait" />
+
         <activity
             android:name=".activity.ModeSettingsActivity"
             android:label="Mode Settings" />
@@ -129,9 +136,12 @@
             android:theme="@android:style/Theme.Translucent.NoTitleBar.Fullscreen" />
         <activity
             android:name=".activity.PostFromKeptActivity"
+
             android:theme="@android:style/Theme.Translucent.NoTitleBar.Fullscreen" />
 
-        <receiver android:name=".receiver.ServiceStarter">
+        <receiver
+            android:name=".receiver.ServiceStarter"
+            android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.BOOT_COMPLETED" />
 
@@ -141,6 +151,7 @@
 
         <activity
             android:name=".activity.NoCropActivity"
+            android:exported="true"
             android:theme="@android:style/Theme.Translucent.NoTitleBar">
             <intent-filter>
                 <action android:name="android.intent.action.SEND" />
@@ -148,8 +159,10 @@
                 <data android:mimeType="image/*" />
             </intent-filter>
         </activity>
+        <!--
         <service
             android:name=".service.ClipboardListenerService"
+            android:exported="true"
             android:label="Regrann Service">
             <intent-filter>
                 <action
@@ -157,6 +170,7 @@
                     android:process=":remote" />
             </intent-filter>
         </service>
+        -->
 
         <meta-data
             android:name="com.google.android.gms.version"

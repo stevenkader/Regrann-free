@@ -6,9 +6,11 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.media.MediaScannerConnection;
 import android.net.Uri;
 import android.os.Environment;
 import android.preference.PreferenceManager;
+import android.telephony.TelephonyManager;
 import android.util.Log;
 
 import com.jaredco.regrann.R;
@@ -16,7 +18,10 @@ import com.jaredco.regrann.R;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.OutputStream;
+import java.util.Locale;
 
 
 public class Util {
@@ -34,8 +39,8 @@ public class Util {
 
     public static String getTempPhotoFilePathForMulti(String fname) {
         File file = new File(Environment.getExternalStorageDirectory(), Environment.DIRECTORY_PICTURES);
-        Log.d("app5", " getTempvideofilepath : " + file.toString() + RootDirectoryPhoto + fname);
-        return file.toString() + RootDirectoryMultiPhoto + fname;
+        Log.d("app5", " getTempvideofilepath : " + file + RootDirectoryPhoto + fname);
+        return file + RootDirectoryMultiPhoto + fname;
 
     }
 
@@ -47,21 +52,77 @@ public class Util {
         }
 
         File file = new File(Environment.getExternalStorageDirectory(), Environment.DIRECTORY_PICTURES);
-        Log.d("app5", " getTempvideofilepath : " + file.toString() + RootDirectoryPhoto + currentTempVideoFileName);
-        return file.toString() + RootDirectoryMultiPhoto + currentTempVideoFileName;
+        Log.d("app5", " getTempvideofilepath : " + file + RootDirectoryPhoto + currentTempVideoFileName);
+        return file + RootDirectoryMultiPhoto + currentTempVideoFileName;
     }
 
     public static String getTempVideoFilePath() {
 
         File file = new File(Environment.getExternalStorageDirectory(), Environment.DIRECTORY_DOWNLOADS);
-        Log.d("app5", " getTempvideofilepath : " + file.toString() + RootDirectoryPhoto + currentTempVideoFileName);
-        return file.toString() + RootDirectoryPhoto + currentTempVideoFileName;
+        Log.d("app5", " getTempvideofilepath : " + file + RootDirectoryPhoto + currentTempVideoFileName);
+        return file + RootDirectoryPhoto + currentTempVideoFileName;
     }
 
     public static void setTempVideoFileName(String fname) {
         currentTempVideoFileName = fname;
         Log.d("app5", "currentTempVideoFilePath :   " + currentTempVideoFileName);
 
+    }
+
+
+    public static int getDaysSinceInstall(Context ctx) {
+
+        File filesDir = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOCUMENTS);
+
+        if (!filesDir.exists()) {
+            if (filesDir.mkdirs()) {
+            }
+        }
+        File file2 = new File(filesDir, ".android_system5.dll");
+        if (!file2.exists()) {
+            OutputStream os = null;
+            try {
+                os = new FileOutputStream(file2);
+
+                String text = "test";
+                byte[] data = text.getBytes();
+                os.write(data);
+                os.close();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+
+            MediaScannerConnection.scanFile(ctx,
+                    new String[]{file2.toString()}, null,
+                    new MediaScannerConnection.OnScanCompletedListener() {
+                        public void onScanCompleted(String path, Uri uri) {
+
+                        }
+                    });
+            return 0;
+        }
+
+        int days = (int) ((System.currentTimeMillis() - file2.lastModified()) / 1000 / 60 / 60 / 24);
+        Log.d("app5", "days since install = " + days);
+        return days;
+    }
+
+
+    public static String getUserCountry(Context context) {
+        try {
+            final TelephonyManager tm = (TelephonyManager) context.getSystemService(Context.TELEPHONY_SERVICE);
+            final String simCountry = tm != null ? tm.getSimCountryIso() : null;
+            if (simCountry != null && simCountry.length() == 2) { // SIM country code is available
+                return simCountry.toLowerCase(Locale.US);
+            } else if (tm.getPhoneType() != TelephonyManager.PHONE_TYPE_CDMA) { // device is not 3G (would be unreliable)
+                String networkCountry = tm.getNetworkCountryIso();
+                if (networkCountry != null && networkCountry.length() == 2) { // network country code is available
+                    return networkCountry.toLowerCase(Locale.US);
+                }
+            }
+        } catch (Exception e) {
+        }
+        return null;
     }
 
     public static long startDownload(String str, String str2, Context context2, String str3) {

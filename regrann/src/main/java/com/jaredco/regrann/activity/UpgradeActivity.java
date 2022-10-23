@@ -42,10 +42,8 @@ public class UpgradeActivity extends AppCompatActivity {
     private BillingClient billingClient;
 
 
-
     private LinearLayout screen_ui;
     SkuDetails skuDetailsRemoveAds = null;
-
 
 
     private static final String BASE_64_ENCODED_PUBLIC_KEY = "MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEA4eVlDAKokhC8AZEdsUsKkFJSvsX+d+J8zclWZ25ADxZYOjE+syRGRZo/dBnt5q5YgC4TmyDdF6UFqZ09mlFvwkpU03X+AJP7JadT2bz1jwELBrjsHVlpOFFMwzXrmmBScGybllC+9BBHbnZQDCTRa81GKTdMDSoV/9ez+fdmYy8uCYEOMJ0bCx1eRA3wHMKWiOx5RKoCqBn8PnNOH6JbuXSZOWc762Pkz1tUr2cSuuW7RotgnsMT02jvyALLVcCDiq+yVoRmHrPQCSgcm3Olwc5WjkBoAQMsvy9hn/dyL8a3MtUY0HBI8tN7VJ/r9yhs2JiXCf3jcmd80qF51XJyoQIDAQAB";
@@ -89,7 +87,6 @@ public class UpgradeActivity extends AppCompatActivity {
                 try {
 
 
-
                     RegrannApp.sendEvent("query_purchases", "", "");
                     Purchase.PurchasesResult purchasesResult = billingClient.queryPurchases(BillingClient.SkuType.INAPP);
 
@@ -128,7 +125,7 @@ public class UpgradeActivity extends AppCompatActivity {
 
     boolean billingReady = false;
     AcknowledgePurchaseResponseListener acknowledgePurchaseResponseListener;
-    ProgressBar spinner ;
+    ProgressBar spinner;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -148,28 +145,24 @@ public class UpgradeActivity extends AppCompatActivity {
         preferences = PreferenceManager.getDefaultSharedPreferences(_this.getApplication().getApplicationContext());
 
 
-      //  noAds = preferences.getBoolean("removeAds", false);
+        //  noAds = preferences.getBoolean("removeAds", false);
 
 
-       // mFirebaseAnalytics = FirebaseAnalytics.getInstance(this);
+        // mFirebaseAnalytics = FirebaseAnalytics.getInstance(this);
 
         btnRemoveAds = findViewById(R.id.upgradeBtn);
 
         btnRemoveAds.setVisibility(View.INVISIBLE);
 
 
+        TextView t = findViewById(R.id.upgrade_header_text);
+        t.setText(preferences.getString("upgrade_header_text", getString(R.string.upgrade_header_text)));
 
-        TextView t =  findViewById(R.id.upgrade_header_text);
-        t.setText(preferences.getString("upgrade_header_text",getString(R.string.upgrade_header_text)));
-
-        t =  findViewById(R.id.upgrade_features);
+        t = findViewById(R.id.upgrade_features);
 //        t.setText(preferences.getString("upgrade_features",getString(R.string.upgrade_features)));
 
-        Button b =  findViewById(R.id.upgradeBtn);
-        b.setText(preferences.getString("upgrade_button_text",getString(R.string.upgrade_button_text)));
-
-
-
+        Button b = findViewById(R.id.upgradeBtn);
+        b.setText(preferences.getString("upgrade_button_text", getString(R.string.upgrade_button_text)));
 
 
         acknowledgePurchaseResponseListener = new AcknowledgePurchaseResponseListener() {
@@ -195,8 +188,8 @@ public class UpgradeActivity extends AppCompatActivity {
                     // show it
                     alertDialog.show();
 
-                }catch (Exception e) {}
-
+                } catch (Exception e) {
+                }
 
 
             }
@@ -217,7 +210,6 @@ public class UpgradeActivity extends AppCompatActivity {
                                 AcknowledgePurchaseParams.newBuilder()
                                         .setPurchaseToken(purchase.getPurchaseToken())
                                         .build();
-
 
 
                         if (purchase.getPurchaseState() == Purchase.PurchaseState.PENDING) {
@@ -243,8 +235,7 @@ public class UpgradeActivity extends AppCompatActivity {
 
                             // show it
                             alertDialog.show();
-                        }
-                        else {
+                        } else {
                             if (purchase.getPurchaseState() == Purchase.PurchaseState.PURCHASED) {
 
                                 if (getIntent().getBooleanExtra("from_main_screen", false))
@@ -275,7 +266,7 @@ public class UpgradeActivity extends AppCompatActivity {
                     // do something you want
 
                 } else {
-                    RegrannApp.sendEvent("ug_purchase_error_"+responseCode.getResponseCode() );
+                    RegrannApp.sendEvent("ug_purchase_error_" + responseCode.getResponseCode());
 
 
                     showErrorToast("Purchasing / Payment problem", "There was a problem, please try again later. You should not have been charged.", false);
@@ -300,9 +291,6 @@ public class UpgradeActivity extends AppCompatActivity {
                     RegrannApp.sendEvent("ug_billing_ready");
 
 
-
-
-
                     queryPurchases();
 
                     List<String> skuList = new ArrayList<>();
@@ -320,14 +308,20 @@ public class UpgradeActivity extends AppCompatActivity {
                                     try {
                                         Log.d("app5", "inst sku details");
 
-                                        if (skuDetailsList.size() > 0)
+                                        if (skuDetailsList.size() > 0) {
                                             skuDetailsRemoveAds = skuDetailsList.get(0);
 
-                                        btnRemoveAds.setVisibility(View.VISIBLE);
+                                            runOnUiThread(new Runnable() {
+                                                public void run() {
+                                                    btnRemoveAds.setVisibility(View.VISIBLE);
 
-                                        spinner.setVisibility(View.GONE);
+                                                    spinner.setVisibility(View.GONE);
+                                                }
+                                            });
+                                        }
 
                                     } catch (Exception e) {
+                                        Log.d("app5", "error getting products " + e.getMessage());
                                     }
 
 
@@ -346,12 +340,7 @@ public class UpgradeActivity extends AppCompatActivity {
         });
 
 
-
-
-
     }
-
-
 
 
     private void showErrorToast(final String error, final String displayMsg) {
@@ -359,7 +348,8 @@ public class UpgradeActivity extends AppCompatActivity {
             showErrorToast(error, displayMsg, false);
     }
 
-    private void showErrorToast(final String error, final String displayMsg, final boolean doFinish) {
+    private void showErrorToast(final String error, final String displayMsg,
+                                final boolean doFinish) {
 
         runOnUiThread(new Runnable() {
             public void run() {
@@ -423,15 +413,12 @@ public class UpgradeActivity extends AppCompatActivity {
     }
 
 
-
     @Override
     public void onBackPressed() {
         try {
             super.onBackPressed();
 
-         //   overridePendingTransition(R.anim.slide_out, R.anim.slide_in);
-
-
+            //   overridePendingTransition(R.anim.slide_out, R.anim.slide_in);
 
 
         } catch (Exception e) {

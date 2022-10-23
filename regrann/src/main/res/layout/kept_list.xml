@@ -38,7 +38,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textAppearance="?android:attr/textAppearanceMedium"
-                android:text="Regrann"
+                android:text="Repost"
                 android:textStyle="bold"
                 android:gravity="center_horizontal"
                 android:textColor="@color/icons"
@@ -51,6 +51,16 @@
                 android:gravity="end"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent">
+
+                <ImageButton
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/homeButton"
+                    android:src="@drawable/ic_baseline_home_24"
+                    android:layout_gravity="center"
+                    android:background="@color/primary"
+                    android:layout_marginRight="15dp" />
+
                 <ImageButton
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"

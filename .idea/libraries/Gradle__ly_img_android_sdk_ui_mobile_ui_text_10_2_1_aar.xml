@@ -1,0 +1,11 @@
+<component name="libraryTable">
+  <library name="Gradle: ly.img.android.sdk.ui.mobile_ui:text:10.2.1@aar">
+    <CLASSES>
+      <root url="file://$USER_HOME$/.gradle/caches/transforms-3/05fad12437f236a872056482112c90d4/transformed/jetified-text-10.2.1/res" />
+      <root url="jar://$USER_HOME$/.gradle/caches/transforms-3/05fad12437f236a872056482112c90d4/transformed/jetified-text-10.2.1/jars/classes.jar!/" />
+      <root url="file://$USER_HOME$/.gradle/caches/transforms-3/05fad12437f236a872056482112c90d4/transformed/jetified-text-10.2.1/AndroidManifest.xml" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>

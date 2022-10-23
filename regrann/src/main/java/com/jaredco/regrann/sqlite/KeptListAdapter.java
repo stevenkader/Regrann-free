@@ -8,9 +8,15 @@ import android.database.sqlite.SQLiteOpenHelper;
 import android.os.Environment;
 import android.util.Log;
 
+import com.jaredco.regrann.activity.RegrannApp;
 import com.jaredco.regrann.model.InstaItem;
 
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.nio.channels.FileChannel;
+import java.nio.file.Files;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.LinkedList;
@@ -32,12 +38,42 @@ public class KeptListAdapter extends SQLiteOpenHelper {
     //        + File.separator + DATABASE_NAME, null, DATABASE_VERSION);
 
     private KeptListAdapter(Context ctx) {
+        //   super(ctx, Environment.getExternalStoragePublicDirectory(
+        //          Environment.DIRECTORY_DOCUMENTS) +  File.separator
+        //         + DATABASE_NAME, null, DATABASE_VERSION);
 
-        super(ctx, ctx.getExternalFilesDir(Environment.DIRECTORY_DOCUMENTS) + "/" +
-                Environment.DIRECTORY_DOCUMENTS + File.separator
-                + DATABASE_NAME, null, DATABASE_VERSION);
-        //  super(ctx, DATABASE_NAME, null, DATABASE_VERSION);
+
+        super(ctx, ctx.getDatabasePath(DATABASE_NAME).getAbsolutePath(), null, DATABASE_VERSION);
+
         try {
+            Log.d("app5", Environment.getExternalStoragePublicDirectory(
+                    Environment.DIRECTORY_DOCUMENTS) + File.separator
+                    + DATABASE_NAME);
+
+            Log.d("app5", RegrannApp._this.getApplicationContext().getDatabasePath(DATABASE_NAME).getAbsolutePath());
+
+            File t = new File(Environment.getExternalStoragePublicDirectory(
+                    Environment.DIRECTORY_DOCUMENTS) + File.separator
+                    + DATABASE_NAME);
+
+            File t1 = new File(Environment.getExternalStoragePublicDirectory(
+                    Environment.DIRECTORY_DOCUMENTS) + File.separator
+                    + DATABASE_NAME + "-bak");
+
+            File newLoc = new File(RegrannApp._this.getApplicationContext().getDatabasePath(DATABASE_NAME).getAbsolutePath());
+
+
+            if (t.exists() && newLoc.exists() == false) {
+                Log.d("app5", "DB exists need to copy then delete");
+
+                copy(t, newLoc);
+
+                copy(t, t1);
+
+                t.delete();
+
+            }
+
             db = this.getWritableDatabase();
             onUpgrade(db, 4, 0);
         } catch (Exception e) {
@@ -46,7 +82,25 @@ public class KeptListAdapter extends SQLiteOpenHelper {
     }
 
 
+    public void copy(File src, File dst) throws IOException {
 
+        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
+
+            Log.d("app5", "Copying :  " + src.toString() + "   " + dst.toString());
+            Files.copy(src.toPath(), dst.toPath());
+        } else {
+
+
+            FileInputStream inStream = new FileInputStream(src);
+            FileOutputStream outStream = new FileOutputStream(dst);
+            FileChannel inChannel = inStream.getChannel();
+            FileChannel outChannel = outStream.getChannel();
+            inChannel.transferTo(0, inChannel.size(), outChannel);
+            inStream.close();
+            outStream.close();
+
+        }
+    }
 
 
     public static KeptListAdapter getInstance(Context ctx) {
@@ -54,7 +108,7 @@ public class KeptListAdapter extends SQLiteOpenHelper {
         // Use the application context, which will ensure that you
         // don't accidentally leak an Activity's context.
         // See this article for more information: http://bit.ly/6LRzfx
-        if (mInstance == null) {
+        if (mInstance == null && ctx != null) {
             mInstance = new KeptListAdapter(ctx.getApplicationContext());
         }
         return mInstance;
@@ -75,7 +129,7 @@ public class KeptListAdapter extends SQLiteOpenHelper {
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
 
         if (checkedTables)
-             return ;
+            return;
 
         switch (oldVersion) {
 

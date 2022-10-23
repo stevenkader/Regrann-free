@@ -6,8 +6,12 @@
         <value>100</value>
     </entry>
     <entry>
+        <key>getpro_rollout</key>
+        <value>5</value>
+    </entry>
+    <entry>
         <key>caption_suffix</key>
-        <value>- #regrann</value>
+        <value>-</value>
     </entry>
     <entry>
         <key>instagram_activity</key>

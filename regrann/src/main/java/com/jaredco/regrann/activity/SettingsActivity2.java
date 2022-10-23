@@ -4,8 +4,6 @@ package com.jaredco.regrann.activity;
 import android.Manifest;
 import android.annotation.SuppressLint;
 import android.app.AlertDialog;
-import android.content.ClipData;
-import android.content.ClipboardManager;
 import android.content.ContentUris;
 import android.content.Context;
 import android.content.Intent;
@@ -35,17 +33,12 @@ import android.view.ViewGroup;
 import android.widget.SimpleCursorAdapter;
 
 import androidx.annotation.LayoutRes;
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatDelegate;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.app.ActivityCompat;
 
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
 import com.google.firebase.analytics.FirebaseAnalytics;
-import com.google.firebase.iid.FirebaseInstanceId;
-import com.google.firebase.iid.InstanceIdResult;
 import com.jaredco.regrann.R;
 
 import java.io.File;
@@ -174,61 +167,9 @@ public class SettingsActivity2 extends PreferenceActivity {
         }
     }
 
-    private void checkForInstagramURLinClipboard() {
-
-        ClipboardManager clipboard = (ClipboardManager) getSystemService(CLIPBOARD_SERVICE);
-
-        ClipData clipData = clipboard != null ? clipboard.getPrimaryClip() : null;
-
-        if (clipData != null) {
-
-            try {
-                final ClipData.Item item = clipData.getItemAt(0);
-                final String text = item.coerceToText(this).toString();
-                ClipData clip = ClipData.newPlainText("message", "");
-                clipboard.setPrimaryClip(clip);
-
-                if (text.length() > 18) {
-
-                    //    if (text.indexOf("ig.me") > 1 ||text.indexOf("instagram.com/tv/") > 1 || text.indexOf("instagram.com/p/") > 1) {
-                    if ((text.contains("ig.me") || text.contains("instagram.com/tv/")) || (text.contains("/p/") && text.contains("instagram.com"))) {
-
-
-                        Intent i;
-
-
-                        i = new Intent(_this, ShareActivity.class);
-
-
-                        i.putExtra("mediaUrl", text);
-
-                        i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                        i.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
-
-
-                        i.putExtra("isJPEG", "no");
-                        System.out.println("***media url " + text);
-
-
-                        startActivity(i);
-                        finish();
-                        return;
-
-                    }
-
-                }
-
-
-            } catch (Exception e) {
-            }
-        }
-
-
-    }
-
     @Override
     public void onResume() {
-        //   checkForInstagramURLinClipboard();
+
         super.onResume();
     }
 
@@ -1061,25 +1002,6 @@ public class SettingsActivity2 extends PreferenceActivity {
         switch (item.getItemId()) {
 
             case R.id.action_help:
-
-                FirebaseInstanceId.getInstance().getInstanceId()
-                        .addOnCompleteListener(new OnCompleteListener<InstanceIdResult>() {
-                            @Override
-                            public void onComplete(@NonNull Task<InstanceIdResult> task) {
-                                if (!task.isSuccessful()) {
-                                    Log.w(TAG, "getInstanceId failed", task.getException());
-                                    return;
-                                }
-
-                                // Get new Instance ID token
-                                String token = task.getResult().getToken();
-
-                                // Log and toast
-                                String msg = token;
-                                Log.d(TAG, msg);
-
-                            }
-                        });
 
 
                 Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse("http://www.regrann.com/support"));

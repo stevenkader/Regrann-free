@@ -8,6 +8,24 @@
     android:background="#ffffffff"
     android:orientation="vertical">
 
+
+    <ImageView
+
+        android:id="@+id/proad"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:onClick="OnClickProAd"
+        custom:srcCompat="@drawable/pro_ad"
+        android:layout_marginTop="20dp"
+        android:layout_marginBottom="20dp"
+        android:adjustViewBounds="true"
+        android:visibility="gone"
+        android:minWidth="20dp"
+        android:minHeight="20dp"
+        android:scaleType="fitCenter"
+        app:layout_constraintTop_toBottomOf="@+id/my_toolbar" />
+
+
     <FrameLayout
         android:id="@+id/frameLayout"
         android:layout_width="fill_parent"
@@ -15,10 +33,22 @@
         android:layout_marginTop="10dp"
         android:orientation="vertical"
         android:padding="5dip"
+
+        android:layout_gravity="center"
+        android:gravity="center"
+        android:scaleType="fitXY"
+
+
         app:layout_constraintBottom_toTopOf="@+id/bottomSection"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/my_toolbar">
+        app:layout_constraintTop_toBottomOf="@+id/proad">
+
+        <View
+            android:id="@+id/divider4"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="?android:attr/listDivider" />
 
         <ImageView
 
@@ -37,10 +67,16 @@
 
         <VideoView
 
-            android:id="@+id/videoview"
-            android:layout_width="fill_parent"
-            android:layout_height="fill_parent"
-            android:layout_gravity="center_horizontal"
+            android:id="@+id/videoplayer"
+
+
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+
+            android:focusable="false"
+            android:focusableInTouchMode="false"
+            android:layout_centerInParent="true"
+            android:layout_gravity="center_horizontal|center_vertical"
             android:layout_marginTop="10dp"
             android:layout_marginBottom="10dp"
             android:adjustViewBounds="true"
@@ -58,7 +94,7 @@
             android:layout_gravity="center_horizontal"
 
             android:layout_marginTop="150dp"
-            android:alpha="0.5"
+
             android:contentDescription="@string/video_icon"
             android:visibility="gone"
             custom:srcCompat="@drawable/videoicon" />
@@ -75,6 +111,7 @@
 
         </com.potyvideo.slider.library.SliderLayout>
 
+
     </FrameLayout>
 
     <LinearLayout
@@ -90,6 +127,7 @@
         app:layout_constraintTop_toBottomOf="@+id/frameLayout">
 
 
+
         <Button
             android:id="@+id/btnEditor"
             android:layout_width="match_parent"
@@ -103,6 +141,16 @@
             android:textSize="18sp"
             android:textStyle="bold"
             android:visibility="gone" />
+
+        <TextView
+            android:id="@+id/editTextTextPersonName"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textSize="14sp"
+            android:gravity="center"
+            android:layout_marginTop="10dp"
+            android:text="Multi-Photo still not working in this version" />
+
 
         <FrameLayout
             android:id="@+id/fl_adplaceholder"
@@ -139,34 +187,16 @@
                 android:id="@+id/buttons"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
+                <!--
+                                <Button
+                                    android:id="@+id/button"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:layout_margin="20px"
+                                    android:onClick="onClickTryProClickBtn"
+                                    android:text="Try Repost Professional" />
+                                    -->
 
-                <LinearLayout
-
-                    android:layout_width="match_parent"
-                    android:layout_height="80dp"
-
-
-                    android:orientation="horizontal">
-
-                    <ImageView
-                        android:id="@+id/tumblr"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_margin="5dp"
-                        android:layout_weight="1"
-                        android:onClick="onClickTumblr"
-
-                        app:srcCompat="@drawable/tumblrcircle" />
-
-                    <ImageView
-                        android:id="@+id/snapchat"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_margin="5dp"
-                        android:layout_weight="1"
-                        android:onClick="onClickSnapChat"
-                        android:src="@drawable/snapchat" />
-                </LinearLayout>
 
                 <LinearLayout
 
@@ -332,9 +362,9 @@
 -->
     <WebView
         android:id="@+id/browser"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:alpha="0"
-        android:visibility="gone"
+        android:layout_width="2dp"
+        android:layout_height="2dp"
+        android:alpha="1"
+        android:visibility="visible"
         tools:ignore="WebViewLayout" />
 </androidx.constraintlayout.widget.ConstraintLayout>

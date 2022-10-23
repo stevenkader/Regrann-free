@@ -1,5 +1,7 @@
 package com.jaredco.regrann.activity;
 
+import static com.jaredco.regrann.activity.RegrannApp.sendEvent;
+
 import android.content.Intent;
 import android.database.Cursor;
 import android.net.Uri;
@@ -7,11 +9,9 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
-import android.view.MotionEvent;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
-import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.SimpleCursorAdapter;
 
@@ -20,8 +20,6 @@ import androidx.appcompat.widget.Toolbar;
 
 import com.jaredco.regrann.R;
 import com.jaredco.regrann.sqlite.KeptListAdapter;
-
-import static com.jaredco.regrann.activity.RegrannApp.sendEvent;
 
 public class KeptForLaterActivity extends AppCompatActivity {
 
@@ -37,53 +35,11 @@ public class KeptForLaterActivity extends AppCompatActivity {
         dbHelper = KeptListAdapter.getInstance(this);
 
         _this = this;
-        // dbHelper.open();
 
 
         Toolbar myToolbar = findViewById(R.id.my_toolbar);
         setSupportActionBar(myToolbar);
 
-
-        ImageView helpBtn = findViewById(R.id.helpBtn);
-        helpBtn.setOnTouchListener(new View.OnTouchListener() {
-
-            @Override
-            public boolean onTouch(View arg0, MotionEvent event) {
-                // TODO Auto-generated method stub
-                if (event.getAction() == MotionEvent.ACTION_UP) {
-                    Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse("http://www.regrann.com/support"));
-                    startActivity(browserIntent);
-                    return true;
-                }
-
-                return false;
-            }
-
-        });
-
-        ImageView settingsBtn = findViewById(R.id.settingsBtn);
-        settingsBtn.setOnTouchListener(new View.OnTouchListener() {
-
-            @Override
-            public boolean onTouch(View arg0, MotionEvent event) {
-                // TODO Auto-generated method stub
-                if (event.getAction() == MotionEvent.ACTION_UP) {
-                    sendEvent("Settings Btn - from share screen", "", "");
-                    startActivity(new Intent(_this, SettingsActivity2.class));
-                    return true;
-                }
-
-                return false;
-            }
-
-        });
-
-
-        // Clean all data
-
-        // dbHelper.insertSomeCountries();
-
-        // Generate ListView from SQLite Database
         displayListView();
 
     }
@@ -112,9 +68,20 @@ public class KeptForLaterActivity extends AppCompatActivity {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
+
+            case R.id.action_home:
+
+                sendEvent("Home Btn - from share screen", "", "");
+                Intent intent = new Intent(_this, RegrannMainActivity.class);
+                intent.putExtra("show_home", true);
+                startActivity(intent);
+
+                return true;
+
+
             case R.id.action_settings:
                 // User chose the "Settings" item, show the app settings UI...
-                RegrannApp.sendEvent("kfl_settings_btn");
+                sendEvent("kfl_settings_btn");
                 // TODO Auto-generated method stub
 
 
@@ -126,7 +93,7 @@ public class KeptForLaterActivity extends AppCompatActivity {
             case R.id.action_help:
                 Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse("http://www.regrann.com/support"));
                 startActivity(browserIntent);
-                RegrannApp.sendEvent("kfl_help_btn");
+                sendEvent("kfl_help_btn");
 
                 return true;
 

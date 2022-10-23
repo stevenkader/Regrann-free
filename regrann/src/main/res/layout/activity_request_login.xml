@@ -47,7 +47,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_margin="20px"
-            android:text="To repost private media and stories the app needs to conect to Instagram"
+            android:text="Instagram now requires users to be logged in to view media. Please login one time within the app. No user info is seen or kept by the app."
             android:textAlignment="center"
             android:textSize="18sp"
             android:textStyle="bold" />
@@ -56,19 +56,10 @@
             android:id="@+id/imageView4"
             android:layout_width="match_parent"
             android:layout_height="151dp"
-            android:layout_marginTop="20px"
+            android:layout_marginTop="18px"
             android:onClick="OnClickLoginBTN"
             app:srcCompat="@drawable/logintoinstagram" />
 
-        <TextView
-            android:id="@+id/textView"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="30px"
-            android:gravity="center_horizontal"
-            android:text="Do not use Facebook to connect, it doesn't work."
-            android:textSize="16sp"
-            android:textStyle="bold" />
 
     </LinearLayout>
 

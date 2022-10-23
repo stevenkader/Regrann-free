@@ -11,9 +11,11 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
 import android.preference.PreferenceManager;
+import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
@@ -23,6 +25,8 @@ import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.SeekBar;
 import android.widget.SeekBar.OnSeekBarChangeListener;
+
+import androidx.core.content.FileProvider;
 
 import com.jaredco.regrann.util.Util;
 
@@ -230,13 +234,36 @@ public class PostFromKeptActivity extends Activity implements OnClickListener, O
                     ClipData clip = ClipData.newPlainText("Post caption", caption);
                     Objects.requireNonNull(clipboard).setPrimaryClip(clip);
 
+
+                    Uri MediaURI;
+
+
                     if (isVideo) {
                         shareIntent.setType("video/*");
-                        shareIntent.putExtra(Intent.EXTRA_STREAM, Uri.fromFile(tempVideoFile));
+
+                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+                            MediaURI = FileProvider.getUriForFile(this, getApplicationContext().getPackageName() + ".provider", tempVideoFile);
+                        } else {
+                            MediaURI = Uri.fromFile(tempVideoFile);
+                        }
+
+
                     } else {
-                        shareIntent.putExtra(Intent.EXTRA_STREAM, Uri.fromFile(tempFile));
-                        shareIntent.setType("image/*");
+                        Log.d("app5", "tempfile :  " + tempFile.toString());
+
+
+                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+                            MediaURI = FileProvider.getUriForFile(this, getApplicationContext().getPackageName() + ".provider", tempFile);
+                        } else {
+                            MediaURI = Uri.fromFile(tempFile);
+                        }
+
+
+                        shareIntent.setType("image/jpeg");
                     }
+                    shareIntent.putExtra(Intent.EXTRA_STREAM, MediaURI);
+
+
                     startActivity(shareIntent);
                     KeptForLaterActivity._this.removeCurrentPhoto();
                     finish();

@@ -62,6 +62,7 @@ public class WVersionManager implements IWVersionManager {
         this.activity = act;
         this.listener = new AlertDialogButtonListener();
         this.customTagHandler = new CustomTagHandler();
+        updateUrl = "https://regrann.com/updatefree";
     }
 
     private Drawable getDefaultAppIcon() {

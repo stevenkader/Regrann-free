@@ -22,11 +22,8 @@ import android.preference.PreferenceManager;
 import android.provider.Settings;
 import android.util.Log;
 
-import androidx.core.app.NotificationCompat;
-
 import com.jaredco.regrann.R;
 import com.jaredco.regrann.activity.RegrannApp;
-import com.jaredco.regrann.activity.SettingsActivityForeground;
 import com.jaredco.regrann.activity.ShareActivity;
 
 public class ClipboardListenerService extends Service {
@@ -115,8 +112,7 @@ public class ClipboardListenerService extends Service {
                             try {
                                 if (text.length() > 18) {
                                     Log.d("regrann", clipListener.toString());
-                                    if ((text.contains("ig.me") || text.contains("instagram.com/tv/")) || (text.contains("/p/") && text.contains("instagram.com"))) {
-
+                                    if (text.contains("instagram.com")) {
 
                                         Intent i;
 
@@ -310,35 +306,5 @@ public class ClipboardListenerService extends Service {
      * <p>
      * }
      **/
-
-    private void runAsForeground() {
-        Intent notificationIntent = new Intent(this, SettingsActivityForeground.class);
-        PendingIntent pendingIntent = PendingIntent.getActivity(this, 0,
-                notificationIntent, PendingIntent.FLAG_UPDATE_CURRENT);
-        notificationIntent.putExtra("fromforegroundnotice", true);
-        boolean isSchedulingActive = false;
-
-        isSchedulingActive = preferences.getBoolean("scheduling_active", false);
-
-        int resid = 0;
-        if (isSchedulingActive) {
-            resid = R.string.foreground_notification_scheduling;
-
-        } else
-            resid = R.string.foreground_notification;
-
-
-        Notification notification = new NotificationCompat.Builder(this)
-                .setSmallIcon(R.drawable.icon_notification2)
-                .setContentTitle("Regrann")
-                .setOngoing(true)
-                .setContentText(getString(resid))
-                .setContentIntent(pendingIntent).build();
-
-
-        startForeground(5321, notification);
-
-    }
-
 
 }

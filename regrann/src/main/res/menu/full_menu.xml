@@ -7,9 +7,16 @@
     <item
         android:id="@+id/action_removeads"
         android:orderInCategory="100"
-        android:title="@string/upgrade_menu"
+        android:title="Try PRO"
 
         app:showAsAction="always" />
+
+    <item
+        android:id="@+id/action_emailsupport"
+        android:orderInCategory="100"
+        android:title="Email Support"
+
+        app:showAsAction="ifRoom" />
 
 
     <item
@@ -17,7 +24,7 @@
         android:icon="@drawable/ic_action_settings2"
         android:orderInCategory="200"
         android:title="@string/action_settings"
-        app:showAsAction="always" />
+        app:showAsAction="ifRoom" />
 
     <item
         android:id="@+id/action_help"

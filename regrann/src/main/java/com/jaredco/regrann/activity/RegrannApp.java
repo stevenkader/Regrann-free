@@ -1,4 +1,4 @@
-    package com.jaredco.regrann.activity;
+package com.jaredco.regrann.activity;
 
 import android.app.Application;
 import android.content.Context;
@@ -16,7 +16,13 @@ import com.google.android.gms.ads.initialization.InitializationStatus;
 import com.google.android.gms.ads.initialization.OnInitializationCompleteListener;
 import com.google.firebase.analytics.FirebaseAnalytics;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.lang.reflect.Method;
+import java.nio.channels.FileChannel;
+import java.nio.file.Files;
 import java.util.Arrays;
 
 //import com.google.ads.mediation.inmobi.InMobiConsent;
@@ -119,6 +125,7 @@ public class RegrannApp extends Application {
         mFirebaseAnalytics = FirebaseAnalytics.getInstance(this);
 
 
+        // if database present
         _this = this;
 
 
@@ -166,12 +173,30 @@ public class RegrannApp extends Application {
     }
 
 
+    public int getBannerPlacementId() {
+        int bannerPlacementId = -1;
+        return bannerPlacementId;
+    }
+
+    public void copy(File src, File dst) throws IOException {
+
+        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
+
+            Log.d("app5", "Copying :  " + src.toString() + "   " + dst.toString());
+            Files.copy(src.toPath(), dst.toPath());
+        } else {
 
 
+            FileInputStream inStream = new FileInputStream(src);
+            FileOutputStream outStream = new FileOutputStream(dst);
+            FileChannel inChannel = inStream.getChannel();
+            FileChannel outChannel = outStream.getChannel();
+            inChannel.transferTo(0, inChannel.size(), outChannel);
+            inStream.close();
+            outStream.close();
 
-       public int getBannerPlacementId() {
-           int bannerPlacementId = -1;
-           return bannerPlacementId;
-       }
+        }
+    }
+
 
 }
