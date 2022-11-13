@@ -10,6 +10,8 @@
 
 
     <ImageView
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
 
         android:id="@+id/proad"
         android:layout_width="fill_parent"
@@ -17,9 +19,9 @@
         android:onClick="OnClickProAd"
         custom:srcCompat="@drawable/pro_ad"
         android:layout_marginTop="20dp"
-        android:layout_marginBottom="20dp"
+        android:layout_marginBottom="30dp"
         android:adjustViewBounds="true"
-        android:visibility="gone"
+        android:visibility="visible"
         android:minWidth="20dp"
         android:minHeight="20dp"
         android:scaleType="fitCenter"
@@ -30,10 +32,10 @@
         android:id="@+id/frameLayout"
         android:layout_width="fill_parent"
         android:layout_height="0dp"
-        android:layout_marginTop="10dp"
+
         android:orientation="vertical"
         android:padding="5dip"
-
+        android:layout_marginTop="20dp"
         android:layout_gravity="center"
         android:gravity="center"
         android:scaleType="fitXY"
@@ -146,6 +148,7 @@
             android:id="@+id/editTextTextPersonName"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:visibility="gone"
             android:textSize="14sp"
             android:gravity="center"
             android:layout_marginTop="10dp"

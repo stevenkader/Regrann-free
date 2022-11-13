@@ -65,7 +65,6 @@ public class InstagramLogin extends AppCompatActivity {
         webSettings.setJavaScriptCanOpenWindowsAutomatically(true);
         webSettings.setSupportMultipleWindows(true);
         webSettings.setJavaScriptEnabled(true);
-        // webSettings.setUserAgentString("Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/102.0.5005.63 Safari/537.36");
 
 
         webview.getSettings().setJavaScriptCanOpenWindowsAutomatically(true);
@@ -82,9 +81,7 @@ public class InstagramLogin extends AppCompatActivity {
         // remove wv from user agent
 
 
-    //    webview.getSettings().setUserAgentString("Mozilla/5.0 (iPhone; CPU iPhone OS 16_0_3 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/15.6 Mobile/15E148 Safari/604.1");
-
-
+        // webview.getSettings().setUserAgentString("Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/96.0.4664.55 Safari/537.36");
         webview.setWebViewClient(new WebViewClient() {
 
 
