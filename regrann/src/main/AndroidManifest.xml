@@ -38,7 +38,7 @@
         android:allowBackup="true"
 
         android:icon="@mipmap/ic_launcher"
-        android:label="Repost for IG"
+        android:label="Repost IG"
         android:networkSecurityConfig="@xml/network_security_config"
         android:theme="@style/AppTheme"
         android:requestLegacyExternalStorage="true"

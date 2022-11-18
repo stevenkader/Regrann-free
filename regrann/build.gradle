@@ -48,8 +48,8 @@ android {
         applicationId "com.jaredco.regrann"
         minSdkVersion 24
         targetSdkVersion 31
-        versionCode 712
-        versionName "12.72"
+        versionCode 716
+        versionName "12.76"
 
         multiDexEnabled true
         resValue 'string', 'pesdk_version', "v$pesdk_version"
@@ -109,7 +109,9 @@ repositories {
     maven {
         url 'https://maven.google.com'
     }
-
+    maven {
+        url 'https://maven.ogury.co'
+    }
 
 }
 
@@ -131,7 +133,8 @@ configurations.all {
 dependencies {
     /* Add the CSDK framework dependencies (Make sure these version numbers are correct) */
     implementation fileTree(include: ['*.*'], dir: 'libs')
-
+    // implementation 'co.ogury:ogury-sdk:5.+'
+    // Ogury Adapter for AdMob mediation
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
 
 

@@ -31,6 +31,18 @@ public class Util {
     private static String currentTempVideoFileName;
 
 
+    public static boolean isCountryUSA(Context ctx) {
+        String country = Util.getUserCountry(ctx.getApplicationContext());
+
+        return country.equals("us");
+    }
+
+    public static boolean isTierOneCountry(Context ctx) {
+        String country = Util.getUserCountry(ctx.getApplicationContext());
+
+        return country.equals("us") || country.equals("ca") || country.equals("br") || country.equals("gb");
+    }
+
     public static String getCurrentVideoFileName() {
 
         return currentTempVideoFileName;
