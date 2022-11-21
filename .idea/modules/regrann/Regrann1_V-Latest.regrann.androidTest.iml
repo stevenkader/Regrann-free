@@ -25,8 +25,7 @@
           <stringArguments>
             <stringArg name="classpath">
               <args>
-                <arg>$MODULE_DIR$/../../../regrann/build/intermediates/compile_and_runtime_not_namespaced_r_class_jar/debugAndroidTest/R.jar</arg>
-                <arg>$MODULE_DIR$/../../../regrann/build/intermediates/app_classes/debug/classes.jar</arg>
+                <arg>$USER_HOME$/.gradle/caches/transforms-3/6ad9c0b2f73f9daa2db00dcc949b5ab3/transformed/jetified-ogury-sdk-5.4.0-api.jar</arg>
                 <arg>$USER_HOME$/.gradle/caches/transforms-3/d2ea0bbaadc31f679ee0b844dc0f61cc/transformed/jetified-kotlin-stdlib-jdk7-1.7.20.jar</arg>
                 <arg>$USER_HOME$/.gradle/caches/transforms-3/6c13a9be4860c55b4013e8166e6edbc9/transformed/jetified-photo-main-10.2.1-api.jar</arg>
                 <arg>$USER_HOME$/.gradle/caches/transforms-3/6cbf0cbd3658a933c0068bd1738312aa/transformed/jetified-all-10.2.1-api.jar</arg>
@@ -128,6 +127,9 @@
                 <arg>$USER_HOME$/.gradle/caches/modules-2/files-2.1/androidx.lifecycle/lifecycle-common/2.3.1/fc466261d52f4433863642fb40d12441ae274a98/lifecycle-common-2.3.1.jar</arg>
                 <arg>$USER_HOME$/.gradle/caches/modules-2/files-2.1/androidx.annotation/annotation/1.3.0/21f49f5f9b85fc49de712539f79123119740595/annotation-1.3.0.jar</arg>
                 <arg>$USER_HOME$/.gradle/caches/transforms-3/e66fd018941767d83ce0ee03e4bf0603/transformed/jetified-build-annotations-10.2.1.jar</arg>
+                <arg>$USER_HOME$/.gradle/caches/transforms-3/2e4e54b9f215d4e4910d3b7333effca6/transformed/jetified-ogury-choice-manager-3.3.0-api.jar</arg>
+                <arg>$USER_HOME$/.gradle/caches/transforms-3/73bc90d9664e966a6932c35ca3528712/transformed/jetified-ogury-ads-4.3.0-api.jar</arg>
+                <arg>$USER_HOME$/.gradle/caches/transforms-3/49e4c2a00172f9f7459ea45c7505e8c9/transformed/jetified-ogury-core-1.2.0-api.jar</arg>
                 <arg>$USER_HOME$/.gradle/caches/transforms-3/60db1bf730ff6bcd98ab2e9eb54b77e8/transformed/jetified-kotlin-stdlib-1.7.20.jar</arg>
                 <arg>$USER_HOME$/.gradle/caches/transforms-3/a02bfd1f5a3a304c33da6b0cab9727b7/transformed/jetified-commons-lang3-3.8.1.jar</arg>
                 <arg>$USER_HOME$/.gradle/caches/transforms-3/5fa4ec2c32436a97766839eab0012b96/transformed/jetified-disklrucache-4.12.0.jar</arg>
@@ -236,6 +238,7 @@
     <orderEntry type="library" scope="TEST" name="Gradle: com.google.firebase:firebase-annotations:16.0.0" level="project" />
     <orderEntry type="library" scope="TEST" name="Gradle: javax.inject:javax.inject:1" level="project" />
     <orderEntry type="library" scope="TEST" name="Gradle: com.google.guava:listenablefuture:1.0" level="project" />
+    <orderEntry type="library" scope="TEST" name="Gradle: co.ogury:ogury-sdk:5.4.0@aar" level="project" />
     <orderEntry type="library" scope="TEST" name="Gradle: ly.img.android.sdk.ui.mobile_ui:photo-main:10.2.1@aar" level="project" />
     <orderEntry type="library" scope="TEST" name="Gradle: ly.img.android.sdk.ui.mobile_ui:all:10.2.1@aar" level="project" />
     <orderEntry type="library" scope="TEST" name="Gradle: ly.img.android.sdk.ui.mobile_ui:filter:10.2.1@aar" level="project" />
@@ -324,6 +327,9 @@
     <orderEntry type="library" scope="TEST" name="Gradle: androidx.lifecycle:lifecycle-livedata:2.1.0@aar" level="project" />
     <orderEntry type="library" scope="TEST" name="Gradle: androidx.arch.core:core-runtime:2.1.0@aar" level="project" />
     <orderEntry type="library" scope="TEST" name="Gradle: androidx.lifecycle:lifecycle-livedata-core:2.3.1@aar" level="project" />
+    <orderEntry type="library" scope="TEST" name="Gradle: co.ogury.module:ogury-choice-manager:3.3.0@aar" level="project" />
+    <orderEntry type="library" scope="TEST" name="Gradle: co.ogury.module:ogury-ads:4.3.0@aar" level="project" />
+    <orderEntry type="library" scope="TEST" name="Gradle: co.ogury.module:ogury-core:1.2.0@aar" level="project" />
     <orderEntry type="library" scope="TEST" name="Gradle: ly.img.android:authorization:9.0.0.0@aar" level="project" />
     <orderEntry type="library" scope="TEST" name="Gradle: androidx.annotation:annotation-experimental:1.1.0@aar" level="project" />
     <orderEntry type="library" scope="TEST" name="Gradle: androidx.startup:startup-runtime:1.0.0@aar" level="project" />
