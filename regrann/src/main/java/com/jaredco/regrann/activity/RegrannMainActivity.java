@@ -3,7 +3,6 @@ package com.jaredco.regrann.activity;
 import static com.jaredco.regrann.activity.RegrannApp.sendEvent;
 import static com.jaredco.regrann.util.Util.getUserCountry;
 
-import android.Manifest;
 import android.app.AlertDialog;
 import android.content.ActivityNotFoundException;
 import android.content.ClipData;
@@ -46,7 +45,6 @@ import com.google.firebase.remoteconfig.FirebaseRemoteConfigSettings;
 import com.jaredco.regrann.R;
 import com.jaredco.regrann.sqlite.KeptListAdapter;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class RegrannMainActivity extends AppCompatActivity {
@@ -439,35 +437,6 @@ MediationTestSuite.launch(_this);
         return true;
     }
 
-    private void checkPermissions() {
-        List<String> permissionsNeeded = new ArrayList<String>();
-
-        final List<String> permissionsList = new ArrayList<String>();
-        if (!addPermission(permissionsList, Manifest.permission.WRITE_EXTERNAL_STORAGE))
-            permissionsNeeded.add("Read SMS");
-
-
-
-        if (permissionsNeeded.size() > 0) {
-
-
-
-            Intent i;
-
-            i = new Intent(this, CheckPermissions.class);
-
-
-            startActivity(i);
-
-
-
-
-
-        } else
-            checkForInstagramURLinClipboard();
-
-    }
-
 
     @Override
     protected void onResume() {
@@ -481,7 +450,7 @@ MediationTestSuite.launch(_this);
                 @Override
                 public void run() {
                     //Do something after 100ms
-                    checkPermissions();
+                    checkForInstagramURLinClipboard();
                 }
             }, 1000);
         }
