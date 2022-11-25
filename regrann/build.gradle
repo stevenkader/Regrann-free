@@ -48,8 +48,8 @@ android {
         applicationId "com.jaredco.regrann"
         minSdkVersion 24
         targetSdkVersion 31
-        versionCode 718
-        versionName "12.78"
+        versionCode 722
+        versionName "12.82"
 
         multiDexEnabled true
         resValue 'string', 'pesdk_version', "v$pesdk_version"
@@ -135,7 +135,7 @@ dependencies {
     implementation fileTree(include: ['*.*'], dir: 'libs')
     implementation 'co.ogury:ogury-sdk:5.+'
     // Ogury Adapter for AdMob mediation
-    // implementation 'co.ogury:ogury-mediation-admob:5.+'
+    implementation 'co.ogury:ogury-mediation-admob:5.+'
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
 
 
@@ -145,13 +145,12 @@ dependencies {
     implementation 'org.apache.commons:commons-text:1.6'
     implementation 'com.squareup.picasso:picasso:2.5.2'
 
-    implementation platform('com.google.firebase:firebase-bom:29.0.0')
+    implementation platform('com.google.firebase:firebase-bom:30.1.0')
     implementation 'com.nineoldandroids:library:2.4.0'
     implementation 'androidx.multidex:multidex:2.0.1'
 
-    implementation 'com.google.android.gms:play-services-ads:20.5.0'
 
-    implementation 'com.google.android.play:core:1.10.2'
+    implementation 'com.google.android.play:core:1.10.3'
 
     /* 4) Add the CSDK framework dependencies (Make sure these version numbers are correct) */
     implementation 'org.jsoup:jsoup:1.14.3'
@@ -161,17 +160,20 @@ dependencies {
     implementation 'com.github.bumptech.glide:glide:4.12.0'
     implementation 'com.google.code.gson:gson:2.8.9'
 
-    // implementation 'com.google.ads.mediation:facebook:6.8.0.0'
+    implementation 'com.google.ads.mediation:facebook:6.12.0.0'
 
     implementation 'com.android.billingclient:billing:4.0.0'
 
-    implementation 'com.google.android.gms:play-services-ads-identifier:17.1.0'
+    implementation 'com.google.android.gms:play-services-ads-identifier:18.0.1'
     implementation 'com.android.volley:volley:1.2.1'
 
     implementation 'androidx.constraintlayout:constraintlayout:2.1.2'
 
     implementation 'androidx.annotation:annotation:1.3.0'
     //  implementation 'com.google.ads.mediation:applovin:10.3.4.0'
+
+    implementation 'com.google.android.gms:play-services-ads:21.3.0'
+    implementation 'com.google.android.ads:mediation-test-suite:3.0.0'
 
 }
 

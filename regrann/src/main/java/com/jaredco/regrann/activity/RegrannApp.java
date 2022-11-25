@@ -10,10 +10,6 @@ import android.util.Log;
 
 import androidx.multidex.MultiDex;
 
-import com.google.android.gms.ads.MobileAds;
-import com.google.android.gms.ads.RequestConfiguration;
-import com.google.android.gms.ads.initialization.InitializationStatus;
-import com.google.android.gms.ads.initialization.OnInitializationCompleteListener;
 import com.google.firebase.analytics.FirebaseAnalytics;
 
 import java.io.File;
@@ -23,7 +19,6 @@ import java.io.IOException;
 import java.lang.reflect.Method;
 import java.nio.channels.FileChannel;
 import java.nio.file.Files;
-import java.util.Arrays;
 
 //import com.google.ads.mediation.inmobi.InMobiConsent;
 
@@ -103,20 +98,7 @@ public class RegrannApp extends Application {
 
         Log.d("app5", "In Regrann App - onCreate");
 
-        RequestConfiguration requestConfiguration
-                = new RequestConfiguration.Builder()
-                .setTestDeviceIds(Arrays.asList("6B4BD6A9C40F28AEA23FBD3EFC72B6A9") )
-                .build();
-        MobileAds.setRequestConfiguration(requestConfiguration);
 
-
-        // AdSettings.addTestDevice("24a1e03e-2ea4-4de2-8b4e-bc7fbf4599ed");
-
-        MobileAds.initialize(this, new OnInitializationCompleteListener() {
-            @Override
-            public void onInitializationComplete(InitializationStatus initializationStatus) {
-            }
-        });
 
         SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this);
         boolean firstRun = preferences.getBoolean("startShowTutorial", true);

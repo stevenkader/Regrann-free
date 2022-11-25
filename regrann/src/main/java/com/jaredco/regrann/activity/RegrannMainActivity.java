@@ -77,15 +77,18 @@ public class RegrannMainActivity extends AppCompatActivity {
         Log.d("app5", "countr code " + country);
 
 
+
         _this = this;
 
+/**
+ MobileAds.initialize(this, new OnInitializationCompleteListener() {
+@Override public void onInitializationComplete(InitializationStatus initializationStatus) {
 
-        //  IntegrationHelper.validateIntegration(this);
 
-        //  MediationTestSuite.launch(RegrannMainActivity.this);
-        //  MediationTestSuite.addTestDevice("B1D20D0F336796629655D59351F179F8");
-      //  MediationTestSuite.addTestDevice("03B8364E84BB1446DA5C8FDFA9A4E356");
-
+MediationTestSuite.launch(_this);
+}
+});
+ **/
 
         preferences = PreferenceManager.getDefaultSharedPreferences(_this.getApplication()
                 .getApplicationContext());
