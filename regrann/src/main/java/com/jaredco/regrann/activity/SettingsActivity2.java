@@ -15,7 +15,6 @@ import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
-import android.os.Handler;
 import android.preference.CheckBoxPreference;
 import android.preference.ListPreference;
 import android.preference.Preference;
@@ -39,6 +38,7 @@ import androidx.appcompat.widget.Toolbar;
 import androidx.core.app.ActivityCompat;
 
 import com.google.firebase.analytics.FirebaseAnalytics;
+import com.jaredco.regrann.BuildConfig;
 import com.jaredco.regrann.R;
 
 import java.io.File;
@@ -194,17 +194,7 @@ public class SettingsActivity2 extends PreferenceActivity {
         getFragmentManager().beginTransaction().replace(android.R.id.content,
                 new PrefsFragment()).commit();
 
-        if (Build.VERSION.SDK_INT >= 23) {
 
-            final Handler handler = new Handler();
-            handler.postDelayed(new Runnable() {
-                @Override
-                public void run() {
-                    //Do something after 100ms
-                    checkPermissions();
-                }
-            }, 1000);
-        }
 
 
     }
@@ -685,8 +675,9 @@ public class SettingsActivity2 extends PreferenceActivity {
                 public boolean onPreferenceChange(Preference preference, Object newValue) {
                     boolean noAds = preferences.getBoolean("removeAds", false);
 
-                    //     if (BuildConfig.DEBUG)
-                    //       noAds = false ;
+                    if (BuildConfig.DEBUG)
+
+                        noAds = false;
 
                     if (!noAds) {
                         Intent i = new Intent(RegrannApp._this, UpgradeActivity.class);

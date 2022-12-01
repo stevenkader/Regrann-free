@@ -48,8 +48,8 @@ android {
         applicationId "com.jaredco.regrann"
         minSdkVersion 24
         targetSdkVersion 31
-        versionCode 724
-        versionName "12.86"
+        versionCode 730
+        versionName "12.92"
 
         multiDexEnabled true
         resValue 'string', 'pesdk_version', "v$pesdk_version"
@@ -137,9 +137,9 @@ dependencies {
     // Ogury Adapter for AdMob mediation
     implementation 'co.ogury:ogury-mediation-admob:5.+'
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
+    //  implementation "androidx.coordinatorlayout.widget.CoordinatorLayout:1.1.0"
 
-
-    implementation 'androidx.appcompat:appcompat:1.2.0'
+    implementation 'androidx.appcompat:appcompat:1.5.1'
     implementation 'commons-io:commons-io:2.11.0'
     implementation 'com.github.HamidrezaAmz:AndroidImageSlider:v1.0.8'
     implementation 'org.apache.commons:commons-text:1.6'
@@ -173,7 +173,8 @@ dependencies {
     //  implementation 'com.google.ads.mediation:applovin:10.3.4.0'
 
     implementation 'com.google.android.gms:play-services-ads:21.3.0'
-    implementation 'com.google.android.ads:mediation-test-suite:3.0.0'
+    implementation 'androidx.coordinatorlayout:coordinatorlayout:1.2.0'
+    // implementation 'com.google.android.ads:mediation-test-suite:3.0.0'
 
 }
 
