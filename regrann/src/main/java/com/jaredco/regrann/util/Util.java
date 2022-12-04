@@ -121,6 +121,7 @@ public class Util {
 
 
     public static String getUserCountry(Context context) {
+
         try {
             final TelephonyManager tm = (TelephonyManager) context.getSystemService(Context.TELEPHONY_SERVICE);
             final String simCountry = tm != null ? tm.getSimCountryIso() : null;
@@ -134,7 +135,7 @@ public class Util {
             }
         } catch (Exception e) {
         }
-        return null;
+        return "";
     }
 
     public static long startDownload(String str, String str2, Context context2, String str3) {
