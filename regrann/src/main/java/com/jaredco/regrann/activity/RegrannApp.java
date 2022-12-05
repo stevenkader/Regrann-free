@@ -10,6 +10,9 @@ import android.util.Log;
 
 import androidx.multidex.MultiDex;
 
+import com.google.android.gms.ads.MobileAds;
+import com.google.android.gms.ads.initialization.InitializationStatus;
+import com.google.android.gms.ads.initialization.OnInitializationCompleteListener;
 import com.google.firebase.analytics.FirebaseAnalytics;
 
 import java.io.File;
@@ -23,6 +26,7 @@ import java.nio.file.Files;
 //import com.google.ads.mediation.inmobi.InMobiConsent;
 
 public class RegrannApp extends Application {
+
 //    public class RegrannApp extends Application  {
 
 
@@ -30,7 +34,7 @@ public class RegrannApp extends Application {
 
     private static FirebaseAnalytics mFirebaseAnalytics;
     public static RegrannApp _this;
-    public static boolean admobReady = false ;
+    public static boolean admobReady = false;
     SharedPreferences preferences;
 
     //try to catch some uncaught exception
@@ -98,6 +102,13 @@ public class RegrannApp extends Application {
 
         Log.d("app5", "In Regrann App - onCreate");
 
+        MobileAds.initialize(
+                this,
+                new OnInitializationCompleteListener() {
+                    @Override
+                    public void onInitializationComplete(InitializationStatus initializationStatus) {
+                    }
+                });
 
 
         SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this);

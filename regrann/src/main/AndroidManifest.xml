@@ -6,8 +6,7 @@
 
     <uses-sdk tools:overrideLibrary="com.facebook, android.support.customtabs" />
 
-    <uses-permission android:name="android.permission.READ_PRIVILEGED_PHONE_STATE" />
-    <uses-permission android:name="android.permission.WAKE_LOCK" />
+     <uses-permission android:name="android.permission.WAKE_LOCK" />
     <uses-permission android:name="android.persistent" />
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
@@ -92,12 +91,14 @@
             android:name=".activity.FetchDownloadUrlService"
             android:exported="true" />
 
+
         <activity
             android:name=".activity.ShareActivity"
-
+            android:exported="true"
             android:label="Repost"
             android:launchMode="singleTask"
             android:theme="@style/Theme.Transparent.Fullscreen" />
+
 
         <activity
             android:name=".activity.OnBoardingActivity"

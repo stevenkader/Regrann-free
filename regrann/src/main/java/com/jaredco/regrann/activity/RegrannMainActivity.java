@@ -4,6 +4,7 @@ import static com.jaredco.regrann.activity.RegrannApp.sendEvent;
 import static com.jaredco.regrann.util.Util.getUserCountry;
 
 import android.app.AlertDialog;
+import android.app.Application;
 import android.content.ActivityNotFoundException;
 import android.content.ClipData;
 import android.content.ClipboardManager;
@@ -56,15 +57,16 @@ public class RegrannMainActivity extends AppCompatActivity {
 
     boolean firstRun, olderUser;
 
-    boolean noAds  ;
+    boolean noAds;
     final private int REQUEST_CODE_ASK_MULTIPLE_PERMISSIONS = 124;
 
 
-    ProgressBar spinner ;
+    ProgressBar spinner;
 
     private BillingClient billingClient;
     boolean billingReady = false;
     AcknowledgePurchaseResponseListener acknowledgePurchaseResponseListener;
+
 
 
     @Override
@@ -74,6 +76,7 @@ public class RegrannMainActivity extends AppCompatActivity {
         String country = getUserCountry(getApplicationContext());
         Log.d("app5", "countr code " + country);
 
+        Application application = getApplication();
 
 
         _this = this;
@@ -210,23 +213,6 @@ MediationTestSuite.launch(_this);
 
         });
 
-
-/**
-
- try {
- if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.P) {
-
- Intent myService = new Intent(RegrannApp._this, ClipboardListenerService.class);
- if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
- ContextCompat.startForegroundService(_this, myService);
- } else {
- _this.startService(myService);
- }
- }
-
- } catch (Exception e) {
- }
- **/
 
         noAds = preferences.getBoolean("removeAds", false);
 
