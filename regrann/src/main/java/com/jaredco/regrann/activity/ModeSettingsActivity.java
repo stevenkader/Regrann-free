@@ -57,7 +57,7 @@ public class ModeSettingsActivity extends AppCompatActivity {
             noAds = preferences.getBoolean("removeAds", false);
 
             if (BuildConfig.DEBUG) {
-                //         noAds = false;
+                noAds = false;
             }
 
             setContentView(R.layout.activity_modesettings);

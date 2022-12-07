@@ -148,13 +148,15 @@ By clicking "Confirm", you consent to the use of anonymous data (like your count
 
     <string name="banner_ad_unit_id">ca-app-pub-1489694459182078/7704789342</string>
 
-<string name="upgrade_menu">Upgrade</string>
+    <string name="upgrade_menu">Upgrade</string>
 
     <string name="upgrade_to_premium">Upgrade to Remove Ads</string>
 
     <string name="upgrade_header_text">Upgrade to Remove Ads\\n\\nONE TIME PAYMENT</string>
 
     <string name="upgrade_features">No Ads\nPriority Support by Developer\n100% Risk Free - Refund Anytime</string>
+    <string name="upgrade_features2">Multi-Photo Support\nCustom Watermark\nQuick Actions\nNo Ads\nPriority Support by Developer\n100% Risk Free</string>
+
     <string name="upgrade_button_text">Upgrade Now</string>
     <string name="auto_saving">Quick Saving......</string>
 

@@ -1,9 +1,12 @@
 package com.jaredco.regrann.activity;
 
+import static com.jaredco.regrann.activity.RegrannApp.sendEvent;
+
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Bundle;
@@ -17,21 +20,12 @@ import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.android.billingclient.api.AcknowledgePurchaseParams;
 import com.android.billingclient.api.AcknowledgePurchaseResponseListener;
 import com.android.billingclient.api.BillingClient;
-import com.android.billingclient.api.BillingClientStateListener;
-import com.android.billingclient.api.BillingFlowParams;
-import com.android.billingclient.api.BillingResult;
 import com.android.billingclient.api.Purchase;
-import com.android.billingclient.api.PurchasesUpdatedListener;
 import com.android.billingclient.api.SkuDetails;
-import com.android.billingclient.api.SkuDetailsParams;
-import com.android.billingclient.api.SkuDetailsResponseListener;
 import com.jaredco.regrann.R;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Random;
 
 
@@ -133,11 +127,11 @@ public class UpgradeActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
 
         _this = this;
-        setContentView(R.layout.activity_upgrade);
+        setContentView(R.layout.activity_upgrade_prof);
 
 
-        spinner = findViewById(R.id.loading_bar);
-        spinner.setVisibility(View.VISIBLE);
+        //  spinner = findViewById(R.id.loading_bar);
+        //    spinner.setVisibility(View.VISIBLE);
 
         sharedPref = this.getPreferences(Context.MODE_PRIVATE);
 
@@ -149,22 +143,17 @@ public class UpgradeActivity extends AppCompatActivity {
 
 
         // mFirebaseAnalytics = FirebaseAnalytics.getInstance(this);
+/**
+ btnRemoveAds = findViewById(R.id.upgradeBtn);
 
-        btnRemoveAds = findViewById(R.id.upgradeBtn);
+ btnRemoveAds.setVisibility(View.INVISIBLE);
+ **/
 
-        btnRemoveAds.setVisibility(View.INVISIBLE);
-
-
-        TextView t = findViewById(R.id.upgrade_header_text);
-        t.setText(preferences.getString("upgrade_header_text", getString(R.string.upgrade_header_text)));
-
-        t = findViewById(R.id.upgrade_features);
-//        t.setText(preferences.getString("upgrade_features",getString(R.string.upgrade_features)));
 
         Button b = findViewById(R.id.upgradeBtn);
-        b.setText(preferences.getString("upgrade_button_text", getString(R.string.upgrade_button_text)));
+        b.setText("Try Repost Professional");
 
-
+/**
         acknowledgePurchaseResponseListener = new AcknowledgePurchaseResponseListener() {
             @Override
             public void onAcknowledgePurchaseResponse(BillingResult billingResult) {
@@ -329,17 +318,15 @@ public class UpgradeActivity extends AppCompatActivity {
                             });
 
                 }
-            }
+}
 
-            @Override
-            public void onBillingServiceDisconnected() {
-                // Try to restart the connection on the next request to
-                // Google Play by calling the startConnection() method.
+@Override public void onBillingServiceDisconnected() {
+// Try to restart the connection on the next request to
+// Google Play by calling the startConnection() method.
 
-            }
-        });
-
-
+}
+});
+ **/
     }
 
 
@@ -385,31 +372,41 @@ public class UpgradeActivity extends AppCompatActivity {
 
     public void onClickUpgradeNow(View view) {
 
-        if (false) {
-            SharedPreferences.Editor editor = preferences.edit();
-            editor.putBoolean("removeAds", true);
-            editor.putString("rewardDate", "");
-            editor.commit();
-            return;
+        sendEvent("upg_click_trypro", "", "");
+        try {
+            startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("market://details?id=com.nimmble.rgpro&referrer=utm_source%3Dapp%26utm_campaign%3Dpro_upg")));
+        } catch (android.content.ActivityNotFoundException anfe) {
+            startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("https://play.google.com/store/apps/details?id=com.nimmble.rgpro")));
         }
 
+        /**
 
-        if (!billingReady) {
-            RegrannApp.sendEvent("ug_removeads_billingnotready");
-            showErrorToast("Purchasing system isn't ready", "Please try again later", true);
-        } else {
+         if (false) {
+         SharedPreferences.Editor editor = preferences.edit();
+         editor.putBoolean("removeAds", true);
+         editor.putString("rewardDate", "");
+         editor.commit();
+         return;
+         }
+
+
+         if (!billingReady) {
+         RegrannApp.sendEvent("ug_removeads_billingnotready");
+         showErrorToast("Purchasing system isn't ready", "Please try again later", true);
+         } else {
 // Retrieve a value for "skuDetails" by calling querySkuDetailsAsync().
 
-            RegrannApp.sendEvent("ug_removeAds_beginflow", "", "");
-            BillingFlowParams flowParams = BillingFlowParams.newBuilder()
-                    .setSkuDetails(skuDetailsRemoveAds).build();
-            BillingResult responseCode = billingClient.launchBillingFlow(_this, flowParams);
+         RegrannApp.sendEvent("ug_removeAds_beginflow", "", "");
+         BillingFlowParams flowParams = BillingFlowParams.newBuilder()
+         .setSkuDetails(skuDetailsRemoveAds).build();
+         BillingResult responseCode = billingClient.launchBillingFlow(_this, flowParams);
 
-            if (responseCode != null) {
+         if (responseCode != null) {
 
-                int i = 1;
-            }
-        }
+         int i = 1;
+         }
+         }
+         **/
     }
 
 
