@@ -81,19 +81,25 @@ public class RegrannMainActivity extends AppCompatActivity {
 
         _this = this;
 
-/**
- MobileAds.initialize(this, new OnInitializationCompleteListener() {
-@Override public void onInitializationComplete(InitializationStatus initializationStatus) {
+        /**
+         OguryConfiguration.Builder oguryConfigurationBuilder = new OguryConfiguration.Builder(_this.getApplicationContext(), "OGY-EF265F412C32");
+
+         Ogury.start(oguryConfigurationBuilder.build());
+
+         OguryChoiceManagerExternal.setConsent(true, "CUSTOM");
+
+         MobileAds.initialize(this, new OnInitializationCompleteListener() {
+        @Override public void onInitializationComplete(InitializationStatus initializationStatus) {
 
 
-MediationTestSuite.launch(_this);
-}
-});
- **/
+        MediationTestSuite.launch(_this);
+        }
+        });
+         **/
+
 
         preferences = PreferenceManager.getDefaultSharedPreferences(_this.getApplication()
                 .getApplicationContext());
-
 
 
         acknowledgePurchaseResponseListener = new AcknowledgePurchaseResponseListener() {
