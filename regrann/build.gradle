@@ -48,8 +48,8 @@ android {
         applicationId "com.jaredco.regrann"
         minSdkVersion 24
         targetSdkVersion 31
-        versionCode 758
-        versionName "13.28"
+        versionCode 772
+        versionName "13.42"
 
         multiDexEnabled true
         resValue 'string', 'pesdk_version', "v$pesdk_version"
@@ -84,12 +84,14 @@ android {
 
     buildTypes {
         debug {
-            //     debuggable true
+            shrinkResources false
+            debuggable true
+            minifyEnabled false
         }
 
 
         release {
-
+            debuggable false
             shrinkResources true
             minifyEnabled true
 
