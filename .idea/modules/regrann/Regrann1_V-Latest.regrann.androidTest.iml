@@ -25,8 +25,8 @@
           <stringArguments>
             <stringArg name="classpath">
               <args>
-                <arg>$USER_HOME$/.gradle/caches/transforms-3/6ad9c0b2f73f9daa2db00dcc949b5ab3/transformed/jetified-ogury-sdk-5.4.0-api.jar</arg>
-                <arg>$USER_HOME$/.gradle/caches/transforms-3/7b5f8b808132afdfb1c60bdc9f237c1b/transformed/jetified-ogury-mediation-admob-5.4.1-api.jar</arg>
+                <arg>$USER_HOME$/.gradle/caches/transforms-3/e7a41695cb70da8fae93bd8d3c003877/transformed/jetified-ogury-sdk-5.5.0-api.jar</arg>
+                <arg>$USER_HOME$/.gradle/caches/transforms-3/d407a9b4332ae490b0875b2ccf912b98/transformed/jetified-ogury-mediation-admob-5.5.0.0-api.jar</arg>
                 <arg>$USER_HOME$/.gradle/caches/transforms-3/6c13a9be4860c55b4013e8166e6edbc9/transformed/jetified-photo-main-10.2.1-api.jar</arg>
                 <arg>$USER_HOME$/.gradle/caches/transforms-3/6cbf0cbd3658a933c0068bd1738312aa/transformed/jetified-all-10.2.1-api.jar</arg>
                 <arg>$USER_HOME$/.gradle/caches/transforms-3/98ce1b63ee6de9001221db294f44d3d6/transformed/jetified-filter-10.2.1-api.jar</arg>
@@ -132,9 +132,9 @@
                 <arg>$USER_HOME$/.gradle/caches/transforms-3/29859bba7903b4e93fe1f04fff95af33/transformed/print-1.0.0-api.jar</arg>
                 <arg>$USER_HOME$/.gradle/caches/modules-2/files-2.1/androidx.annotation/annotation/1.5.0/857678d6b4ca7b28571ef7935c668bdb57e15027/annotation-1.5.0.jar</arg>
                 <arg>$USER_HOME$/.gradle/caches/transforms-3/e66fd018941767d83ce0ee03e4bf0603/transformed/jetified-build-annotations-10.2.1.jar</arg>
-                <arg>$USER_HOME$/.gradle/caches/transforms-3/2e4e54b9f215d4e4910d3b7333effca6/transformed/jetified-ogury-choice-manager-3.3.0-api.jar</arg>
-                <arg>$USER_HOME$/.gradle/caches/transforms-3/73bc90d9664e966a6932c35ca3528712/transformed/jetified-ogury-ads-4.3.0-api.jar</arg>
-                <arg>$USER_HOME$/.gradle/caches/transforms-3/49e4c2a00172f9f7459ea45c7505e8c9/transformed/jetified-ogury-core-1.2.0-api.jar</arg>
+                <arg>$USER_HOME$/.gradle/caches/transforms-3/13298efe9a5e6ac452f17baeccf3c1f7/transformed/jetified-ogury-choice-manager-3.3.1-api.jar</arg>
+                <arg>$USER_HOME$/.gradle/caches/transforms-3/53b4bc804ffbfefdf5757d92b6bb06ac/transformed/jetified-ogury-ads-4.4.0-api.jar</arg>
+                <arg>$USER_HOME$/.gradle/caches/transforms-3/56733e11ce5124154085a41aba253886/transformed/jetified-ogury-core-1.2.1-api.jar</arg>
                 <arg>$USER_HOME$/.gradle/caches/transforms-3/60db1bf730ff6bcd98ab2e9eb54b77e8/transformed/jetified-kotlin-stdlib-1.7.20.jar</arg>
                 <arg>$USER_HOME$/.gradle/caches/transforms-3/a02bfd1f5a3a304c33da6b0cab9727b7/transformed/jetified-commons-lang3-3.8.1.jar</arg>
                 <arg>$USER_HOME$/.gradle/caches/transforms-3/5fa4ec2c32436a97766839eab0012b96/transformed/jetified-disklrucache-4.12.0.jar</arg>
@@ -249,8 +249,8 @@
     <orderEntry type="library" scope="TEST" name="Gradle: com.google.guava:listenablefuture:1.0" level="project" />
     <orderEntry type="library" scope="TEST" name="Gradle: com.google.firebase:firebase-annotations:16.0.0" level="project" />
     <orderEntry type="library" scope="TEST" name="Gradle: javax.inject:javax.inject:1" level="project" />
-    <orderEntry type="library" scope="TEST" name="Gradle: co.ogury:ogury-sdk:5.4.0@aar" level="project" />
-    <orderEntry type="library" scope="TEST" name="Gradle: co.ogury:ogury-mediation-admob:5.4.1@aar" level="project" />
+    <orderEntry type="library" scope="TEST" name="Gradle: co.ogury:ogury-sdk:5.5.0@aar" level="project" />
+    <orderEntry type="library" scope="TEST" name="Gradle: co.ogury:ogury-mediation-admob:5.5.0.0@aar" level="project" />
     <orderEntry type="library" scope="TEST" name="Gradle: ly.img.android.sdk.ui.mobile_ui:photo-main:10.2.1@aar" level="project" />
     <orderEntry type="library" scope="TEST" name="Gradle: ly.img.android.sdk.ui.mobile_ui:all:10.2.1@aar" level="project" />
     <orderEntry type="library" scope="TEST" name="Gradle: ly.img.android.sdk.ui.mobile_ui:filter:10.2.1@aar" level="project" />
@@ -339,9 +339,9 @@
     <orderEntry type="library" scope="TEST" name="Gradle: androidx.documentfile:documentfile:1.0.0@aar" level="project" />
     <orderEntry type="library" scope="TEST" name="Gradle: androidx.localbroadcastmanager:localbroadcastmanager:1.0.0@aar" level="project" />
     <orderEntry type="library" scope="TEST" name="Gradle: androidx.print:print:1.0.0@aar" level="project" />
-    <orderEntry type="library" scope="TEST" name="Gradle: co.ogury.module:ogury-choice-manager:3.3.0@aar" level="project" />
-    <orderEntry type="library" scope="TEST" name="Gradle: co.ogury.module:ogury-ads:4.3.0@aar" level="project" />
-    <orderEntry type="library" scope="TEST" name="Gradle: co.ogury.module:ogury-core:1.2.0@aar" level="project" />
+    <orderEntry type="library" scope="TEST" name="Gradle: co.ogury.module:ogury-choice-manager:3.3.1@aar" level="project" />
+    <orderEntry type="library" scope="TEST" name="Gradle: co.ogury.module:ogury-ads:4.4.0@aar" level="project" />
+    <orderEntry type="library" scope="TEST" name="Gradle: co.ogury.module:ogury-core:1.2.1@aar" level="project" />
     <orderEntry type="library" scope="TEST" name="Gradle: ly.img.android:authorization:9.0.0.0@aar" level="project" />
     <orderEntry type="library" scope="TEST" name="Gradle: androidx.annotation:annotation-experimental:1.1.0@aar" level="project" />
     <orderEntry type="library" scope="TEST" name="Gradle: androidx.startup:startup-runtime:1.0.0@aar" level="project" />
