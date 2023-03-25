@@ -14,6 +14,8 @@ buildscript {
 
 
     }
+
+
     dependencies {
 
         classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
@@ -30,12 +32,13 @@ buildscript {
     }
 }
 
+
 allprojects {
     repositories {
         google()
         mavenCentral()
         maven { url 'https://artifactory.img.ly/artifactory/imgly' }
-
+        maven { url "https://artifactory.appodeal.com/appodeal" }
 
     }
 }

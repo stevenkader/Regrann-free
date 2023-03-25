@@ -1,0 +1,13 @@
+<component name="libraryTable">
+  <library name="Gradle: com.appodeal.ads:consent:3.0.2@aar">
+    <CLASSES>
+      <root url="jar://$USER_HOME$/.gradle/caches/transforms-3/462dac2bcf12854a0dd1805200350c54/transformed/jetified-consent-3.0.2/jars/classes.jar!/" />
+      <root url="file://$USER_HOME$/.gradle/caches/transforms-3/462dac2bcf12854a0dd1805200350c54/transformed/jetified-consent-3.0.2/res" />
+      <root url="file://$USER_HOME$/.gradle/caches/transforms-3/462dac2bcf12854a0dd1805200350c54/transformed/jetified-consent-3.0.2/AndroidManifest.xml" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES>
+      <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.appodeal.ads/consent/3.0.2/7d16f6c8e1a6025454ac0e65d0d07e2decec5b19/consent-3.0.2-sources.jar!/" />
+    </SOURCES>
+  </library>
+</component>

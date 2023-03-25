@@ -1,0 +1,10 @@
+<component name="libraryTable">
+  <library name="Gradle: com.appodeal.ads.sdk.services:firebase:3.0.2.0@aar">
+    <CLASSES>
+      <root url="jar://$USER_HOME$/.gradle/caches/transforms-3/a26f2a253ad97dfa7395e0b4b7b15d10/transformed/jetified-firebase-3.0.2.0/jars/classes.jar!/" />
+      <root url="file://$USER_HOME$/.gradle/caches/transforms-3/a26f2a253ad97dfa7395e0b4b7b15d10/transformed/jetified-firebase-3.0.2.0/AndroidManifest.xml" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>
