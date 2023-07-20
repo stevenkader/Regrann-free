@@ -77,7 +77,8 @@
                 android:layout_marginBottom="11dp"
                 android:background="#03FFFFFF"
                 android:onClick="onClickUpgradeButton"
-                android:text="" />
+                android:text=""
+                android:visibility="gone" />
 
             <ImageView
                 android:id="@+id/imgPatch"
@@ -90,7 +91,7 @@
                 android:layout_marginEnd="11dp"
                 android:layout_marginBottom="11dp"
                 app:srcCompat="@drawable/patch"
-                tools:visibility="gone" />
+                tools:visibility="visible" />
 
         </RelativeLayout>
 
@@ -184,13 +185,28 @@
                         android:onClick="onClickBtnChangeLogin"
                         app:srcCompat="@drawable/changelogin" />
 
+
                     <Button
-                        android:id="@+id/button3"
+                        android:id="@+id/upgrade"
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
+                        android:layout_height="80dp"
                         android:layout_marginTop="20dp"
                         android:onClick="onClickUpgradeButton"
-                        android:text="Upgrade to Professional\nMulti-photo / Faster / No Ads" />
+
+                        android:text="Upgrade to Professional\nMulti-photo / Faster / No Ads"
+                        android:textSize="18sp" />
+
+
+                    <Button
+                        android:id="@+id/retrievePurchase"
+                        android:layout_width="match_parent"
+                        android:layout_height="40dp"
+                        android:layout_marginTop="20dp"
+                        android:onClick="onClickRetrievePurchase"
+                        android:text="Retrieve Purchase"
+
+                        android:textSize="18sp" />
+
 
                 </LinearLayout>
 

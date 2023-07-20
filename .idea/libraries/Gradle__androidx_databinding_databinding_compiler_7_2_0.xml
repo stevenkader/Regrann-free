@@ -1,0 +1,11 @@
+<component name="libraryTable">
+  <library name="Gradle: androidx.databinding:databinding-compiler:7.2.0">
+    <CLASSES>
+      <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/androidx.databinding/databinding-compiler/7.2.0/bb5349aa68a59bd35e1a84b1b832e0f4872239a2/databinding-compiler-7.2.0.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES>
+      <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/androidx.databinding/databinding-compiler/7.2.0/c66f07aecab2cd0cb3a5c9c5bb6bd644c723c945/databinding-compiler-7.2.0-sources.jar!/" />
+    </SOURCES>
+  </library>
+</component>

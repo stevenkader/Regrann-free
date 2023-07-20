@@ -1,6 +1,5 @@
 package com.jaredco.regrann.activity;
 
-import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Environment;
@@ -212,9 +211,9 @@ public class ModeSettingsActivity extends AppCompatActivity {
                             cb3.setChecked(false);
                         } else {
                             cb1.setChecked(false);
-                            Intent i = new Intent(RegrannApp._this, UpgradeActivity.class);
-                            i.putExtra("from_ms_screen", true);
-                            startActivity(i);
+                            //  Intent i = new Intent(RegrannApp._this, UpgradeActivity.class);
+                            // i.putExtra("from_ms_screen", true);
+                            // startActivity(i);
 
 
                         }
@@ -251,9 +250,9 @@ public class ModeSettingsActivity extends AppCompatActivity {
                             cb3.setChecked(false);
                         } else {
                             cb2.setChecked(false);
-                            Intent i = new Intent(RegrannApp._this, UpgradeActivity.class);
-                            i.putExtra("from_ms_screen", true);
-                            startActivity(i);
+                            //  Intent i = new Intent(RegrannApp._this, UpgradeActivity.class);
+                            //i.putExtra("from_ms_screen", true);
+                            //startActivity(i);
 
                         }
                         //  SettingsActivity2.bindPreferenceSummaryToValue("mode_string", getString(R.string.Quick_Repost_Mode));

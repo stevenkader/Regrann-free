@@ -1,8 +1,41 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <string name="app_name">Repost for IG</string>
+    <string name="in_app_name">Repost for IG</string>
     <string name="mode">Mode</string>
+    <string name="subscribe">Click to Subscribe\n50% off Sale</string>
+
+    <string name="ph_feature_1">Repost for Instagram</string>
+    <string name="ph_feature_2">Multi-Photo Support</string>
+    <string name="ph_feature_3">Remove Ads - Faster</string>
+    <string name="ph_feature_4">Repost from Twitter / \nYouTube / Facebook / \nTikTok</string>
+    <string name="ph_feature_5">Quick Actions</string>
+    <string name="ph_feature_6">VIP Customer Support</string>
+    <string name="ph_get_special_price">Get special price</string>
+    <string name="ph_limited_time_offer">Limited time offer</string>
+    <string name="ph_offer_basic">Basic</string>
+    <string name="ph_offer_premium">Premium</string>
+    <string name="ph_one_time_offer_name">Lifetime premium</string>
+    <string name="ph_one_time_payment">One time payment</string>
+    <string name="ph_start_30_day_trial_cta">START FREE 30-DAY TRIAL</string>
+    <string name="ph_start_3_day_trial_cta">START FREE 3-DAY TRIAL</string>
+    <string name="ph_start_7_day_trial_cta">START FREE 7-DAY TRIAL</string>
+    <string name="ph_start_free_trial">Start free trial</string>
+    <string name="ph_start_like_pro">Start Like a Pro</string>
+    <string name="ph_start_premium_cta">START PREMIUM</string>
+    <string name="ph_start_trial_cta">START FREE TRIAL</string>
+    <string name="ph_subscription_info">Subscription will auto-renew. Cancel anytime.</string>
+    <string name="ph_terms_and_conditions">By continuing you agree to our &lt;a href=%1$s&gt;Terms&lt;/a&gt; and &lt;a href=%2$s&gt;Privacy&lt;/a&gt; policies</string>
+    <string name="ph_try_limited">or try limited version</string>
+    <string name="ph_unlock_all_features">Unlock All Features</string>
+
+
     <string name="app_id" translatable="false">773402562742917</string>
-    <string name="app_name">Repost</string>
+    <string name="no_risk_1">Your free trial is over.\nTo continue using Repost Pro just sign up for a monthly subscription with no risk!\n100% satisfaction guaranteed</string>
+    <string name="no_risk_2">Just $3.99/month subscription\nCan cancel anytime.\n\nExtra Features : Multi-photo Posts, No Ads, Handle videos from Twitter - Facebook - YouTube Shorts - TikTok, Personal Fast Support, First to get new features and priority fixes.</string>
+    <string name="start_free_trial_btn">Start Free Trial</string>
+
+    <string name="eula_text">By continuing, you accept and approve the &lt;a href="http://jaredcompany.com/terms-of-use/">terms of use&lt;/a> and the &lt;a href="http://jaredcompany.com/privacy-statement/">privacy policy.&lt;/a></string>
 
     <string name="choose_mail_client">Choose Mail Client</string>
     <string name="share_email_no_email_client_installed">No email client installed.</string>

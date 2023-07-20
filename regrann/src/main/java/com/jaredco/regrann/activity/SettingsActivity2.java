@@ -680,9 +680,9 @@ public class SettingsActivity2 extends PreferenceActivity {
                         noAds = false;
 
                     if (!noAds) {
-                        Intent i = new Intent(RegrannApp._this, UpgradeActivity.class);
-                        i.putExtra("from__custom_watermark", false);
-                        startActivity(i);
+                        //           Intent i = new Intent(RegrannApp._this, UpgradeActivity.class);
+                        //          i.putExtra("from__custom_watermark", false);
+                        //         startActivity(i);
                         return false;
                     }
 

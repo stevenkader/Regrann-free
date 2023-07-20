@@ -4,8 +4,10 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Handler;
+import android.preference.PreferenceManager;
 import android.util.Log;
 
 import com.jaredco.regrann.R;
@@ -42,19 +44,28 @@ public class NewShareText extends Activity {
                         @Override
                         public void run() {
 
+
                             try {
+                                SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(RegrannApp._this.getApplicationContext());
 
-                               if (text.contains("instagram.com")) {
-                                   text = text.substring(text.indexOf("https://"));
+                                Boolean really_subscribed = preferences.getBoolean("really_subscribed", false);
+                                Boolean subscribed = preferences.getBoolean("subscribed", false);
 
-                                   Intent i;
-                                   i = new Intent(_this, ShareActivity.class);
+                                if (really_subscribed == true) {
+                                    subscribed = true;
+
+                                }
+                                if (text.contains("instagram.com") || (subscribed && (text.contains("youtube.com/shorts") || text.contains("fb.watch") || text.contains("tiktok") || text.contains("facebook.com") || text.contains("twitter.com")))) {
+                                    text = text.substring(text.indexOf("https://"));
+
+                                    Intent i;
+                                    i = new Intent(_this, ShareActivity.class);
 
 
-                                   // String uri=imgDirPath+"/"+path;
-                                   i.putExtra("mediaUrl", text);
-                                   i.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
-                                   i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                                    // String uri=imgDirPath+"/"+path;
+                                    i.putExtra("mediaUrl", text);
+                                    i.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
+                                    i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
 
                                     System.out.println("***media url " + text);
                                    startActivity(i);
@@ -68,10 +79,23 @@ public class NewShareText extends Activity {
 
 
                                } else {
-                                   showErrorToast("Error", "Regrann doesn't support his share link.");
+
+                                    if (text.contains("youtube.com/shorts") || text.contains("fb.watch") || text.contains("tiktok") || text.contains("facebook.com") || text.contains("twitter.com")) {
 
 
-                               }
+                                        Intent i = new Intent(_this, RequestPaymentActivity.class);
+                                        i.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
+                                        i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+
+
+                                        startActivity(i);
+                                        finish();
+                                        return;
+                                    }
+                                    showErrorToast("Error", "Regrann doesn't support his share link.");
+
+
+                                }
 
 
                             } catch (Exception e) {

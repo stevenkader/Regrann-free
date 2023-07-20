@@ -5,7 +5,6 @@ import static com.jaredco.regrann.util.Util.getUserCountry;
 
 import android.Manifest;
 import android.app.AlertDialog;
-import android.app.Application;
 import android.content.ActivityNotFoundException;
 import android.content.ClipData;
 import android.content.ClipboardManager;
@@ -22,10 +21,10 @@ import android.os.Handler;
 import android.preference.PreferenceManager;
 import android.util.Log;
 import android.view.View;
-import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 
@@ -34,8 +33,6 @@ import com.android.billingclient.api.AcknowledgePurchaseResponseListener;
 import com.android.billingclient.api.BillingClient;
 import com.android.billingclient.api.BillingClientStateListener;
 import com.android.billingclient.api.BillingResult;
-import com.android.billingclient.api.ConsumeParams;
-import com.android.billingclient.api.ConsumeResponseListener;
 import com.android.billingclient.api.Purchase;
 import com.android.billingclient.api.PurchasesResponseListener;
 import com.android.billingclient.api.PurchasesUpdatedListener;
@@ -60,10 +57,8 @@ public class RegrannMainActivity extends AppCompatActivity {
     boolean firstRun, olderUser;
 
     boolean noAds;
-    final private int REQUEST_CODE_ASK_MULTIPLE_PERMISSIONS = 124;
 
 
-    ProgressBar spinner;
 
     private BillingClient billingClient;
     boolean billingReady = false;
@@ -77,9 +72,6 @@ public class RegrannMainActivity extends AppCompatActivity {
 
         String country = getUserCountry(getApplicationContext());
         Log.d("app5", "countr code " + country);
-
-        Application application = getApplication();
-
 
         _this = this;
 
@@ -227,6 +219,8 @@ public class RegrannMainActivity extends AppCompatActivity {
         // public static InstaAPI instaAPI;
         FirebaseAnalytics mFirebaseAnalytics = FirebaseAnalytics.getInstance(this);
 
+
+        retreivePurchase();
 
         try {
 
@@ -408,15 +402,21 @@ public class RegrannMainActivity extends AppCompatActivity {
     }
 
 
+    public void onClickRetrievePurchase(View v) {
+        retrieveBtnPressed = true;
+        retreivePurchase();
+
+    }
 
     public void onClickBtnChangeLogin(View v) {
 
         Intent myIntent = new Intent(RegrannMainActivity.this, InstagramLogin.class);
         myIntent.putExtra("frommain", true);
+
+
         _this.startActivity(myIntent);
 
     }
-
 
 
 
@@ -511,17 +511,16 @@ public class RegrannMainActivity extends AppCompatActivity {
         //  startActivity(i);
         //   RegrannApp.sendEvent("rmain_upgrade_btn");
 
-        RegrannApp.sendEvent("rmain_upgrade_btn_clkV2", "", "");
+        RegrannApp.sendEvent("rmain_upgrade_btn_clkV5", "", "");
 
-        final String appPackageName = getPackageName(); // getPackageName() from Context or Activity object
-        try {
-            startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("market://details?id=com.nimmble.rgpro")));
-        } catch (android.content.ActivityNotFoundException anfe) {
-            startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("https://play.google.com/store/apps/details?id=com.nimmble.rgpro")));
-        }
+        Intent i = new Intent(_this, RequestPaymentActivity.class);
+
+        startActivity(i);
+
 
     }
 
+    /**
 
     public void queryPurchases() {
         Runnable queryToExecute = new Runnable() {
@@ -549,6 +548,7 @@ public class RegrannMainActivity extends AppCompatActivity {
 
                                     ConsumeParams consumeParams = ConsumeParams.newBuilder()
                                             .setPurchaseToken(purchase.getPurchaseToken())
+
                                             .build();
 
                                     ConsumeResponseListener consumeResponseListener = new ConsumeResponseListener() {
@@ -587,17 +587,17 @@ public class RegrannMainActivity extends AppCompatActivity {
                 } catch (Exception e) {
                     int i = 1 ;
                 }
-            }
-
-        };
-
-        try {
-            executeServiceRequest(queryToExecute);
-        } catch (Exception e) {
-        }
-
     }
 
+    };
+
+     try {
+     executeServiceRequest(queryToExecute);
+     } catch (Exception e) {
+     }
+
+     }
+     **/
 
 
     private void executeServiceRequest(Runnable runnable) {
@@ -653,13 +653,6 @@ public class RegrannMainActivity extends AppCompatActivity {
         noAds = preferences.getBoolean("removeAds", false);
 
 
-        if (!noAds)
-            findViewById(R.id.imgPatch).setVisibility(View.GONE);
-        else
-            findViewById(R.id.btnUpgrade).setVisibility(View.GONE);
-
-
-
     }
 
 
@@ -700,6 +693,92 @@ public class RegrannMainActivity extends AppCompatActivity {
         RegrannApp.sendEvent("main_email_support");
 
 
+    }
+
+
+    boolean retrieveBtnPressed;
+
+
+    static String sku = "free-trial";  // replace with your SKU
+
+
+    public void retreivePurchase() {
+
+        PurchasesUpdatedListener b = new PurchasesUpdatedListener() {
+
+            @Override
+            public void onPurchasesUpdated(@NonNull BillingResult billingResult, @Nullable List<Purchase> list) {
+
+            }
+        };
+
+        billingClient = BillingClient.newBuilder(RegrannApp._this).setListener(b).enablePendingPurchases().build();
+
+        billingClient.startConnection(new BillingClientStateListener() {
+            @Override
+            public void onBillingSetupFinished(BillingResult billingResult) {
+                if (billingResult.getResponseCode() == BillingClient.BillingResponseCode.OK) {
+                    // The BillingClient is ready. You can query purchases here.
+                    checkPurchasedItem();
+                }
+            }
+
+            @Override
+            public void onBillingServiceDisconnected() {
+                // Try to restart the connection on the next request to
+                // Google Play by calling the startConnection() method.
+            }
+        });
+    }
+
+    private void checkPurchasedItem() {
+        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(RegrannApp._this);
+        SharedPreferences.Editor editor = preferences.edit();
+
+        if (billingClient.isReady()) {
+            billingClient.queryPurchasesAsync(BillingClient.SkuType.SUBS, (billingResult, purchasesList) -> {
+                if (billingResult.getResponseCode() == BillingClient.BillingResponseCode.OK && purchasesList != null) {
+                    for (Purchase purchase : purchasesList) {
+                        if (purchase.getProducts().get(0).equals(sku)) {
+                            // The SKU is already purchased
+                            Log.d("app5", "The SKU is already purchased");
+                            editor.putBoolean("subscribed", true);
+                            editor.putBoolean("really_subscribed", true);
+                            editor.commit();
+
+                            runOnUiThread(new Runnable() {
+                                public void run() {
+                                    if (retrieveBtnPressed)
+                                        Toast.makeText(_this, "Purchase has been retrieved", Toast.LENGTH_LONG).show();
+
+                                }
+                            });
+
+
+                            return;
+                        }
+                    }
+
+                    editor.putBoolean("subscribed", false);
+                    editor.putBoolean("really_subscribed", false);
+                    editor.commit();
+                    Log.d("app5", "NOT purchased");
+                    runOnUiThread(new Runnable() {
+                        public void run() {
+                            if (retrieveBtnPressed)
+                                Toast.makeText(_this, "No purchase found", Toast.LENGTH_LONG).show();
+
+                        }
+                    });
+
+                } else {
+                    // Handle any error occurred
+                    //   Log.e("MainActivity", "Error occurred while querying purchases");
+                }
+
+
+            });
+        }
     }
 
     public void watchYoutubeVideo(String id) {
@@ -759,7 +838,7 @@ public class RegrannMainActivity extends AppCompatActivity {
 
             Intent i;
 
-            i = new Intent(this, CheckPermissions.class);
+            i = new Intent(this, CheckPermissions2.class);
 
 
             startActivity(i);
@@ -775,6 +854,7 @@ public class RegrannMainActivity extends AppCompatActivity {
 
         numClicks = 0;
         watchYoutubeVideo(preferences.getString("multipost_videoid", "rikrGCItVSw"));
+
 
     }
 
@@ -800,14 +880,14 @@ public class RegrannMainActivity extends AppCompatActivity {
                 try {
                     final ClipData.Item item = clipData.getItemAt(0);
                     String text = item.coerceToText(RegrannMainActivity.this).toString();
-                ClipData clip = ClipData.newPlainText("message", "");
-                clipboard.setPrimaryClip(clip);
 
-                if (text.length() > 18) {
+
+                    if (text.length() > 18) {
 
                     //    if (text.indexOf("ig.me") > 1 ||text.indexOf("instagram.com/tv/") > 1 || text.indexOf("instagram.com/p/") > 1) {
                     if (text.contains("instagram.com")) {
-
+                        ClipData clip = ClipData.newPlainText("message", "");
+                        clipboard.setPrimaryClip(clip);
                         Intent i;
                         i = new Intent(_this, ShareActivity.class);
 

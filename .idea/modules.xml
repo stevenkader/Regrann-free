@@ -2,13 +2,13 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/.idea/modules/Regrann1_V-Latest.iml" filepath="$PROJECT_DIR$/.idea/modules/Regrann1_V-Latest.iml" />
-      <module fileurl="file://$PROJECT_DIR$/.idea/modules/nativetemplates/Regrann1_V-Latest.nativetemplates.iml" filepath="$PROJECT_DIR$/.idea/modules/nativetemplates/Regrann1_V-Latest.nativetemplates.iml" />
-      <module fileurl="file://$PROJECT_DIR$/.idea/modules/regrann/Regrann1_V-Latest.regrann.iml" filepath="$PROJECT_DIR$/.idea/modules/regrann/Regrann1_V-Latest.regrann.iml" />
-      <module fileurl="file://$PROJECT_DIR$/.idea/modules/regrann/Regrann1_V-Latest.regrann.androidTest.iml" filepath="$PROJECT_DIR$/.idea/modules/regrann/Regrann1_V-Latest.regrann.androidTest.iml" />
-      <module fileurl="file://$PROJECT_DIR$/.idea/modules/regrann/Regrann1_V-Latest.regrann.main.iml" filepath="$PROJECT_DIR$/.idea/modules/regrann/Regrann1_V-Latest.regrann.main.iml" />
-      <module fileurl="file://$PROJECT_DIR$/.idea/modules/regrann/Regrann1_V-Latest.regrann.unitTest.iml" filepath="$PROJECT_DIR$/.idea/modules/regrann/Regrann1_V-Latest.regrann.unitTest.iml" />
-      <module fileurl="file://$PROJECT_DIR$/.idea/modules/utils/Regrann1_V-Latest.utils.iml" filepath="$PROJECT_DIR$/.idea/modules/utils/Regrann1_V-Latest.utils.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/Calldorado_-_Regrann1_V-Latest.iml" filepath="$PROJECT_DIR$/.idea/modules/Calldorado_-_Regrann1_V-Latest.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/nativetemplates/Calldorado_-_Regrann1_V-Latest.nativetemplates.iml" filepath="$PROJECT_DIR$/.idea/modules/nativetemplates/Calldorado_-_Regrann1_V-Latest.nativetemplates.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/regrann/Calldorado_-_Regrann1_V-Latest.regrann.iml" filepath="$PROJECT_DIR$/.idea/modules/regrann/Calldorado_-_Regrann1_V-Latest.regrann.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/regrann/Calldorado_-_Regrann1_V-Latest.regrann.androidTest.iml" filepath="$PROJECT_DIR$/.idea/modules/regrann/Calldorado_-_Regrann1_V-Latest.regrann.androidTest.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/regrann/Calldorado_-_Regrann1_V-Latest.regrann.main.iml" filepath="$PROJECT_DIR$/.idea/modules/regrann/Calldorado_-_Regrann1_V-Latest.regrann.main.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/regrann/Calldorado_-_Regrann1_V-Latest.regrann.unitTest.iml" filepath="$PROJECT_DIR$/.idea/modules/regrann/Calldorado_-_Regrann1_V-Latest.regrann.unitTest.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/utils/Calldorado_-_Regrann1_V-Latest.utils.iml" filepath="$PROJECT_DIR$/.idea/modules/utils/Calldorado_-_Regrann1_V-Latest.utils.iml" />
     </modules>
   </component>
 </project>

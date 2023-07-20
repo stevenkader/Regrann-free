@@ -259,7 +259,7 @@ public class OnBoardingActivity extends Activity {
 
             Intent i;
 
-            i = new Intent(this, CheckPermissions.class);
+            i = new Intent(this, CheckPermissions2.class);
 
 
             startActivity(i);

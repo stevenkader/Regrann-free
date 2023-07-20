@@ -48,8 +48,8 @@ android {
         applicationId "com.jaredco.regrann"
         minSdkVersion 24
         targetSdkVersion 31
-        versionCode 778
-        versionName "13.48"
+        versionCode 832
+        versionName "14.82"
 
         multiDexEnabled true
         resValue 'string', 'pesdk_version', "v$pesdk_version"
@@ -58,6 +58,9 @@ android {
 
     }
 
+    dataBinding {
+        enabled = true
+    }
 
     lintOptions {
         disable 'MissingTranslation'
@@ -79,6 +82,12 @@ android {
         exclude 'META-INF/NOTICE'
         exclude 'META-INF/DEPENDENCIES'
         pickFirst 'AndroidManifest.xml'
+
+        exclude 'META-INF/LGPL2.1'
+        exclude 'META-INF/AL2.0'
+        exclude 'META-INF/LICENSE.md'
+        exclude 'META-INF/NOTICE.md'
+        exclude("META-INF/*.kotlin_module")
     }
 
 
@@ -106,7 +115,12 @@ android {
 
 
 repositories {
+
+
+    google()
+    jcenter()
     mavenCentral()
+
     maven { url 'https://jitpack.io' }
     maven {
         url 'https://maven.google.com'
@@ -114,6 +128,10 @@ repositories {
     maven {
         url 'https://maven.ogury.co'
     }
+    maven { url 'https://maven.calldorado.com/nexus/content/repositories/releases' }
+    maven { url 'https://maven.calldorado.com/nexus/content/repositories/thirdparty/' }
+    maven { url 'https://artifact.bytedance.com/repository/pangle' }
+
 
 }
 
@@ -133,6 +151,15 @@ configurations.all {
 
 
 dependencies {
+
+
+    implementation('com.calldorado:caller-sdk-full:7.0.12.1040@aar') {
+        transitive = true
+    }
+
+    implementation 'com.android.databinding:compiler:3.1.4'
+
+
     /* Add the CSDK framework dependencies (Make sure these version numbers are correct) */
     implementation fileTree(include: ['*.*'], dir: 'libs')
     implementation 'co.ogury:ogury-sdk:5.+'
@@ -141,10 +168,10 @@ dependencies {
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
     //  implementation "androidx.coordinatorlayout.widget.CoordinatorLayout:1.1.0"
 
-    implementation 'androidx.appcompat:appcompat:1.5.1'
+    implementation 'androidx.appcompat:appcompat:1.6.1'
     implementation 'commons-io:commons-io:2.11.0'
     implementation 'com.github.HamidrezaAmz:AndroidImageSlider:v1.0.8'
-    implementation 'org.apache.commons:commons-text:1.6'
+    implementation 'org.apache.commons:commons-text:1.10.0'
     implementation 'com.squareup.picasso:picasso:2.5.2'
 
     implementation platform('com.google.firebase:firebase-bom:30.1.0')
@@ -155,44 +182,41 @@ dependencies {
     implementation 'com.google.android.play:core:1.10.3'
 
     /* 4) Add the CSDK framework dependencies (Make sure these version numbers are correct) */
-    implementation 'org.jsoup:jsoup:1.14.3'
-    implementation 'com.google.firebase:firebase-messaging-ktx:23.1.2'
-    implementation 'com.google.firebase:firebase-config-ktx:21.2.1'
-    implementation 'com.google.firebase:firebase-analytics-ktx:21.2.0'
-    implementation 'com.github.bumptech.glide:glide:4.12.0'
-    implementation 'com.google.code.gson:gson:2.8.9'
+    implementation 'org.jsoup:jsoup:1.15.3'
+    implementation 'com.google.firebase:firebase-messaging'
+    implementation 'com.google.firebase:firebase-config:21.0.2'
+    implementation 'com.google.firebase:firebase-analytics'
+    implementation 'com.github.bumptech.glide:glide:4.14.2'
+    implementation 'com.google.code.gson:gson:2.10'
 
-    //  implementation 'com.google.ads.mediation:facebook:6.12.0.0'
-
-    implementation 'com.android.billingclient:billing:4.0.0'
+    implementation 'com.google.ads.mediation:facebook:6.12.0.0'
+    implementation 'com.google.guava:guava:24.1-jre'
+    implementation 'com.android.billingclient:billing:6.0.1'
 
     //  implementation 'com.google.android.gms:play-services-ads-identifier:18.0.1'
     implementation 'com.android.volley:volley:1.2.1'
 
-    implementation 'androidx.constraintlayout:constraintlayout:2.1.2'
+    implementation 'androidx.constraintlayout:constraintlayout:2.1.4'
 
-    implementation 'androidx.annotation:annotation:1.3.0'
+    implementation 'androidx.annotation:annotation:1.6.0'
     //  implementation 'com.google.ads.mediation:applovin:10.3.4.0'
 
-    // implementation 'com.google.android.gms:play-services-ads:21.3.0'
+    implementation 'com.google.android.gms:play-services-ads:21.3.0'
     implementation 'androidx.coordinatorlayout:coordinatorlayout:1.2.0'
 
-    implementation 'com.appodeal.ads.sdk:core:3.0.2'
-    implementation 'com.appodeal.ads.sdk.services:adjust:3.0.2.0'
-    implementation 'com.appodeal.ads.sdk.networks:applovin:3.0.2.0'
-    implementation 'com.appodeal.ads.sdk.networks:bidmachine:3.0.2.0'
-    implementation 'com.appodeal.ads.sdk.services:firebase:3.0.2.0'
-    implementation 'com.appodeal.ads.sdk.networks:admob:3.0.2.0'
-    implementation 'com.appodeal.ads.sdk.networks:ironsource:3.0.2.0'
-    implementation 'com.appodeal.ads.sdk.networks:facebook:3.0.2.0'
-    implementation 'com.appodeal.ads.sdk.networks:mraid:3.0.2.0'
-    implementation 'com.appodeal.ads.sdk.networks:my_target:3.0.2.0'
-    implementation 'com.appodeal.ads.sdk.services:sentry_analytics:3.0.2.0'
-    implementation 'com.appodeal.ads.sdk.services:stack_analytics:3.0.2.0'
-    implementation 'com.appodeal.ads.sdk.networks:yandex:3.0.2.0'
+    // implementation 'com.google.android.ads:mediation-test-suite:3.0.0'
+    implementation("com.calldorado:doralytics:1.0.2.113@jar") {
+
+        transitive true
+    }
+
 
 }
 
+
+configurations {
+    compile.exclude module: 'doralytics-staging'
+}
 // ADD THIS AT THE BOTTOM
 apply plugin: 'com.google.gms.google-services'
 

@@ -2,8 +2,7 @@
 
 
 
-    <PreferenceCategory android:title="@string/pref_header_general">
-
+    <PreferenceCategory android:title="GENERAL">
 
 
         <Preference
@@ -18,14 +17,27 @@
         </Preference>
 
 
+        <Preference
+            android:key="mode_string"
+
+            android:title="Call Info Settings">
+            <intent
+                android:action="android.intent.action.VIEW"
+                android:targetClass="com.jaredco.regrann.activity.CallSettingsActivity"
+                android:targetPackage="com.jaredco.regrann" />
+
+        </Preference>
+    </PreferenceCategory>
+    <PreferenceCategory android:title="WATERMARK">
+
 
         <CheckBoxPreference
-        android:defaultValue="false"
-        android:key="watermark_checkbox"
-        android:summary="@string/pref_description_watermark"
-        android:title="@string/pref_title_watermark"
+            android:defaultValue="false"
+            android:key="watermark_checkbox"
+            android:summary="@string/pref_description_watermark"
+            android:title="@string/pref_title_watermark"
 
-        />
+            />
 
         <CheckBoxPreference
             android:defaultValue="false"
@@ -36,15 +48,15 @@
             />
 
 
-<!--
-        <CheckBoxPreference
-            android:defaultValue="false"
-            android:key="foreground_checkbox"
-            android:summary="@string/txtChkboxForForeground"
-            android:title="@string/pref_title_foreground"
+        <!--
+                <CheckBoxPreference
+                    android:defaultValue="false"
+                    android:key="foreground_checkbox"
+                    android:summary="@string/txtChkboxForForeground"
+                    android:title="@string/pref_title_foreground"
 
-            />
--->
+                    />
+        -->
 
         <ListPreference
             android:defaultValue="1"
@@ -74,7 +86,7 @@
 
     -->
 
-    <PreferenceCategory android:title="@string/pref_header_signature">
+    <PreferenceCategory android:title="SIGNATURE">
 
         <ListPreference
             android:defaultValue="1"
@@ -164,6 +176,8 @@
             </PreferenceCategory>
 
     -->
+
+
     <PreferenceCategory android:title="PRIVACY">
 
     <Preference android:title="Privacy Statement" >
