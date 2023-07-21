@@ -38,7 +38,6 @@ import androidx.appcompat.widget.Toolbar;
 import androidx.core.app.ActivityCompat;
 
 import com.google.firebase.analytics.FirebaseAnalytics;
-import com.jaredco.regrann.BuildConfig;
 import com.jaredco.regrann.R;
 
 import java.io.File;
@@ -673,18 +672,7 @@ public class SettingsActivity2 extends PreferenceActivity {
 
             checkboxPref.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
                 public boolean onPreferenceChange(Preference preference, Object newValue) {
-                    boolean noAds = preferences.getBoolean("removeAds", false);
 
-                    if (BuildConfig.DEBUG)
-
-                        noAds = false;
-
-                    if (!noAds) {
-                        //           Intent i = new Intent(RegrannApp._this, UpgradeActivity.class);
-                        //          i.putExtra("from__custom_watermark", false);
-                        //         startActivity(i);
-                        return false;
-                    }
 
                     if ((Boolean) newValue) {
                         // select photo

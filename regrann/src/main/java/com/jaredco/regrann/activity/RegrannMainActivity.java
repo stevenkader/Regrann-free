@@ -43,6 +43,7 @@ import com.google.firebase.remoteconfig.FirebaseRemoteConfig;
 import com.google.firebase.remoteconfig.FirebaseRemoteConfigSettings;
 import com.jaredco.regrann.R;
 import com.jaredco.regrann.sqlite.KeptListAdapter;
+import com.jaredco.regrann.util.Util;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -513,9 +514,7 @@ public class RegrannMainActivity extends AppCompatActivity {
 
         RegrannApp.sendEvent("rmain_upgrade_btn_clkV5", "", "");
 
-        Intent i = new Intent(_this, RequestPaymentActivity.class);
-
-        startActivity(i);
+        Util.openSubscriptionRequest(_this);
 
 
     }

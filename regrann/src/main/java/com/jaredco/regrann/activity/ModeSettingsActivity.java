@@ -13,7 +13,6 @@ import android.widget.CheckBox;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
-import com.jaredco.regrann.BuildConfig;
 import com.jaredco.regrann.R;
 import com.jaredco.regrann.util.Util;
 
@@ -25,7 +24,7 @@ import java.io.OutputStream;
 public class ModeSettingsActivity extends AppCompatActivity {
 
     Button runTutorialBtn, videoBtn, loginBtn, myFeedBtn;
-
+    ModeSettingsActivity _this;
     CheckBox cb4 = null;
     CheckBox cb5 = null;
     SharedPreferences preferences;
@@ -37,27 +36,21 @@ public class ModeSettingsActivity extends AppCompatActivity {
         super.onResume();
 
 
-        if (!BuildConfig.DEBUG) {
-            //       noAds = preferences.getBoolean("removeAds", false);
-        }
-
-
     }
 
+    boolean subscribed = false;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
+        _this = this;
         try {
             preferences = PreferenceManager.getDefaultSharedPreferences(this.getApplication().getApplicationContext());
 
 
             noAds = preferences.getBoolean("removeAds", false);
+            subscribed = preferences.getBoolean("really_subscribed", false);
 
-            if (BuildConfig.DEBUG) {
-                noAds = false;
-            }
 
             setContentView(R.layout.activity_modesettings);
 
@@ -196,7 +189,7 @@ public class ModeSettingsActivity extends AppCompatActivity {
                     // is chkIos checked?
                     if (((CheckBox) v).isChecked()) {
 
-                        if (noAds) {
+                        if (noAds || subscribed) {
                             RegrannApp.sendEvent("SettingScreen", "QuickPost Checkbox", "");
                             Util.showOkDialog("Important", getString(R.string.HowToTurnOffQuickPost), ModeSettingsActivity.this);
                             editor.putBoolean("quickpost", true);
@@ -211,9 +204,14 @@ public class ModeSettingsActivity extends AppCompatActivity {
                             cb3.setChecked(false);
                         } else {
                             cb1.setChecked(false);
-                            //  Intent i = new Intent(RegrannApp._this, UpgradeActivity.class);
-                            // i.putExtra("from_ms_screen", true);
-                            // startActivity(i);
+                            boolean noAds = preferences.getBoolean("removeAds", false);
+                            boolean subscribed = preferences.getBoolean("really_subscribed", false);
+
+
+                            if (!noAds && !subscribed) {
+                                Util.openSubscriptionRequest(_this);
+
+                            }
 
 
                         }
@@ -235,7 +233,7 @@ public class ModeSettingsActivity extends AppCompatActivity {
                     // is chkIos checked?
 
                     if (((CheckBox) v).isChecked()) {
-                        if (noAds) {
+                        if (noAds || subscribed) {
                             RegrannApp.sendEvent("SettingScreen", "QuickSave Checkbox", "");
                             Util.showOkDialog("Important", getString(R.string.HowToTurnOffQuickSave), ModeSettingsActivity.this);
 
@@ -250,6 +248,13 @@ public class ModeSettingsActivity extends AppCompatActivity {
                             cb3.setChecked(false);
                         } else {
                             cb2.setChecked(false);
+                            boolean noAds = preferences.getBoolean("removeAds", false);
+                            boolean subscribed = preferences.getBoolean("really_subscribed", false);
+
+
+                            if (!noAds && !subscribed) {
+                                Util.openSubscriptionRequest(_this);
+                            }
                             //  Intent i = new Intent(RegrannApp._this, UpgradeActivity.class);
                             //i.putExtra("from_ms_screen", true);
                             //startActivity(i);
@@ -273,19 +278,34 @@ public class ModeSettingsActivity extends AppCompatActivity {
                     SharedPreferences.Editor editor = preferences.edit();
                     // is chkIos checked?
                     if (((CheckBox) v).isChecked()) {
-                        RegrannApp.sendEvent("SettingScreen", "PostLater Checkbox", "");
-                        Util.showOkDialog("Important", getString(R.string.howToTurnOffPostLater), ModeSettingsActivity.this);
+                        if (noAds || subscribed) {
+                            RegrannApp.sendEvent("SettingScreen", "PostLater Checkbox", "");
+                            Util.showOkDialog("Important", getString(R.string.howToTurnOffPostLater), ModeSettingsActivity.this);
 
-                        editor.putBoolean("quickkeep", true);
-                        editor.putBoolean("normalMode", false);
-                        editor.putString("mode_list", "4");
-                        editor.putBoolean("quicksave", false);
+                            editor.putBoolean("quickkeep", true);
+                            editor.putBoolean("normalMode", false);
+                            editor.putString("mode_list", "4");
+                            editor.putBoolean("quicksave", false);
 
-                        editor.putBoolean("quickpost", false);
-                        editor.apply();
-                        cb0.setChecked(false);
-                        cb1.setChecked(false);
-                        cb2.setChecked(false);
+                            editor.putBoolean("quickpost", false);
+                            editor.apply();
+                            cb0.setChecked(false);
+                            cb1.setChecked(false);
+                            cb2.setChecked(false);
+                        } else {
+                            cb3.setChecked(false);
+                            boolean noAds = preferences.getBoolean("removeAds", false);
+                            boolean subscribed = preferences.getBoolean("really_subscribed", false);
+
+
+                            if (!noAds && !subscribed) {
+                                Util.openSubscriptionRequest(_this);
+                            }
+                            //  Intent i = new Intent(RegrannApp._this, UpgradeActivity.class);
+                            //i.putExtra("from_ms_screen", true);
+                            //startActivity(i);
+
+                        }
                     } else {
                         cb0.setChecked(true);
                         editor.putString("mode_list", "2");
@@ -293,6 +313,7 @@ public class ModeSettingsActivity extends AppCompatActivity {
                         editor.putBoolean("quickkeep", false);
                         editor.apply();
                     }
+
 
                 }
             });

@@ -3,6 +3,7 @@ package com.jaredco.regrann.util;
 import android.app.AlertDialog;
 import android.app.DownloadManager;
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -14,6 +15,7 @@ import android.telephony.TelephonyManager;
 import android.util.Log;
 
 import com.jaredco.regrann.R;
+import com.jaredco.regrann.activity.RequestPaymentActivity;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -35,6 +37,13 @@ public class Util {
         String country = Util.getUserCountry(ctx.getApplicationContext());
 
         return country.equals("us");
+    }
+
+    public static void openSubscriptionRequest(Context ctx) {
+
+        Intent i = new Intent(ctx, RequestPaymentActivity.class);
+
+        ctx.startActivity(i);
     }
 
     public static boolean isTierOneCountry(Context ctx) {
