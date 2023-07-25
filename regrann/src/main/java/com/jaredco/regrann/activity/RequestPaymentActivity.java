@@ -27,6 +27,7 @@ import com.android.billingclient.api.ProductDetailsResponseListener;
 import com.android.billingclient.api.Purchase;
 import com.android.billingclient.api.PurchasesUpdatedListener;
 import com.android.billingclient.api.QueryProductDetailsParams;
+import com.calldorado.sdk.Calldorado;
 import com.google.common.collect.ImmutableList;
 import com.jaredco.regrann.R;
 
@@ -187,6 +188,7 @@ public class RequestPaymentActivity extends AppCompatActivity {
                                     SharedPreferences.Editor editor = preferences.edit();
 
                                     editor.putBoolean("really_subscribed", true);
+                                    editor.commit();
                                     Long price;
                                     String currencyCode;
                                     try {
@@ -202,7 +204,7 @@ public class RequestPaymentActivity extends AppCompatActivity {
                                     Log.d("app5", price + "    " + currencyCode);
                                     HashMap<String, String> HashMap = new HashMap<String, String>();
 
-
+                                    Calldorado.updatePremiumUsers();
                                     HashMap.put("sku_name", SKU);
 
                                     HashMap.put("purchase_token", purchase.getPurchaseToken());
@@ -212,7 +214,7 @@ public class RequestPaymentActivity extends AppCompatActivity {
                                     //               HashMap);
                                     Log.d("sdkEvent:", "sub_monthly");
 
-                                    editor.commit();
+
                                 }
 
                                 //    Qonversion.getSharedInstance().syncPurchases();

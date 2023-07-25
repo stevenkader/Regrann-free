@@ -36,6 +36,7 @@ import com.android.billingclient.api.BillingResult;
 import com.android.billingclient.api.Purchase;
 import com.android.billingclient.api.PurchasesResponseListener;
 import com.android.billingclient.api.PurchasesUpdatedListener;
+import com.calldorado.sdk.Calldorado;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.analytics.FirebaseAnalytics;
@@ -295,7 +296,6 @@ public class RegrannMainActivity extends AppCompatActivity {
 
 
         //    instaAPI = new InstaAPI(this);
-
 
 
         if (getIntent().hasExtra("update_notice")) {
@@ -738,13 +738,14 @@ public class RegrannMainActivity extends AppCompatActivity {
             billingClient.queryPurchasesAsync(BillingClient.SkuType.SUBS, (billingResult, purchasesList) -> {
                 if (billingResult.getResponseCode() == BillingClient.BillingResponseCode.OK && purchasesList != null) {
                     for (Purchase purchase : purchasesList) {
-                        if (purchase.getProducts().get(0).equals(sku)) {
+                        if (purchase.getProducts().get(0).equals("repost_professional")) {
                             // The SKU is already purchased
                             Log.d("app5", "The SKU is already purchased");
                             editor.putBoolean("subscribed", true);
                             editor.putBoolean("really_subscribed", true);
                             editor.commit();
 
+                            Calldorado.updatePremiumUsers();
                             runOnUiThread(new Runnable() {
                                 public void run() {
                                     if (retrieveBtnPressed)

@@ -138,9 +138,9 @@ public class InstagramLogin extends AppCompatActivity {
         try {
 
             AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(InstagramLogin.this);
-
+            alertDialogBuilder.setIcon(R.mipmap.ic_launcher);
             // set dialog message
-            alertDialogBuilder.setMessage("To protect your main account you should use a second dummy account to login with here.\n\nYou will not be able to repost private content but it is better to be safe.").setCancelable(false).setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+            alertDialogBuilder.setMessage("To protect your main account you should use a second extra account to login with here.").setCancelable(false).setPositiveButton("Ok", new DialogInterface.OnClickListener() {
                         public void onClick(DialogInterface dialog, int id) {
                             dialog.dismiss();
                         }
