@@ -9,6 +9,8 @@ import android.provider.Settings;
 import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
 
+import com.jaredco.regrann.activity.RegrannApp;
+
 public class OverlayPermissionManager {
     private static final String TAG = "OverlayPermissionManage";
     public static final int ACTION_MANAGE_OVERLAY_PERMISSION_REQUEST_CODE = 2803;
@@ -57,6 +59,7 @@ public class OverlayPermissionManager {
                     }
                 }
                 if (shouldContinueThread && counter < LISTEN_TIMEOUT) {
+                    RegrannApp.sendEvent("cp_permission_overlay_granted3");
                     Intent intent = new Intent(activity, activity.getClass());
                     intent.setFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT | Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP);
                     if (Build.VERSION.SDK_INT > Build.VERSION_CODES.Q) {

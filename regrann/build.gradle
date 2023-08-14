@@ -48,8 +48,8 @@ android {
         applicationId "com.jaredco.regrann"
         minSdkVersion 24
         targetSdkVersion 31
-        versionCode 836
-        versionName "14.86"
+        versionCode 842
+        versionName "14.92"
 
         multiDexEnabled true
         resValue 'string', 'pesdk_version', "v$pesdk_version"
@@ -62,33 +62,21 @@ android {
         enabled = true
     }
 
-    lintOptions {
-        disable 'MissingTranslation'
-    }
-
 
     /* 2) Compile for Java 1.8 or greater */
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8
     }
+    packagingOptions {
+        resources {
+            excludes += ['META-INF/LICENSE.txt', 'META-INF/LICENSE', 'META-INF/NOTICE.txt', 'META-INF/NOTICE', 'META-INF/DEPENDENCIES', 'META-INF/LGPL2.1', 'META-INF/AL2.0', 'META-INF/LICENSE.md', 'META-INF/NOTICE.md', 'META-INF/*.kotlin_module']
+            pickFirsts += ['AndroidManifest.xml']
+        }
+    }
 
 
     /* 4) Exclude duplicate licenses */
-    packagingOptions {
-        exclude 'META-INF/LICENSE.txt'
-        exclude 'META-INF/LICENSE'
-        exclude 'META-INF/NOTICE.txt'
-        exclude 'META-INF/NOTICE'
-        exclude 'META-INF/DEPENDENCIES'
-        pickFirst 'AndroidManifest.xml'
-
-        exclude 'META-INF/LGPL2.1'
-        exclude 'META-INF/AL2.0'
-        exclude 'META-INF/LICENSE.md'
-        exclude 'META-INF/NOTICE.md'
-        exclude("META-INF/*.kotlin_module")
-    }
 
 
     buildTypes {
@@ -109,6 +97,10 @@ android {
 
         }
     }
+    lint {
+        disable 'MissingTranslation'
+    }
+    namespace 'com.jaredco.regrann'
 
 
 }
@@ -204,19 +196,11 @@ dependencies {
     implementation 'com.google.android.gms:play-services-ads:21.3.0'
     implementation 'androidx.coordinatorlayout:coordinatorlayout:1.2.0'
 
-    // implementation 'com.google.android.ads:mediation-test-suite:3.0.0'
-    implementation("com.calldorado:doralytics:1.0.2.113@jar") {
-
-        transitive true
-    }
 
 
 }
 
 
-configurations {
-    compile.exclude module: 'doralytics-staging'
-}
 // ADD THIS AT THE BOTTOM
 apply plugin: 'com.google.gms.google-services'
 

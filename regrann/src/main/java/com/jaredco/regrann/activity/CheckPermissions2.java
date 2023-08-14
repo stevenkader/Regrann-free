@@ -156,7 +156,7 @@ public class CheckPermissions2 extends AppCompatActivity {
         if (quicktest == false && permissionsNeeded.size() > 0) {
 
             //   addPermission(permissionsList, Manifest.permission.BLUETOOTH_CONNECT);
-            RegrannApp.sendEvent("cp_request_permissions2");
+            RegrannApp.sendEvent("cp_request_permissions3");
             ActivityCompat.requestPermissions(_this, permissionsList.toArray(new String[permissionsList.size()]),
                     REQUEST_CODE_ASK_MULTIPLE_PERMISSIONS);
         }
@@ -235,7 +235,7 @@ public class CheckPermissions2 extends AppCompatActivity {
 
 
                     Log.d("tag", "allpermissionsgranted");
-                    RegrannApp.sendEvent("cp_permission_granted2");
+                    RegrannApp.sendEvent("cp_permission_granted3");
 
 
                     sharedPreferences = _this.getSharedPreferences("prefs", MODE_PRIVATE);
@@ -283,7 +283,7 @@ public class CheckPermissions2 extends AppCompatActivity {
                                     .setMessage("Please enable the app to draw over other apps.")
                                     .setTitle("Need one more permission")
 
-                                    .setCancelable(true)
+                                    .setCancelable(false)
                                     .setPositiveButton(android.R.string.ok,
                                             new DialogInterface.OnClickListener() {
                                                 public void onClick(DialogInterface dialog, int id) {

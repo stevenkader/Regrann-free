@@ -213,12 +213,13 @@
                 <ImageView
                     android:id="@+id/howToMulti"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="5dp"
+                    android:layout_height="154dp"
+                    android:layout_marginTop="15dp"
 
                     android:onClick="onClickHowToMulti"
-                    app:srcCompat="@drawable/howtorepost"
-                    android:visibility="gone" />
+                    android:scaleType="fitXY"
+                    android:visibility="visible"
+                    app:srcCompat="@drawable/howtorepost" />
 
 
 
