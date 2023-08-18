@@ -243,14 +243,16 @@
                         android:layout_weight="1"
                         android:src="@drawable/downloadbtn" />
 
+
                     <ImageView
                         android:id="@+id/downloadsingle"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_margin="5dp"
                         android:layout_weight="1"
+                        android:adjustViewBounds="false"
+                        android:scaleType="fitCenter"
                         android:src="@drawable/downloadbtn_single"
-
                         android:visibility="gone" />
 
                     <ImageView

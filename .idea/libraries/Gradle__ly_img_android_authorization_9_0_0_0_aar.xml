@@ -2,8 +2,8 @@
   <library name="Gradle: ly.img.android:authorization:9.0.0.0@aar">
     <CLASSES>
       <root url="jar://$USER_HOME$/.gradle/caches/transforms-3/183c318f270f297d47b69e41f0f1af84/transformed/jetified-authorization-9.0.0.0/jars/classes.jar!/" />
-      <root url="file://$USER_HOME$/.gradle/caches/transforms-3/183c318f270f297d47b69e41f0f1af84/transformed/jetified-authorization-9.0.0.0/AndroidManifest.xml" />
       <root url="file://$USER_HOME$/.gradle/caches/transforms-3/183c318f270f297d47b69e41f0f1af84/transformed/jetified-authorization-9.0.0.0/res" />
+      <root url="file://$USER_HOME$/.gradle/caches/transforms-3/183c318f270f297d47b69e41f0f1af84/transformed/jetified-authorization-9.0.0.0/AndroidManifest.xml" />
     </CLASSES>
     <JAVADOC />
     <SOURCES />

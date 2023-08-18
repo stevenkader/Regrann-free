@@ -26,6 +26,7 @@ public class OverlayPermissionManager {
 
     public void requestOverlay() {
         shouldContinueThread = true;
+        RegrannApp.sendEvent("cp_permission_overlay_start4");
         sendToSettings();
         startGrantedCheckThread();
     }
