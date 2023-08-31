@@ -16,6 +16,7 @@ import android.util.Log;
 
 import com.jaredco.regrann.R;
 import com.jaredco.regrann.activity.RequestPaymentActivity;
+import com.jaredco.regrann.activity.ShareActivity;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -42,8 +43,10 @@ public class Util {
     public static void openSubscriptionRequest(Context ctx) {
 
         Intent i = new Intent(ctx, RequestPaymentActivity.class);
+        i.putExtra("mediaUrl", ShareActivity._this.getIntent().getStringExtra("mediaUrl"));
 
         ctx.startActivity(i);
+
     }
 
     public static boolean isTierOneCountry(Context ctx) {
@@ -68,7 +71,7 @@ public class Util {
 
     public static String getTempVideoFilePath(boolean isMulti) {
 
-        if (isMulti == false) {
+        if (!isMulti) {
             return getTempVideoFilePath();
         }
 
@@ -153,10 +156,9 @@ public class Util {
         request.setAllowedOverRoaming(true);
         request.setNotificationVisibility(DownloadManager.Request.VISIBILITY_HIDDEN);
 
-        StringBuilder sb = new StringBuilder();
-        sb.append(str3);
-        sb.append("");
-        request.setTitle(sb.toString());
+        String sb = str3 +
+                "";
+        request.setTitle(sb);
         String str4 = Environment.DIRECTORY_DOWNLOADS;
 
         String sb2 = Util.RootDirectoryPhoto + str3;
@@ -173,10 +175,9 @@ public class Util {
         request.setAllowedOverRoaming(true);
         request.setNotificationVisibility(DownloadManager.Request.VISIBILITY_HIDDEN);
 
-        StringBuilder sb = new StringBuilder();
-        sb.append(str3);
-        sb.append("");
-        request.setTitle(sb.toString());
+        String sb = str3 +
+                "";
+        request.setTitle(sb);
 
         String str4;
         String sb2;

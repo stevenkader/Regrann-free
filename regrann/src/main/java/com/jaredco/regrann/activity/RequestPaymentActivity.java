@@ -182,7 +182,7 @@ public class RequestPaymentActivity extends AppCompatActivity {
                         } else {
                             if (purchase.getPurchaseState() == Purchase.PurchaseState.PURCHASED) {
 
-                                if (preferences.getBoolean("really_subscribed", false) == false) {
+                                if (!preferences.getBoolean("really_subscribed", false)) {
                                     RegrannApp.sendEvent("rp_ug_purchase_complete");
 
                                     SharedPreferences.Editor editor = preferences.edit();
@@ -232,6 +232,7 @@ public class RequestPaymentActivity extends AppCompatActivity {
                                         alertDialogBuilder.setTitle("Upgrade Complete").setMessage(getString(R.string.purchase_complete)).setCancelable(false).setIcon(R.mipmap.ic_launcher).setPositiveButton("Ok", new DialogInterface.OnClickListener() {
                                             public void onClick(DialogInterface dialog, int id) {
 
+                                                dialog.dismiss();
                                                 Intent shareIntent = new Intent(_this, NewShareText.class);
                                                 shareIntent.putExtra(Intent.EXTRA_TEXT, _this.getIntent().getStringExtra("mediaUrl"));
                                                 shareIntent.setAction(Intent.ACTION_SEND);
@@ -264,7 +265,6 @@ public class RequestPaymentActivity extends AppCompatActivity {
                     showErrorToast("Purchasing / Payment problem", "There was a problem, please try again later. You should not have been charged.", true);
                     // Toast.makeText(_this, "There was a problem with purchase, please try again later", Toast.LENGTH_LONG);
 
-                    return;
                 }
 
 
@@ -522,6 +522,7 @@ public class RequestPaymentActivity extends AppCompatActivity {
 
     public void onClickCloseBtn(View v) {
         sendEvent("rp_close_clicked", "", "");
+        ShareActivity._this.finish();
         finish();
 
     }

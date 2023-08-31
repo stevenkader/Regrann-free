@@ -7,7 +7,7 @@
     <ImageView
         android:id="@+id/iv_onboard"
         android:layout_width="match_parent"
-        android:layout_height="@dimen/ob_banner_height"
+        android:layout_height="532dp"
         android:layout_marginLeft="@dimen/activity_horizontal_margin"
         android:layout_marginTop="10dp"
         android:layout_marginRight="@dimen/activity_horizontal_margin"
@@ -15,8 +15,8 @@
         android:gravity="center"
         android:paddingTop="8dp"
         android:paddingBottom="8dp"
-        android:scaleType="fitXY"
-        android:src="@drawable/step1" />
+        android:scaleType="fitStart"
+        android:src="@drawable/scrn1" />
 
     <RelativeLayout
 
@@ -44,7 +44,7 @@
             <TextView
                 android:id="@+id/tv_desc"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="97dp"
                 android:layout_marginTop="20dp"
                 android:layout_marginBottom="10dp"
                 android:gravity="center"

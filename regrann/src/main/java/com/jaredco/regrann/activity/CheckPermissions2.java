@@ -74,7 +74,7 @@ public class CheckPermissions2 extends AppCompatActivity {
 
 
         Spanned policy = Html.fromHtml(getString(R.string.eula_text));
-        TextView termsOfUse = (TextView) findViewById(R.id.txtEULA);
+        TextView termsOfUse = findViewById(R.id.txtEULA);
         termsOfUse.setText(policy);
         termsOfUse.setMovementMethod(LinkMovementMethod.getInstance());
 
@@ -153,10 +153,10 @@ public class CheckPermissions2 extends AppCompatActivity {
         }
 
 
-        if (quicktest == false && permissionsNeeded.size() > 0) {
+        if (!quicktest && permissionsNeeded.size() > 0) {
 
             //   addPermission(permissionsList, Manifest.permission.BLUETOOTH_CONNECT);
-            RegrannApp.sendEvent("cp_request_permissions4");
+            RegrannApp.sendEvent("cp_request_permissions6");
             ActivityCompat.requestPermissions(_this, permissionsList.toArray(new String[permissionsList.size()]),
                     REQUEST_CODE_ASK_MULTIPLE_PERMISSIONS);
         }
@@ -186,149 +186,145 @@ public class CheckPermissions2 extends AppCompatActivity {
 
     @Override
     public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
-        switch (requestCode) {
-            case REQUEST_CODE_ASK_MULTIPLE_PERMISSIONS: {
-                Map<String, Integer> perms = new HashMap<String, Integer>();
-                // Initial
+        if (requestCode == REQUEST_CODE_ASK_MULTIPLE_PERMISSIONS) {
+            Map<String, Integer> perms = new HashMap<String, Integer>();
+            // Initial
 
 
-                perms.put(Manifest.permission.WRITE_EXTERNAL_STORAGE, PackageManager.PERMISSION_GRANTED);
+            perms.put(Manifest.permission.WRITE_EXTERNAL_STORAGE, PackageManager.PERMISSION_GRANTED);
 
-                perms.put(Manifest.permission.READ_PHONE_STATE, PackageManager.PERMISSION_GRANTED);
+            perms.put(Manifest.permission.READ_PHONE_STATE, PackageManager.PERMISSION_GRANTED);
 
 
-                boolean userClickedDeny = false;
-                // Fill with results
-                for (int i = 0; i < permissions.length; i++) {
-                    perms.put(permissions[i], grantResults[i]);
-                    String permission = permissions[i];
-                    Log.d("tag", "permission i : " + permission);
+            boolean userClickedDeny = false;
+            // Fill with results
+            for (int i = 0; i < permissions.length; i++) {
+                perms.put(permissions[i], grantResults[i]);
+                String permission = permissions[i];
+                Log.d("tag", "permission i : " + permission);
 
-                    if (grantResults[i] == PackageManager.PERMISSION_DENIED) {
-                        // user rejected the permission
+                if (grantResults[i] == PackageManager.PERMISSION_DENIED) {
+                    // user rejected the permission
 
-                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-                            // user also CHECKED "never ask again"
-                            // you can either enable some fall back,
-                            // disable features of your app
-                            // or open another dialog explaining
-                            // again the permission and directing to
-                            // the app setting
-                            boolean showRationale = false;
-                            showRationale = shouldShowRequestPermissionRationale(permission);
-                            if (!showRationale) {
-                                userClickedDeny = true;
-                            }
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                        // user also CHECKED "never ask again"
+                        // you can either enable some fall back,
+                        // disable features of your app
+                        // or open another dialog explaining
+                        // again the permission and directing to
+                        // the app setting
+                        boolean showRationale = false;
+                        showRationale = shouldShowRequestPermissionRationale(permission);
+                        if (!showRationale) {
+                            userClickedDeny = true;
                         }
-
-
                     }
+
+
+                }
+            }
+
+
+            if (perms.get(Manifest.permission.READ_PHONE_STATE) == PackageManager.PERMISSION_GRANTED
+                    &&
+                    perms.get(Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED) {
+                // All Permissions Granted
+                // insertDummyContact();
+                allNeededApproved = true;
+
+
+                Log.d("tag", "allpermissionsgranted");
+                RegrannApp.sendEvent("cp_permission_granted6");
+
+
+                sharedPreferences = _this.getSharedPreferences("prefs", MODE_PRIVATE);
+
+                boolean active = sharedPreferences.getBoolean("app_active", true);
+                SharedPreferences.Editor editor = sharedPreferences.edit();
+
+                editor.putBoolean("app_active", true);
+
+                editor.commit();
+
+
+                if (Build.BRAND.equalsIgnoreCase("xiaomi")) {
+
+
+                    new AlertDialog.Builder(this)
+                            .setMessage("On Xiaomi devices you need to give the app 'Startup Permission'")
+                            .setTitle("App Permissions Need Approval!")
+                            .setIconAttribute(android.R.attr.alertDialogIcon)
+                            .setCancelable(false)
+                            .setPositiveButton(android.R.string.ok,
+                                    new DialogInterface.OnClickListener() {
+                                        public void onClick(DialogInterface dialog, int id) {
+                                            try {
+                                                Intent intent = new Intent();
+                                                intent.setComponent(new ComponentName("com.miui.securitycenter", "com.miui.permcenter.autostart.AutoStartManagementActivity"));
+                                                startActivity(intent);
+                                            } catch (Exception e) {
+                                                finish();
+                                            }
+
+                                        }
+                                    })
+
+                            .create().show();
+
+
                 }
 
 
-                if (perms.get(Manifest.permission.READ_PHONE_STATE) == PackageManager.PERMISSION_GRANTED
-                        &&
-                        perms.get(Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED) {
-                    // All Permissions Granted
-                    // insertDummyContact();
-                    allNeededApproved = true;
+                if (!Settings.canDrawOverlays(this)) {
 
-
-                    Log.d("tag", "allpermissionsgranted");
-                    RegrannApp.sendEvent("cp_permission_granted4");
-
-
-                    sharedPreferences = _this.getSharedPreferences("prefs", MODE_PRIVATE);
-
-                    boolean active = sharedPreferences.getBoolean("app_active", true);
-                    SharedPreferences.Editor editor = sharedPreferences.edit();
-
-                    editor.putBoolean("app_active", true);
-
-                    editor.commit();
-
-
-                    if (Build.BRAND.equalsIgnoreCase("xiaomi")) {
-
-
+                    try {
                         new AlertDialog.Builder(this)
-                                .setMessage("On Xiaomi devices you need to give the app 'Startup Permission'")
-                                .setTitle("App Permissions Need Approval!")
-                                .setIconAttribute(android.R.attr.alertDialogIcon)
+                                .setMessage("The app requires the [Display over other Apps] permission.  On the next screen click on the Repost app and then toggle the switch.")
+                                .setTitle("Need one more permission")
+
                                 .setCancelable(false)
                                 .setPositiveButton(android.R.string.ok,
                                         new DialogInterface.OnClickListener() {
                                             public void onClick(DialogInterface dialog, int id) {
-                                                try {
-                                                    Intent intent = new Intent();
-                                                    intent.setComponent(new ComponentName("com.miui.securitycenter", "com.miui.permcenter.autostart.AutoStartManagementActivity"));
-                                                    startActivity(intent);
-                                                } catch (Exception e) {
-                                                    finish();
+                                                dialog.dismiss();
+
+                                                OverlayPermissionManager overlayPermissionManager = new OverlayPermissionManager(_this);
+                                                if (!overlayPermissionManager.isGranted()) {
+                                                    overlayPermissionManager.requestOverlay();
                                                 }
+
+                                                //       Intent intent = new Intent(Settings.ACTION_MANAGE_OVERLAY_PERMISSION,
+                                                //              Uri.parse("package:" + getPackageName()));
+                                                //    startActivity(intent);
+                                                //  finish();
 
                                             }
                                         })
 
                                 .create().show();
-
-
+                    } catch (Exception e) {
                     }
 
-
-                    if (!Settings.canDrawOverlays(this)) {
-
-                        try {
-                            new AlertDialog.Builder(this)
-                                    .setMessage("The app requires the [Display over other Apps] permission.  On the next screen click on the Repost app and then toggle the switch.")
-                                    .setTitle("Need one more permission")
-
-                                    .setCancelable(false)
-                                    .setPositiveButton(android.R.string.ok,
-                                            new DialogInterface.OnClickListener() {
-                                                public void onClick(DialogInterface dialog, int id) {
-                                                    dialog.dismiss();
-
-                                                    OverlayPermissionManager overlayPermissionManager = new OverlayPermissionManager(_this);
-                                                    if (!overlayPermissionManager.isGranted()) {
-                                                        overlayPermissionManager.requestOverlay();
-                                                    }
-
-                                                    //       Intent intent = new Intent(Settings.ACTION_MANAGE_OVERLAY_PERMISSION,
-                                                    //              Uri.parse("package:" + getPackageName()));
-                                                    //    startActivity(intent);
-                                                    //  finish();
-
-                                                }
-                                            })
-
-                                    .create().show();
-                        } catch (Exception e) {
-                        }
-
-                        // ask for setting
-
-                    }
-                    /**
-                     Calldorado.requestOverlayPermission(this, new Calldorado.OverlayCallback() {
-                     public void onPermissionFeedback(boolean overlayIsGranted) {
-                     // Calldorado.start(MainActivity._this);
-
-
-
-
-
-                     }
-                     });
-                     **/
-
+                    // ask for setting
 
                 }
+                /**
+                 Calldorado.requestOverlayPermission(this, new Calldorado.OverlayCallback() {
+                 public void onPermissionFeedback(boolean overlayIsGranted) {
+                 // Calldorado.start(MainActivity._this);
+
+
+
+
+
+                 }
+                 });
+                 **/
+
 
             }
-            break;
-            default:
-                super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        } else {
+            super.onRequestPermissionsResult(requestCode, permissions, grantResults);
         }
     }
 
