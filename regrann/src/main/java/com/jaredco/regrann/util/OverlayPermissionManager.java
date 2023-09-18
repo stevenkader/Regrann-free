@@ -9,6 +9,7 @@ import android.provider.Settings;
 import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
 
+import com.jaredco.regrann.activity.OverlaypermissionActivity;
 import com.jaredco.regrann.activity.RegrannApp;
 
 public class OverlayPermissionManager {
@@ -31,10 +32,17 @@ public class OverlayPermissionManager {
         startGrantedCheckThread();
     }
 
+
     private void sendToSettings() {
         Intent intent = new Intent(Settings.ACTION_MANAGE_OVERLAY_PERMISSION, Uri.parse("package:" + activity.getPackageName()));
         intent.addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
+
         activity.startActivityForResult(intent, ACTION_MANAGE_OVERLAY_PERMISSION_REQUEST_CODE);
+
+        Intent intent2 = new Intent(activity, OverlaypermissionActivity.class);
+
+        activity.startActivity(intent2);
+
     }
 
     public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {

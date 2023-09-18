@@ -125,7 +125,7 @@
 
                         <HorizontalScrollView
                             android:layout_width="match_parent"
-                            android:layout_height="250dp"
+                            android:layout_height="350dp"
                             android:id="@+id/horizontalScrollView">
 
                             <LinearLayout
@@ -137,38 +137,38 @@
 
                                     android:layout_width="200dp"
                                     android:layout_height="match_parent"
-                                    app:srcCompat="@drawable/scrn1" />
+                                    app:srcCompat="@drawable/step1" />
 
                                 <ImageView
 
                                     android:layout_width="200dp"
                                     android:layout_height="match_parent"
-                                    android:layout_marginLeft="10dp"
+                                    android:layout_marginLeft="0dp"
 
-                                    app:srcCompat="@drawable/scrn2" />
-
-                                <ImageView
-                                    android:layout_marginLeft="10dp"
-                                    android:layout_width="200dp"
-                                    android:layout_height="match_parent"
-                                    app:srcCompat="@drawable/scrn3" />
+                                    app:srcCompat="@drawable/step2" />
 
                                 <ImageView
-
+                                    android:layout_marginLeft="0dp"
                                     android:layout_width="200dp"
                                     android:layout_height="match_parent"
-                                    android:layout_marginLeft="10dp"
-
-                                    app:srcCompat="@drawable/scrn4" />
+                                    app:srcCompat="@drawable/step2" />
 
                                 <ImageView
 
                                     android:layout_width="200dp"
                                     android:layout_height="match_parent"
-                                    android:layout_marginLeft="10dp"
+                                    android:layout_marginLeft="0dp"
 
-                                    android:layout_marginRight="20dp"
-                                    app:srcCompat="@drawable/scrn5" />
+                                    app:srcCompat="@drawable/step4" />
+
+                                <ImageView
+
+                                    android:layout_width="200dp"
+                                    android:layout_height="match_parent"
+                                    android:layout_marginLeft="0dp"
+
+                                    android:layout_marginRight="0dp"
+                                    app:srcCompat="@drawable/step5" />
 
 
                             </LinearLayout>

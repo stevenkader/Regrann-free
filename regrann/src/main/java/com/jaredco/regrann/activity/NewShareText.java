@@ -51,11 +51,11 @@ public class NewShareText extends Activity {
                                 Boolean really_subscribed = preferences.getBoolean("really_subscribed", false);
                                 Boolean subscribed = preferences.getBoolean("subscribed", false);
 
-                                if (really_subscribed == true) {
+                                if (really_subscribed) {
                                     subscribed = true;
 
                                 }
-                                if (text.contains("instagram.com") || (subscribed && (text.contains("youtube.com/shorts") || text.contains("fb.watch") || text.contains("tiktok") || text.contains("facebook.com") || text.contains("twitter.com")))) {
+                                if (text.contains("instagram.com") || (subscribed && (text.contains("youtube.com/shorts") || text.contains("fb.watch") || text.contains("tiktok") || text.contains("facebook.com") || text.contains("twitter.com") || text.contains("x.com")))) {
                                     text = text.substring(text.indexOf("https://"));
 
                                     Intent i;
@@ -80,7 +80,7 @@ public class NewShareText extends Activity {
 
                                } else {
 
-                                    if (text.contains("youtube.com/shorts") || text.contains("fb.watch") || text.contains("tiktok") || text.contains("facebook.com") || text.contains("twitter.com")) {
+                                    if (text.contains("youtube.com/shorts") || text.contains("fb.watch") || text.contains("tiktok") || text.contains("facebook.com") || text.contains("twitter.com") || text.contains("x.com")) {
 
 
                                         Intent i = new Intent(_this, RequestPaymentActivity.class);

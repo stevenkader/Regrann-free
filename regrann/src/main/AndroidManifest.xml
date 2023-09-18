@@ -5,20 +5,25 @@
 
     <uses-sdk tools:overrideLibrary="com.facebook, android.support.customtabs" />
 
+    <uses-feature
+        android:name="android.hardware.camera"
+        android:required="false" />
+
     <uses-permission
         android:name="android.permission.ACCESS_COARSE_LOCATION"
         tools:node="remove" />
     <uses-permission
         android:name="android.permission.ACCESS_FINE_LOCATION"
         tools:node="remove" />
-
+    <uses-permission
+        android:name="android.permission.ACCESS_BACKGROUND_LOCATION"
+        tools:node="remove" />
     <uses-permission android:name="android.permission.WAKE_LOCK" />
     <uses-permission android:name="android.persistent" />
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
     <uses-permission android:name="android.permission.DOWNLOAD_WITHOUT_NOTIFICATION" />
-
     <uses-permission android:name="com.android.vending.BILLING" />
     <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
     <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
@@ -26,16 +31,13 @@
     <uses-permission
         android:name="android.permission.ACCESS_FINE_LOCATION"
         tools:node="remove" />
-
     <uses-permission
         android:name="android.permission.READ_CALL_LOG"
         tools:node="remove" />
-
     <uses-permission android:name="android.permission.CHANGE_WIFI_STATE" />
     <uses-permission
         android:name="android.permission.CAMERA"
         tools:node="remove" />
-
     <uses-permission
         android:name="android.permission.WRITE_EXTERNAL_STORAGE"
         tools:remove="android:maxSdkVersion" />
@@ -46,22 +48,24 @@
         android:normalScreens="true"
         android:smallScreens="true" />
 
-
     <application
         android:name=".activity.RegrannApp"
-        android:hardwareAccelerated="true"
         android:allowBackup="true"
-
+        android:hardwareAccelerated="true"
+        android:hasFragileUserData="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:networkSecurityConfig="@xml/network_security_config"
-        android:theme="@style/AppTheme"
-        android:requestLegacyExternalStorage="true"
         android:preserveLegacyExternalStorage="true"
+        android:requestLegacyExternalStorage="true"
+        android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true"
-        android:hasFragileUserData="true"
         tools:replace="android:name,android:networkSecurityConfig">
+        <activity
+            android:name=".activity.OverlaypermissionActivity"
+            android:theme="@android:style/Theme.Translucent.NoTitleBar"
 
+            android:exported="false" />
 
         <provider
             android:name="androidx.core.content.FileProvider"
@@ -77,7 +81,6 @@
             android:name=".activity.RegrannMainActivity"
             android:exported="true"
             android:label="@string/in_app_name">
-
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -104,15 +107,12 @@
             android:name=".activity.FetchDownloadUrlService"
             android:exported="true" />
 
-
         <activity
             android:name=".activity.ShareActivity"
             android:exported="true"
             android:label="Repost"
             android:launchMode="singleTask"
             android:theme="@style/Theme.Transparent.Fullscreen" />
-
-
         <activity
             android:name=".activity.OnBoardingActivity"
             android:screenOrientation="portrait" />
@@ -123,14 +123,10 @@
         <activity
             android:name=".activity.CallSettingsActivity"
             android:screenOrientation="portrait" />
-
         <activity
             android:name=".activity.RequestPaymentActivity"
-
             android:exported="true"
-
             android:screenOrientation="portrait" />
-
         <activity
             android:name=".activity.LoginRequestActivity"
             android:label="Repost - Connect to Instagram"
@@ -147,7 +143,6 @@
             android:name=".activity.SettingsActivity2"
             android:label="Repost Settings"
             android:theme="@style/Pref" />
-
         <activity
             android:name=".activity.ModeSettingsActivity"
             android:label="Mode Settings" />
@@ -160,9 +155,7 @@
             android:theme="@android:style/Theme.Translucent.NoTitleBar.Fullscreen" />
         <activity
             android:name=".activity.PostFromKeptActivity"
-
             android:theme="@android:style/Theme.Translucent.NoTitleBar.Fullscreen" />
-
 
         <receiver
             android:name=".receiver.FirebaseEventBroadcastReceiver"
@@ -193,7 +186,9 @@
             android:theme="@android:style/Theme.Translucent.NoTitleBar">
             <intent-filter>
                 <action android:name="android.intent.action.SEND" />
+
                 <category android:name="android.intent.category.DEFAULT" />
+
                 <data android:mimeType="image/*" />
             </intent-filter>
         </activity>
@@ -209,20 +204,16 @@
             </intent-filter>
         </service>
         -->
-
         <meta-data
             android:name="com.google.android.gms.version"
             android:value="@integer/google_play_services_version" />
-
-
         <meta-data
             android:name="com.facebook.sdk.ApplicationId"
             android:value="@string/facebook_app_id" />
-
         <meta-data
-            tools:replace="android:value"
             android:name="com.google.android.gms.ads.APPLICATION_ID"
-            android:value="ca-app-pub-8534786486141147~4402306255" />
+            android:value="ca-app-pub-8534786486141147~4402306255"
+            tools:replace="android:value" />
         <meta-data
             android:name="com.calldorado.apiToken"
             android:value="c844b792-694d-4369-a59f-853f31ee6b47" />

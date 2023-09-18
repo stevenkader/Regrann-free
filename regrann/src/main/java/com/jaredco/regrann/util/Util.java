@@ -1,5 +1,6 @@
 package com.jaredco.regrann.util;
 
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.DownloadManager;
 import android.content.Context;
@@ -16,7 +17,6 @@ import android.util.Log;
 
 import com.jaredco.regrann.R;
 import com.jaredco.regrann.activity.RequestPaymentActivity;
-import com.jaredco.regrann.activity.ShareActivity;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -40,10 +40,10 @@ public class Util {
         return country.equals("us");
     }
 
-    public static void openSubscriptionRequest(Context ctx) {
+    public static void openSubscriptionRequest(Activity ctx) {
 
         Intent i = new Intent(ctx, RequestPaymentActivity.class);
-        i.putExtra("mediaUrl", ShareActivity._this.getIntent().getStringExtra("mediaUrl"));
+        i.putExtra("mediaUrl", ctx.getIntent().getStringExtra("mediaUrl"));
 
         ctx.startActivity(i);
 
@@ -71,7 +71,7 @@ public class Util {
 
     public static String getTempVideoFilePath(boolean isMulti) {
 
-        if (!isMulti) {
+        if (isMulti) {
             return getTempVideoFilePath();
         }
 

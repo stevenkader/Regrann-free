@@ -522,7 +522,13 @@ public class RequestPaymentActivity extends AppCompatActivity {
 
     public void onClickCloseBtn(View v) {
         sendEvent("rp_close_clicked", "", "");
-        ShareActivity._this.finish();
+        try {
+            if (ShareActivity._this != null)
+                ShareActivity._this.finish();
+        } catch (Exception e) {
+        }
+
+
         finish();
 
     }

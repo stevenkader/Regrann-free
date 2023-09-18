@@ -48,8 +48,8 @@ android {
         applicationId "com.jaredco.regrann"
         minSdkVersion 24
         targetSdkVersion 31
-        versionCode 852
-        versionName "15.02"
+        versionCode 850
+        versionName "15.00"
 
         multiDexEnabled true
         resValue 'string', 'pesdk_version', "v$pesdk_version"

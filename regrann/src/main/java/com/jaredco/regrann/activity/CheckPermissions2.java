@@ -55,7 +55,7 @@ public class CheckPermissions2 extends AppCompatActivity {
         setContentView(R.layout.activity_checkpermissions2);
 
 
-        if (checkPermissions(true))
+        if (checkPermissions(true) && Settings.canDrawOverlays(this))
             finish();
 
         final Button button = findViewById(R.id.goBtn);
@@ -83,6 +83,13 @@ public class CheckPermissions2 extends AppCompatActivity {
 
     @Override
     public void onBackPressed() {
+
+        if (!Settings.canDrawOverlays(this)) {
+
+            requestOverlay();
+            return;
+        }
+
         if (allNeededApproved) {
             super.onBackPressed();
         } else {
@@ -110,6 +117,9 @@ public class CheckPermissions2 extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
+
+        if (Settings.canDrawOverlays(this))
+            allNeededApproved = true;
 
         if (checkPermissions(true) && Settings.canDrawOverlays(this))
             showConfirmDialog();
@@ -143,7 +153,7 @@ public class CheckPermissions2 extends AppCompatActivity {
         //   addPermission(permissionsList, Manifest.permission.ACCESS_FINE_LOCATION);
 
         if (quicktest) {
-            if (permissionsNeeded.size() == 0) {
+            if (permissionsNeeded.size() == 0 && Settings.canDrawOverlays(this)) {
                 //  showConfirmDialog();
                 //  finish();
                 return true;
@@ -159,7 +169,12 @@ public class CheckPermissions2 extends AppCompatActivity {
             RegrannApp.sendEvent("cp_request_permissions6");
             ActivityCompat.requestPermissions(_this, permissionsList.toArray(new String[permissionsList.size()]),
                     REQUEST_CODE_ASK_MULTIPLE_PERMISSIONS);
+        } else {
+
+            if (!quicktest && !Settings.canDrawOverlays(this))
+                requestOverlay();
         }
+
         return false;
 
 
@@ -230,7 +245,7 @@ public class CheckPermissions2 extends AppCompatActivity {
                     perms.get(Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED) {
                 // All Permissions Granted
                 // insertDummyContact();
-                allNeededApproved = true;
+                //      allNeededApproved = true;
 
 
                 Log.d("tag", "allpermissionsgranted");
@@ -274,52 +289,7 @@ public class CheckPermissions2 extends AppCompatActivity {
 
                 }
 
-
-                if (!Settings.canDrawOverlays(this)) {
-
-                    try {
-                        new AlertDialog.Builder(this)
-                                .setMessage("The app requires the [Display over other Apps] permission.  On the next screen click on the Repost app and then toggle the switch.")
-                                .setTitle("Need one more permission")
-
-                                .setCancelable(false)
-                                .setPositiveButton(android.R.string.ok,
-                                        new DialogInterface.OnClickListener() {
-                                            public void onClick(DialogInterface dialog, int id) {
-                                                dialog.dismiss();
-
-                                                OverlayPermissionManager overlayPermissionManager = new OverlayPermissionManager(_this);
-                                                if (!overlayPermissionManager.isGranted()) {
-                                                    overlayPermissionManager.requestOverlay();
-                                                }
-
-                                                //       Intent intent = new Intent(Settings.ACTION_MANAGE_OVERLAY_PERMISSION,
-                                                //              Uri.parse("package:" + getPackageName()));
-                                                //    startActivity(intent);
-                                                //  finish();
-
-                                            }
-                                        })
-
-                                .create().show();
-                    } catch (Exception e) {
-                    }
-
-                    // ask for setting
-
-                }
-                /**
-                 Calldorado.requestOverlayPermission(this, new Calldorado.OverlayCallback() {
-                 public void onPermissionFeedback(boolean overlayIsGranted) {
-                 // Calldorado.start(MainActivity._this);
-
-
-
-
-
-                 }
-                 });
-                 **/
+                requestOverlay();
 
 
             }
@@ -328,6 +298,41 @@ public class CheckPermissions2 extends AppCompatActivity {
         }
     }
 
+    private void requestOverlay() {
+
+        if (!Settings.canDrawOverlays(this)) {
+
+            try {
+                new AlertDialog.Builder(this)
+                        .setMessage("The app requires the [Display over other Apps] permission.  On the next screen click on the Repost app and then toggle the switch.")
+                        .setTitle("Need one more permission")
+
+                        .setCancelable(false)
+                        .setPositiveButton(android.R.string.ok,
+                                new DialogInterface.OnClickListener() {
+                                    public void onClick(DialogInterface dialog, int id) {
+                                        dialog.dismiss();
+
+                                        OverlayPermissionManager overlayPermissionManager = new OverlayPermissionManager(_this);
+                                        if (!overlayPermissionManager.isGranted()) {
+                                            overlayPermissionManager.requestOverlay();
+                                        }
+
+                                        //       Intent intent = new Intent(Settings.ACTION_MANAGE_OVERLAY_PERMISSION,
+                                        //              Uri.parse("package:" + getPackageName()));
+                                        //    startActivity(intent);
+                                        //  finish();
+
+                                    }
+                                })
+
+                        .create().show();
+            } catch (Exception e) {
+            }
+
+
+        }
+    }
 
     private void showConfirmDialog() {
         try {

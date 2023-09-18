@@ -104,7 +104,9 @@ public class OnBoardingActivity extends Activity {
 
                 try {
 
-                    Uri uri = Uri.parse("https://www.instagram.com/p/BWmLOXLDbtD/");
+                    //https://www.instagram.com/p/Cwihlv7y44k/
+
+                    Uri uri = Uri.parse("https://www.instagram.com/p/Cwihlv7y44k/");
                     Intent intent = new Intent(Intent.ACTION_VIEW, uri);
 
                     intent.setPackage("com.instagram.android");
@@ -131,8 +133,8 @@ public class OnBoardingActivity extends Activity {
     {
 
         int[] header = {R.string.ob_header0,R.string.ob_header1, R.string.ob_header2, R.string.ob_header3,R.string.ob_header4,R.string.ob_header5};
-        int[] desc = {R.string.ob_desc0,R.string.ob_desc1, R.string.ob_desc2, R.string.ob_desc3,R.string.ob_desc4,R.string.ob_desc5};
-        int[] imageId = {R.drawable.step0,R.drawable.step1, R.drawable.step2, R.drawable.step2a,R.drawable.step3,R.drawable.step4};
+        int[] desc = {R.string.ob_desc0, R.string.ob_desc1, R.string.ob_desc2, R.string.ob_desc3, R.string.ob_desc4, R.string.ob_desc5};
+        int[] imageId = {R.drawable.step0, R.drawable.step1, R.drawable.step2, R.drawable.step3, R.drawable.step4, R.drawable.step5};
 
         for(int i=0;i<imageId.length;i++)
         {
