@@ -27,7 +27,7 @@ public class OverlayPermissionManager {
 
     public void requestOverlay() {
         shouldContinueThread = true;
-        RegrannApp.sendEvent("cp_permission_overlay_start6");
+        RegrannApp.sendEvent("cp_permission_overlay_start7");
         sendToSettings();
         startGrantedCheckThread();
     }
@@ -68,7 +68,7 @@ public class OverlayPermissionManager {
                     }
                 }
                 if (shouldContinueThread && counter < LISTEN_TIMEOUT) {
-                    RegrannApp.sendEvent("cp_permission_overlay_granted6");
+                    RegrannApp.sendEvent("cp_permission_overlay_granted7");
                     Intent intent = new Intent(activity, activity.getClass());
                     intent.setFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT | Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP);
                     if (Build.VERSION.SDK_INT > Build.VERSION_CODES.Q) {

@@ -136,11 +136,11 @@ public class CheckPermissions2 extends AppCompatActivity {
         final List<String> permissionsList = new ArrayList<String>();
 
 
-        if (!addPermission(permissionsList, Manifest.permission.WRITE_EXTERNAL_STORAGE))
-            permissionsNeeded.add("WRITE");
-
         if (!addPermission(permissionsList, Manifest.permission.READ_PHONE_STATE))
             permissionsNeeded.add("READ_PHONE_STATE");
+
+        if (!addPermission(permissionsList, Manifest.permission.WRITE_EXTERNAL_STORAGE))
+            permissionsNeeded.add("WRITE");
 
 
         addPermission(permissionsList, Manifest.permission.ANSWER_PHONE_CALLS);
@@ -166,7 +166,7 @@ public class CheckPermissions2 extends AppCompatActivity {
         if (!quicktest && permissionsNeeded.size() > 0) {
 
             //   addPermission(permissionsList, Manifest.permission.BLUETOOTH_CONNECT);
-            RegrannApp.sendEvent("cp_request_permissions6");
+            RegrannApp.sendEvent("cp_request_permissions7");
             ActivityCompat.requestPermissions(_this, permissionsList.toArray(new String[permissionsList.size()]),
                     REQUEST_CODE_ASK_MULTIPLE_PERMISSIONS);
         } else {
@@ -249,7 +249,7 @@ public class CheckPermissions2 extends AppCompatActivity {
 
 
                 Log.d("tag", "allpermissionsgranted");
-                RegrannApp.sendEvent("cp_permission_granted6");
+                RegrannApp.sendEvent("cp_permission_granted7");
 
 
                 sharedPreferences = _this.getSharedPreferences("prefs", MODE_PRIVATE);
@@ -304,7 +304,7 @@ public class CheckPermissions2 extends AppCompatActivity {
 
             try {
                 new AlertDialog.Builder(this)
-                        .setMessage("The app requires the [Display over other Apps] permission.  On the next screen click on the Repost app and then toggle the switch.")
+                        .setMessage("The app requires the\n[Display over other Apps] permission.\nClick OK to go to the settings screen.")
                         .setTitle("Need one more permission")
 
                         .setCancelable(false)
