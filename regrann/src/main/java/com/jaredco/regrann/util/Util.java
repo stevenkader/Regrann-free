@@ -16,6 +16,7 @@ import android.telephony.TelephonyManager;
 import android.util.Log;
 
 import com.jaredco.regrann.R;
+import com.jaredco.regrann.activity.RegrannApp;
 import com.jaredco.regrann.activity.RequestPaymentActivity;
 
 import java.io.File;
@@ -33,7 +34,22 @@ public class Util {
 
     private static String currentTempVideoFileName;
 
+    public static boolean isPRO() {
+        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(RegrannApp._this.getApplicationContext());
 
+        boolean really_subscribed = preferences.getBoolean("really_subscribed", false);
+        boolean subscribed = preferences.getBoolean("subscribed", false);
+        boolean manually_subscribed = preferences.getBoolean("manual_subscribed", false);
+
+        if (really_subscribed || manually_subscribed) {
+
+            subscribed = true;
+
+        }
+        return subscribed;
+
+
+    }
     public static boolean isCountryUSA(Context ctx) {
         String country = Util.getUserCountry(ctx.getApplicationContext());
 

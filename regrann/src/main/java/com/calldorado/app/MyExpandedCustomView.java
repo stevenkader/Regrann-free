@@ -1,25 +1,6 @@
 package com.calldorado.app;
 
-import static android.view.View.inflate;
-
-import android.content.Context;
-import android.content.Intent;
-import android.database.Cursor;
-import android.util.Log;
-import android.view.View;
-import android.widget.ImageView;
-import android.widget.LinearLayout;
-import android.widget.SimpleCursorAdapter;
-
-import com.calldorado.sdk.ui.ui.aftercall.cards.native_field.CalldoradoCustomView;
-import com.jaredco.regrann.R;
-import com.jaredco.regrann.activity.RegrannMainActivity;
-import com.jaredco.regrann.sqlite.KeptListAdapter;
-import com.jaredco.regrann.util.Util;
-
-import java.io.File;
-
-
+/**
 public class MyExpandedCustomView extends CalldoradoCustomView {
     private LinearLayout ll;
     private final Context context;
@@ -143,13 +124,14 @@ public class MyExpandedCustomView extends CalldoradoCustomView {
 
 
                     } catch (Exception e) {
-                        int i = 1;
-                    }
-                } catch (Exception e) {
-                    int i = 2;
-                }
-            }
-        });
-        return ll;
+    int i = 1;
     }
-}
+    } catch (Exception e) {
+    int i = 2;
+    }
+    }
+    });
+    return ll;
+    }
+    }
+ **/

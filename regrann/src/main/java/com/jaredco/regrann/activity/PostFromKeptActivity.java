@@ -14,6 +14,7 @@ import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
+import android.os.Handler;
 import android.preference.PreferenceManager;
 import android.util.Log;
 import android.view.View;
@@ -28,6 +29,7 @@ import android.widget.SeekBar.OnSeekBarChangeListener;
 
 import androidx.core.content.FileProvider;
 
+import com.jaredco.regrann.R;
 import com.jaredco.regrann.util.Util;
 
 import org.apache.commons.io.FileUtils;
@@ -264,16 +266,19 @@ public class PostFromKeptActivity extends Activity implements OnClickListener, O
                     shareIntent.putExtra(Intent.EXTRA_STREAM, MediaURI);
 
 
-                    startActivity(shareIntent);
+                    //  startActivity(shareIntent);
+
+                    shareWithInstagramChooser();
+
+
                     KeptForLaterActivity._this.removeCurrentPhoto();
-                    finish();
+
 
                 } catch (Exception e) {
                     showErrorToast(e.getMessage(), "Sorry. There was a problem. Please try again later.");
 
                 }
                 // FlurryAgent.onEndSession(serviceCtx);
-                return;
             }
 
         } catch (Exception e) {
@@ -282,6 +287,81 @@ public class PostFromKeptActivity extends Activity implements OnClickListener, O
         }
 
     }
+
+
+    private void shareWithInstagramChooser() {
+
+
+        try {
+            // flurryAgent.logEvent("Share button pressed");
+            // Create the new Intent using the 'Send' action.
+            Intent share = new Intent(Intent.ACTION_SEND);
+            share.setPackage("com.instagram.android");
+
+            if (isVideo)
+                share.setClassName(
+                        "com.instagram.android",
+                        "com.instagram.share.handleractivity.ReelShareHandlerActivity");
+
+
+            share.setFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
+
+            Uri MediaURI;
+
+
+            if (isVideo) {
+
+                File t = new File(Util.getTempVideoFilePath());
+
+
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+                    MediaURI = FileProvider.getUriForFile(this, getApplicationContext().getPackageName() + ".provider", t);
+                } else {
+                    MediaURI = Uri.fromFile(t);
+                }
+
+
+            } else {
+                Log.d("app5", "tempfile :  " + tempFile.toString());
+
+
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+                    MediaURI = FileProvider.getUriForFile(this, getApplicationContext().getPackageName() + ".provider", tempFile);
+                } else {
+                    MediaURI = Uri.fromFile(tempFile);
+                }
+
+
+            }
+
+            if (isVideo) {
+                share.setType("video/mp4");
+                share.putExtra(Intent.EXTRA_STREAM, MediaURI);
+            } else {
+                share.putExtra(Intent.EXTRA_STREAM, MediaURI);
+
+                share.setType("image/*");
+            }
+
+
+            // Broadcast the Intent.
+            startActivity(Intent.createChooser(share, "Share to"));
+
+
+            final Handler handler = new Handler();
+            handler.postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    finish();
+                }
+            }, 2000);
+        } catch (Exception e) {
+            showErrorToast(e.getMessage(), getString(R.string.therewasproblem));
+
+        }
+
+    }
+
 
     @Override
     public void onDestroy() {

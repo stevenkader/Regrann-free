@@ -1,17 +1,6 @@
 package com.calldorado.app;
 
-import static android.view.View.inflate;
-
-import android.content.Context;
-import android.content.Intent;
-import android.view.View;
-import android.widget.LinearLayout;
-import android.widget.TextView;
-
-import com.calldorado.sdk.ui.ui.aftercall.cards.native_field.CalldoradoCustomView;
-import com.jaredco.regrann.R;
-import com.jaredco.regrann.activity.SettingsActivity2;
-
+/**
 public class MyCustomView extends CalldoradoCustomView {
     private LinearLayout ll;
     private final Context context;
@@ -50,12 +39,14 @@ public class MyCustomView extends CalldoradoCustomView {
 
 
                     } catch (Exception e) {
-                        int i = 1;
-                    }
-                } catch (Exception e) {
-                }
-            }
-        });
-        return ll;
+    int i = 1;
     }
-}
+    } catch (Exception e) {
+    }
+    }
+    });
+    return ll;
+    }
+
+    }
+ **/

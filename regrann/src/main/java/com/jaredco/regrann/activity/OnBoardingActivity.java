@@ -285,7 +285,7 @@ public class OnBoardingActivity extends Activity {
                 @Override
                 public void run() {
                     //Do something after 100ms
-                    checkPermissions();
+                    //      checkPermissions();
                 }
             }, 1000);
         }

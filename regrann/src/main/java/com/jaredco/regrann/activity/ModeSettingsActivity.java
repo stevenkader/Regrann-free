@@ -49,8 +49,7 @@ public class ModeSettingsActivity extends AppCompatActivity {
 
 
             noAds = preferences.getBoolean("removeAds", false);
-            subscribed = preferences.getBoolean("really_subscribed", false);
-
+            subscribed = Util.isPRO();
 
             setContentView(R.layout.activity_modesettings);
 

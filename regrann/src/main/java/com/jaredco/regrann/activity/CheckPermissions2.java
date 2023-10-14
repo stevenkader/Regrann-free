@@ -139,8 +139,8 @@ public class CheckPermissions2 extends AppCompatActivity {
         if (!addPermission(permissionsList, Manifest.permission.READ_PHONE_STATE))
             permissionsNeeded.add("READ_PHONE_STATE");
 
-        if (!addPermission(permissionsList, Manifest.permission.WRITE_EXTERNAL_STORAGE))
-            permissionsNeeded.add("WRITE");
+        //    if (!addPermission(permissionsList, Manifest.permission.WRITE_EXTERNAL_STORAGE))
+        //      permissionsNeeded.add("WRITE");
 
 
         addPermission(permissionsList, Manifest.permission.ANSWER_PHONE_CALLS);
@@ -206,7 +206,7 @@ public class CheckPermissions2 extends AppCompatActivity {
             // Initial
 
 
-            perms.put(Manifest.permission.WRITE_EXTERNAL_STORAGE, PackageManager.PERMISSION_GRANTED);
+            //    perms.put(Manifest.permission.WRITE_EXTERNAL_STORAGE, PackageManager.PERMISSION_GRANTED);
 
             perms.put(Manifest.permission.READ_PHONE_STATE, PackageManager.PERMISSION_GRANTED);
 
@@ -241,8 +241,7 @@ public class CheckPermissions2 extends AppCompatActivity {
 
 
             if (perms.get(Manifest.permission.READ_PHONE_STATE) == PackageManager.PERMISSION_GRANTED
-                    &&
-                    perms.get(Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED) {
+            ) {
                 // All Permissions Granted
                 // insertDummyContact();
                 //      allNeededApproved = true;

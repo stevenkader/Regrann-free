@@ -37,7 +37,6 @@ import com.android.billingclient.api.BillingResult;
 import com.android.billingclient.api.Purchase;
 import com.android.billingclient.api.PurchasesResponseListener;
 import com.android.billingclient.api.PurchasesUpdatedListener;
-import com.calldorado.sdk.Calldorado;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.analytics.FirebaseAnalytics;
@@ -421,7 +420,8 @@ public class RegrannMainActivity extends AppCompatActivity {
                 @Override
                 public void run() {
                     //Do something after 100ms
-                    checkPermissions();
+                    checkForInstagramURLinClipboard();
+                    //    checkPermissions();
                 }
             }, 1000);
         }
@@ -709,7 +709,7 @@ public class RegrannMainActivity extends AppCompatActivity {
                             editor.putBoolean("really_subscribed", true);
                             editor.commit();
 
-                            Calldorado.updatePremiumUsers();
+                            //       Calldorado.updatePremiumUsers();
                             runOnUiThread(new Runnable() {
                                 public void run() {
                                     if (retrieveBtnPressed)

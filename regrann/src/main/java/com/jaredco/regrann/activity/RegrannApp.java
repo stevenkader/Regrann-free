@@ -9,9 +9,7 @@ import android.preference.PreferenceManager;
 import android.util.Log;
 
 import androidx.multidex.MultiDex;
-import androidx.work.WorkManager;
 
-import com.calldorado.sdk.Calldorado;
 import com.google.android.gms.ads.MobileAds;
 import com.google.android.gms.ads.initialization.InitializationStatus;
 import com.google.android.gms.ads.initialization.OnInitializationCompleteListener;
@@ -103,14 +101,16 @@ public class RegrannApp extends Application {
 
 
         Log.d("app5", "In Regrann App - onCreate");
+/**
+ androidx.work.Configuration myConfig = new androidx.work.Configuration.Builder()
+ .setMinimumLoggingLevel(Log.INFO)
+ .build();
+ WorkManager.initialize(this, myConfig);
+ Calldorado.startCalldorado(this);
 
-        androidx.work.Configuration myConfig = new androidx.work.Configuration.Builder()
-                .setMinimumLoggingLevel(Log.INFO)
-                .build();
-        WorkManager.initialize(this, myConfig);
-        Calldorado.startCalldorado(this);
 
-        Calldorado.acceptConditions(getApplicationContext(), true);
+ Calldorado.acceptConditions(getApplicationContext(), true);
+ **/
 
         MobileAds.initialize(
                 this,

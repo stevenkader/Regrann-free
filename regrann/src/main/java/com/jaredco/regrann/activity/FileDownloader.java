@@ -82,7 +82,7 @@ public class FileDownloader {
 
 
             if (result) {
-                Toast.makeText(context, "Download complete", Toast.LENGTH_SHORT).show();
+          //      Toast.makeText(context, "Download complete", Toast.LENGTH_SHORT).show();
             } else {
                 // Toast.makeText(context, "Download failed", Toast.LENGTH_SHORT).show();
             }
