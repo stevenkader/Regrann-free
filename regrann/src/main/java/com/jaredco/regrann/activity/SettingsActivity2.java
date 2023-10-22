@@ -2,27 +2,20 @@ package com.jaredco.regrann.activity;
 
 
 import android.Manifest;
-import android.annotation.SuppressLint;
 import android.app.AlertDialog;
-import android.content.ContentUris;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.content.res.Configuration;
-import android.database.Cursor;
 import android.net.Uri;
-import android.os.Build;
 import android.os.Bundle;
-import android.os.Environment;
 import android.preference.CheckBoxPreference;
 import android.preference.ListPreference;
 import android.preference.Preference;
 import android.preference.PreferenceActivity;
 import android.preference.PreferenceFragment;
 import android.preference.PreferenceManager;
-import android.provider.DocumentsContract;
-import android.provider.MediaStore;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -39,8 +32,8 @@ import androidx.core.app.ActivityCompat;
 
 import com.google.firebase.analytics.FirebaseAnalytics;
 import com.jaredco.regrann.R;
+import com.jaredco.regrann.util.Util;
 
-import java.io.File;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -642,6 +635,7 @@ public class SettingsActivity2 extends PreferenceActivity {
            cbxCreditWatermark = (CheckBoxPreference) findPreference("watermark_checkbox");
 
 
+
             cbxCreditWatermark.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener()
             {
                 @Override
@@ -676,12 +670,24 @@ public class SettingsActivity2 extends PreferenceActivity {
 
                     if ((Boolean) newValue) {
                         // select photo
+
+                        if (!Util.isPRO()) {
+
+                            Intent i = new Intent(_this, RequestPaymentActivity.class);
+                            i.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
+                            i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+
+
+                            startActivity(i);
+                            return true;
+                        }
                         cbxCreditWatermark.setChecked(false);
                         editor.putBoolean("watermark_checkbox", false);
                         editor.commit();
-                        Intent intent = new Intent();
+                        Intent intent = new Intent(Intent.ACTION_OPEN_DOCUMENT);
+                        intent.addCategory(Intent.CATEGORY_OPENABLE);
                         intent.setType("image/*");
-                        intent.setAction(Intent.ACTION_GET_CONTENT);
+
                         startActivityForResult(Intent.createChooser(intent, "Select Picture"), 1);
 
 
@@ -749,7 +755,12 @@ public class SettingsActivity2 extends PreferenceActivity {
                 if (resultCode == RESULT_OK) {
 
 
-                    editor.putString("watermark_imagefile", getRealPathFromURI_API19(_this, imageReturnedIntent.getData()));
+                    Uri selectedImageUri = imageReturnedIntent.getData();
+
+                    RegrannApp._this.getContentResolver().takePersistableUriPermission(selectedImageUri, (Intent.FLAG_GRANT_READ_URI_PERMISSION | Intent.FLAG_GRANT_WRITE_URI_PERMISSION));
+
+
+                    editor.putString("watermark_imagefile", selectedImageUri.toString());
                     editor.apply();
 
                     RegrannApp.sendEvent("custom_watermark_uploaded");
@@ -764,208 +775,12 @@ public class SettingsActivity2 extends PreferenceActivity {
     }
 
 
-    @SuppressLint("NewApi")
-    public static String getRealPathFromURI_API19(final Context context, final Uri uri) {
-
-        final boolean isKitKat = Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT;
-
-        // DocumentProvider
-        if (isKitKat && DocumentsContract.isDocumentUri(context, uri)) {
-            // ExternalStorageProvider
-            if (isExternalStorageDocument(uri)) {
-                final String docId = DocumentsContract.getDocumentId(uri);
-                final String[] split = docId.split(":");
-                final String type = split[0];
-
-                // This is for checking Main Memory
-                if ("primary".equalsIgnoreCase(type)) {
-                    if (split.length > 1) {
-                        return Environment.getExternalStorageDirectory() + "/" + split[1];
-                    } else {
-                        return Environment.getExternalStorageDirectory() + "/";
-                    }
-                    // This is for checking SD Card
-                } else {
-                    return "storage" + "/" + docId.replace(":", "/");
-                }
-
-            }
-            // DownloadsProvider
-            else if (isDownloadsDocument(uri)) {
-                String fileName = getFilePath(context, uri);
-                if (fileName != null) {
-                    return Environment.getExternalStorageDirectory().toString() + "/Download/" + fileName;
-                }
-
-                String id = DocumentsContract.getDocumentId(uri);
-                if (id.startsWith("raw:")) {
-                    id = id.replaceFirst("raw:", "");
-                    File file = new File(id);
-                    if (file.exists())
-                        return id;
-                }
-
-                final Uri contentUri = ContentUris.withAppendedId(Uri.parse("content://downloads/public_downloads"), Long.valueOf(id));
-                return getDataColumn(context, contentUri, null, null);
-            }
-            // MediaProvider
-            else if (isMediaDocument(uri)) {
-                final String docId = DocumentsContract.getDocumentId(uri);
-                final String[] split = docId.split(":");
-                final String type = split[0];
-
-                Uri contentUri = null;
-                if ("image".equals(type)) {
-                    contentUri = MediaStore.Images.Media.EXTERNAL_CONTENT_URI;
-                } else if ("video".equals(type)) {
-                    contentUri = MediaStore.Video.Media.EXTERNAL_CONTENT_URI;
-                } else if ("audio".equals(type)) {
-                    contentUri = MediaStore.Audio.Media.EXTERNAL_CONTENT_URI;
-                }
-
-                final String selection = "_id=?";
-                final String[] selectionArgs = new String[]{
-                        split[1]
-                };
-
-                return getDataColumn(context, contentUri, selection, selectionArgs);
-            }
-        }
-        // MediaStore (and general)
-        else if ("content".equalsIgnoreCase(uri.getScheme())) {
-
-            // Return the remote address
-            if (isGooglePhotosUri(uri))
-                return uri.getLastPathSegment();
-
-            return getDataColumn(context, uri, null, null);
-        }
-        // File
-        else if ("file".equalsIgnoreCase(uri.getScheme())) {
-            return uri.getPath();
-        }
-
-        return null;
-    }
-
-    public static String getDataColumn(Context context, Uri uri, String selection,
-                                       String[] selectionArgs) {
-
-        Cursor cursor = null;
-        final String column = "_data";
-        final String[] projection = {
-                column
-        };
-
-        try {
-            cursor = context.getContentResolver().query(uri, projection, selection, selectionArgs,
-                    null);
-            if (cursor != null && cursor.moveToFirst()) {
-                final int index = cursor.getColumnIndexOrThrow(column);
-                return cursor.getString(index);
-            }
-        } finally {
-            if (cursor != null)
-                cursor.close();
-        }
-        return null;
-    }
 
 
-    public static String getFilePath(Context context, Uri uri) {
 
-        Cursor cursor = null;
-        final String[] projection = {
-                MediaStore.MediaColumns.DISPLAY_NAME
-        };
 
-        try {
-            cursor = context.getContentResolver().query(uri, projection, null, null,
-                    null);
-            if (cursor != null && cursor.moveToFirst()) {
-                final int index = cursor.getColumnIndexOrThrow(MediaStore.MediaColumns.DISPLAY_NAME);
-                return cursor.getString(index);
-            }
-        } finally {
-            if (cursor != null)
-                cursor.close();
-        }
-        return null;
-    }
 
-    /**
-     * @param uri The Uri to check.
-     * @return Whether the Uri authority is ExternalStorageProvider.
-     */
-    public static boolean isExternalStorageDocument(Uri uri) {
-        return "com.android.externalstorage.documents".equals(uri.getAuthority());
-    }
 
-    /**
-     * @param uri The Uri to check.
-     * @return Whether the Uri authority is DownloadsProvider.
-     */
-    public static boolean isDownloadsDocument(Uri uri) {
-        return "com.android.providers.downloads.documents".equals(uri.getAuthority());
-    }
-
-    /**
-     * @param uri The Uri to check.
-     * @return Whether the Uri authority is MediaProvider.
-     */
-    public static boolean isMediaDocument(Uri uri) {
-        return "com.android.providers.media.documents".equals(uri.getAuthority());
-    }
-
-    /**
-     * @param uri The Uri to check.
-     * @return Whether the Uri authority is Google Photos.
-     */
-    public static boolean isGooglePhotosUri(Uri uri) {
-        return "com.google.android.apps.photos.content".equals(uri.getAuthority());
-    }
-
-    /**
-
-    @SuppressLint("NewApi")
-    public static String getRealPathFromURI_API19(Context context, Uri uri){
-        String filePath = "";
-        String wholeID = DocumentsContract.getDocumentId(uri);
-
-        // Split at colon, use second item in the array
-        String id = wholeID.split(":")[1];
-
-        String[] column = { MediaStore.Images.Media.DATA };
-
-        // where id is equal to
-        String sel = MediaStore.Images.Media._ID + "=?";
-
-        Cursor cursor = context.getContentResolver().query(MediaStore.Images.Media.EXTERNAL_CONTENT_URI,
-                column, sel, new String[]{ id }, null);
-
-        int columnIndex = cursor.getColumnIndex(column[0]);
-
-        if (cursor.moveToFirst()) {
-            filePath = cursor.getString(columnIndex);
-        }
-
-        cursor.close();
-
-        return filePath;
-    }
-    **/
-
-    /**
-     * Set up the {@link android.app.ActionBar}, if the API is available.
-     */
-    private void setupActionBar() {
-        // ActionBar actionBar = getSupportActionBar();
-
-        //   if (actionBar != null) {
-        // Show the Up button in the action bar.
-        //      actionBar.setDisplayHomeAsUpEnabled(true);
-        //  }
-    }
 
 
     @Override

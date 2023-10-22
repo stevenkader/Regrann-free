@@ -198,6 +198,18 @@
 
 
                     <Button
+
+                        android:layout_width="match_parent"
+                        android:layout_height="80dp"
+                        android:layout_marginTop="20dp"
+                        android:padding="10dp"
+                        android:onClick="onClickVideos15sec"
+                        android:text="How to Repost Videos\nLonger than 15 Seconds"
+
+                        android:textSize="18sp" />
+
+
+                    <Button
                         android:id="@+id/retrievePurchase"
                         android:layout_width="match_parent"
                         android:layout_height="40dp"

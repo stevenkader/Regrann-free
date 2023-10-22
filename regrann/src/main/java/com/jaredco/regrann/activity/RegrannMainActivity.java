@@ -822,6 +822,14 @@ public class RegrannMainActivity extends AppCompatActivity {
 
     }
 
+    public void onClickVideos15sec(View view) {
+
+        numClicks = 0;
+        watchYoutubeVideo("Gm6Iipr44SI");
+
+
+    }
+//onClickVideos15sec
 
     public void onClickOpenSettings(View view) {
         RegrannApp.sendEvent("rmain_settings_btn");

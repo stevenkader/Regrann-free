@@ -92,7 +92,7 @@ public class NewShareText extends Activity {
                                         finish();
                                         return;
                                     }
-                                    showErrorToast("Error", "Regrann doesn't support his share link.");
+                                    showErrorToast("Error", "Repost for IG doesn't support this share link.");
 
 
                                 }
