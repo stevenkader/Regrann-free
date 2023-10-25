@@ -221,6 +221,7 @@
             android:name="com.calldorado.appKey"
             android:value="515af176-e9f0-4f11-a5a2-6b0748255a03" />
 
+
         <provider
             android:name="androidx.startup.InitializationProvider"
             android:authorities="${applicationId}.androidx-startup"

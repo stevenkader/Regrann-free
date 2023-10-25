@@ -55,7 +55,7 @@
                     android:layout_height="wrap_content"
 
                     android:layout_marginStart="5dp"
-                    android:text="#Repost for IG"
+                    android:text="Repost for IG"
                     android:textColor="@color/White"
                     android:textSize="16sp" />
             </LinearLayout>
