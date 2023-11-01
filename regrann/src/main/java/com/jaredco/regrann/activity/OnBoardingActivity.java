@@ -261,7 +261,7 @@ public class OnBoardingActivity extends Activity {
 
             Intent i;
 
-            i = new Intent(this, CheckPermissions2.class);
+            i = new Intent(this, CheckPermissions.class);
 
 
             startActivity(i);
@@ -278,21 +278,21 @@ public class OnBoardingActivity extends Activity {
     @Override
     protected void onResume() {
         super.onResume();
-        if (Build.VERSION.SDK_INT >= 23){
+
 
             final Handler handler = new Handler();
             handler.postDelayed(new Runnable() {
                 @Override
                 public void run() {
                     //Do something after 100ms
-                    //      checkPermissions();
+                    if (android.os.Build.VERSION.SDK_INT < Build.VERSION_CODES.R) {
+                        // only for gingerbread and newer versions
+                        checkPermissions();
+                    }
+
                 }
             }, 1000);
         }
-
-
-
-    }
 
 
     @Override

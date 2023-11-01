@@ -19,7 +19,6 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.preference.PreferenceManager;
-import android.provider.Settings;
 import android.util.Log;
 import android.view.View;
 import android.widget.Toast;
@@ -413,18 +412,23 @@ public class RegrannMainActivity extends AppCompatActivity {
         super.onResume();
 
 
-        if (Build.VERSION.SDK_INT >= 23) {
+
 
             final Handler handler = new Handler();
             handler.postDelayed(new Runnable() {
                 @Override
                 public void run() {
                     //Do something after 100ms
-                    checkForInstagramURLinClipboard();
-                    //    checkPermissions();
+
+                    if (android.os.Build.VERSION.SDK_INT < Build.VERSION_CODES.R) {
+                        // only for gingerbread and newer versions
+                        checkPermissions();
+                    } else {
+                        checkForInstagramURLinClipboard();
+                    }
+
                 }
             }, 1000);
-        }
 
 
         invalidateOptionsMenu();
@@ -792,18 +796,20 @@ public class RegrannMainActivity extends AppCompatActivity {
         List<String> permissionsNeeded = new ArrayList<String>();
 
         final List<String> permissionsList = new ArrayList<String>();
-        if (!addPermission(permissionsList, Manifest.permission.WRITE_EXTERNAL_STORAGE))
+        if (!addPermission(permissionsList, Manifest.permission.WRITE_EXTERNAL_STORAGE)) {
             permissionsNeeded.add("Read SMS");
+        }
 
 
-        boolean overlaySet = !isPRO() && ActivityCompat.checkSelfPermission(this, Manifest.permission.READ_PHONE_STATE) == PackageManager.PERMISSION_GRANTED;
+        //  boolean overlaySet = !isPRO() && ActivityCompat.checkSelfPermission(this, Manifest.permission.READ_PHONE_STATE) == PackageManager.PERMISSION_GRANTED;
 
-        if (permissionsNeeded.size() > 0 || (overlaySet && !Settings.canDrawOverlays(this))) {
+        //    if (permissionsNeeded.size() > 0 || (overlaySet && !Settings.canDrawOverlays(this))) {
+        if (permissionsNeeded.size() > 0) {
 
 
             Intent i;
 
-            i = new Intent(this, CheckPermissions2.class);
+            i = new Intent(this, CheckPermissions.class);
 
 
             startActivity(i);

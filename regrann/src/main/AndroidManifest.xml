@@ -117,7 +117,7 @@
             android:name=".activity.OnBoardingActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".activity.CheckPermissions2"
+            android:name=".activity.CheckPermissions"
             android:label="Repost - Permissions"
             android:screenOrientation="portrait" />
         <activity
@@ -222,10 +222,6 @@
             android:value="515af176-e9f0-4f11-a5a2-6b0748255a03" />
 
 
-        <provider
-            android:name="androidx.startup.InitializationProvider"
-            android:authorities="${applicationId}.androidx-startup"
-            tools:node="remove" />
     </application>
 
 </manifest>
