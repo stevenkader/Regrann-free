@@ -131,11 +131,11 @@
                 <arg>$USER_HOME$/.gradle/caches/transforms-3/b11320dbe814012b59494a2e268a498e/transformed/jetified-tracing-1.0.0-api.jar</arg>
                 <arg>$USER_HOME$/.gradle/caches/transforms-3/8afe8067cb927ebdebd003f9dedfa898/transformed/jetified-guava-31.1-android.jar</arg>
                 <arg>$USER_HOME$/.gradle/caches/transforms-3/80dd5fbea6b094a3f220381cd466d262/transformed/jetified-listenablefuture-9999.0-empty-to-avoid-conflict-with-guava.jar</arg>
-                <arg>$USER_HOME$/.gradle/caches/transforms-3/1c7afa18aedc3ed40d8f23cbb40e646a/transformed/jetified-ogury-sdk-5.6.1-api.jar</arg>
-                <arg>$USER_HOME$/.gradle/caches/transforms-3/5f6ff7c450691822d637a99973a6e1ad/transformed/jetified-ogury-choice-manager-3.3.1-api.jar</arg>
+                <arg>$USER_HOME$/.gradle/caches/transforms-3/c4f1d06f4239d7b6def971c0a1765eab/transformed/jetified-ogury-sdk-5.6.2-api.jar</arg>
+                <arg>$USER_HOME$/.gradle/caches/transforms-3/617961f32d341e0443a6dd6b09fb42f6/transformed/jetified-ogury-choice-manager-3.3.2-api.jar</arg>
                 <arg>$USER_HOME$/.gradle/caches/transforms-3/7d65db6a28ee102068338187188d7e0b/transformed/jetified-ogury-ads-4.5.1-api.jar</arg>
                 <arg>$USER_HOME$/.gradle/caches/transforms-3/89fd16d5e44a71c033b31c8aab4af485/transformed/jetified-ogury-core-1.3.0-api.jar</arg>
-                <arg>$USER_HOME$/.gradle/caches/transforms-3/9235b1f963b962e2466575e1b9428d8e/transformed/jetified-ogury-mediation-admob-5.6.1.0-api.jar</arg>
+                <arg>$USER_HOME$/.gradle/caches/transforms-3/84add849f111fe7e786139ab6a8e5229/transformed/jetified-ogury-mediation-admob-5.6.2.0-api.jar</arg>
                 <arg>$USER_HOME$/.gradle/caches/transforms-3/91c79c353e72bd45fc32b1d0b212f4df/transformed/jetified-commons-io-2.11.0.jar</arg>
                 <arg>$USER_HOME$/.gradle/caches/transforms-3/400af086ff4433f28aa95076e3c1b30f/transformed/jetified-AndroidImageSlider-v1.0.8-api.jar</arg>
                 <arg>$USER_HOME$/.gradle/caches/transforms-3/09e5e547c8c08c044443f0e7f135fa1c/transformed/jetified-okhttp-3.10.0.jar</arg>
@@ -266,11 +266,11 @@
     <orderEntry type="library" name="Gradle: androidx.startup:startup-runtime:1.1.1@aar" level="project" />
     <orderEntry type="library" name="Gradle: androidx.lifecycle:lifecycle-service:2.4.0@aar" level="project" />
     <orderEntry type="library" name="Gradle: androidx.lifecycle:lifecycle-viewmodel:2.5.1@aar" level="project" />
-    <orderEntry type="library" name="Gradle: co.ogury:ogury-sdk:5.6.1@aar" level="project" />
-    <orderEntry type="library" name="Gradle: co.ogury.module:ogury-choice-manager:3.3.1@aar" level="project" />
+    <orderEntry type="library" name="Gradle: co.ogury:ogury-sdk:5.6.2@aar" level="project" />
+    <orderEntry type="library" name="Gradle: co.ogury.module:ogury-choice-manager:3.3.2@aar" level="project" />
     <orderEntry type="library" name="Gradle: co.ogury.module:ogury-core:1.3.0@aar" level="project" />
     <orderEntry type="library" name="Gradle: co.ogury.module:ogury-ads:4.5.1@aar" level="project" />
-    <orderEntry type="library" name="Gradle: co.ogury:ogury-mediation-admob:5.6.1.0@aar" level="project" />
+    <orderEntry type="library" name="Gradle: co.ogury:ogury-mediation-admob:5.6.2.0@aar" level="project" />
     <orderEntry type="library" name="Gradle: androidx.appcompat:appcompat:1.6.1@aar" level="project" />
     <orderEntry type="library" name="Gradle: androidx.activity:activity:1.6.0@aar" level="project" />
     <orderEntry type="library" name="Gradle: androidx.core:core:1.9.0@aar" level="project" />

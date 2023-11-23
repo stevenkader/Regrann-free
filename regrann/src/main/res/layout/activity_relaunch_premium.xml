@@ -68,7 +68,28 @@
         android:textAllCaps="true"
         android:textColor="#ffffff"
         android:textSize="16sp"
+        app:layout_constraintBottom_toTopOf="@+id/btnSubscribeYearly"
+        tools:layout_editor_absoluteX="16dp" />
+
+    <TextView
+        android:id="@+id/btnSubscribeYearly"
+        style="@style/PhCtaButton"
+        android:layout_width="match_parent"
+        android:layout_margin="16dp"
+        android:visibility="gone"
+        android:layout_marginBottom="16dp"
+        android:backgroundTint="?attr/colorPrimary"
+        android:gravity="center_horizontal|center_vertical"
+        android:includeFontPadding="false"
+        android:onClick="subscribeBtnYearly"
+        android:paddingLeft="12dp"
+        android:paddingRight="12dp"
+        android:text="START FREE TRIAL - 50% off pay by year"
+        android:textAllCaps="true"
+        android:textColor="#ffffff"
+        android:textSize="16sp"
         app:layout_constraintBottom_toTopOf="@+id/relaunch_premium_subscription_info"
+
         tools:layout_editor_absoluteX="16dp" />
 
     <TextView
@@ -88,9 +109,9 @@
     <include
         layout="@layout/ph_features_table"
         android:layout_width="match_parent"
-        android:layout_height="0dp"
+        android:layout_height="wrap_content"
         android:layout_marginTop="30dp"
-        android:layout_marginBottom="10dp"
+        android:layout_marginBottom="30dp"
         app:layout_constraintBottom_toTopOf="@+id/relaunch_premium_text_price"
         app:layout_constraintTop_toBottomOf="@+id/header_layout"
         app:layout_constraintVertical_bias="0.2" />

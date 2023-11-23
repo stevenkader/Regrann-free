@@ -19,8 +19,8 @@
                 <arg>$USER_HOME$/.gradle/caches/transforms-3/486216ffa5a7e1826945368b816775fb/transformed/databinding-adapters-7.4.0-rc03-api.jar</arg>
                 <arg>$USER_HOME$/.gradle/caches/modules-2/files-2.1/androidx.databinding/databinding-common/7.4.0-rc03/84ed411631d2c4113f4ad992669fe3f50a83f072/databinding-common-7.4.0-rc03.jar</arg>
                 <arg>$USER_HOME$/.gradle/caches/transforms-3/f9ff94d542dd4d236e6d9f8aa3dc77e6/transformed/jetified-databinding-ktx-7.4.0-rc03-api.jar</arg>
-                <arg>$USER_HOME$/.gradle/caches/transforms-3/1c7afa18aedc3ed40d8f23cbb40e646a/transformed/jetified-ogury-sdk-5.6.1-api.jar</arg>
-                <arg>$USER_HOME$/.gradle/caches/transforms-3/9235b1f963b962e2466575e1b9428d8e/transformed/jetified-ogury-mediation-admob-5.6.1.0-api.jar</arg>
+                <arg>$USER_HOME$/.gradle/caches/transforms-3/c4f1d06f4239d7b6def971c0a1765eab/transformed/jetified-ogury-sdk-5.6.2-api.jar</arg>
+                <arg>$USER_HOME$/.gradle/caches/transforms-3/84add849f111fe7e786139ab6a8e5229/transformed/jetified-ogury-mediation-admob-5.6.2.0-api.jar</arg>
                 <arg>$USER_HOME$/.gradle/caches/transforms-3/5cf27927e0daaa34b2cf313f83db1dc2/transformed/jetified-facebook-6.12.0.0-api.jar</arg>
                 <arg>$USER_HOME$/.gradle/caches/transforms-3/4cf5433edf3fb8d1b8bfa63f378e7109/transformed/jetified-play-services-ads-22.4.0-api.jar</arg>
                 <arg>$USER_HOME$/.gradle/caches/transforms-3/32d95e166d9eefb5bcc5a16ec7621478/transformed/jetified-ads-adservices-java-1.0.0-beta05-api.jar</arg>
@@ -136,7 +136,7 @@
                 <arg>$USER_HOME$/.gradle/caches/transforms-3/d09b4eef169c2ff08f8b91932d070739/transformed/print-1.0.0-api.jar</arg>
                 <arg>$USER_HOME$/.gradle/caches/transforms-3/d00e4f8d4678ee153543157f05993665/transformed/jetified-guava-21.0.jar</arg>
                 <arg>$USER_HOME$/.gradle/caches/transforms-3/d9c4e84f8e2cdd72c049671b1872015d/transformed/jetified-build-annotations-10.2.1.jar</arg>
-                <arg>$USER_HOME$/.gradle/caches/transforms-3/5f6ff7c450691822d637a99973a6e1ad/transformed/jetified-ogury-choice-manager-3.3.1-api.jar</arg>
+                <arg>$USER_HOME$/.gradle/caches/transforms-3/617961f32d341e0443a6dd6b09fb42f6/transformed/jetified-ogury-choice-manager-3.3.2-api.jar</arg>
                 <arg>$USER_HOME$/.gradle/caches/transforms-3/7d65db6a28ee102068338187188d7e0b/transformed/jetified-ogury-ads-4.5.1-api.jar</arg>
                 <arg>$USER_HOME$/.gradle/caches/transforms-3/89fd16d5e44a71c033b31c8aab4af485/transformed/jetified-ogury-core-1.3.0-api.jar</arg>
                 <arg>$USER_HOME$/.gradle/caches/transforms-3/7d3d5fee103a11bc34b9c78c07081139/transformed/jetified-annotation-jvm-1.6.0.jar</arg>
@@ -242,11 +242,11 @@
     <orderEntry type="library" scope="TEST" name="Gradle: androidx.startup:startup-runtime:1.0.0@aar" level="project" />
     <orderEntry type="library" scope="TEST" name="Gradle: androidx.lifecycle:lifecycle-service:2.4.0@aar" level="project" />
     <orderEntry type="library" scope="TEST" name="Gradle: androidx.lifecycle:lifecycle-viewmodel:2.5.1@aar" level="project" />
-    <orderEntry type="library" scope="TEST" name="Gradle: co.ogury:ogury-sdk:5.6.1@aar" level="project" />
-    <orderEntry type="library" scope="TEST" name="Gradle: co.ogury.module:ogury-choice-manager:3.3.1@aar" level="project" />
+    <orderEntry type="library" scope="TEST" name="Gradle: co.ogury:ogury-sdk:5.6.2@aar" level="project" />
+    <orderEntry type="library" scope="TEST" name="Gradle: co.ogury.module:ogury-choice-manager:3.3.2@aar" level="project" />
     <orderEntry type="library" scope="TEST" name="Gradle: co.ogury.module:ogury-core:1.3.0@aar" level="project" />
     <orderEntry type="library" scope="TEST" name="Gradle: co.ogury.module:ogury-ads:4.5.1@aar" level="project" />
-    <orderEntry type="library" scope="TEST" name="Gradle: co.ogury:ogury-mediation-admob:5.6.1.0@aar" level="project" />
+    <orderEntry type="library" scope="TEST" name="Gradle: co.ogury:ogury-mediation-admob:5.6.2.0@aar" level="project" />
     <orderEntry type="library" scope="TEST" name="Gradle: androidx.appcompat:appcompat:1.6.1@aar" level="project" />
     <orderEntry type="library" scope="TEST" name="Gradle: androidx.activity:activity:1.6.0@aar" level="project" />
     <orderEntry type="library" scope="TEST" name="Gradle: androidx.core:core:1.9.0@aar" level="project" />

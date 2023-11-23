@@ -89,8 +89,8 @@
             android:layout_marginBottom="20dp"
             android:adjustViewBounds="true"
             android:contentDescription="@string/preview_image"
-            android:minWidth="20dp"
-            android:minHeight="20dp"
+            android:minWidth="100dp"
+            android:minHeight="100dp"
             android:scaleType="fitCenter"
             android:visibility="gone" />
 
