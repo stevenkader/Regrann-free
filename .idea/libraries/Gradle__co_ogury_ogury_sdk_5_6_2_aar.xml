@@ -1,0 +1,10 @@
+<component name="libraryTable">
+  <library name="Gradle: co.ogury:ogury-sdk:5.6.2@aar">
+    <CLASSES>
+      <root url="jar://$USER_HOME$/.gradle/caches/transforms-3/1373a96bb1b95e16f1cb40b2f550962b/transformed/jetified-ogury-sdk-5.6.2/jars/classes.jar!/" />
+      <root url="file://$USER_HOME$/.gradle/caches/transforms-3/1373a96bb1b95e16f1cb40b2f550962b/transformed/jetified-ogury-sdk-5.6.2/AndroidManifest.xml" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>
