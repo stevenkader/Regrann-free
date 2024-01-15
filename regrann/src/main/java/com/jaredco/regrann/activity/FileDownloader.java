@@ -81,11 +81,9 @@ public class FileDownloader {
             ShareActivity._this.videoDownloadComplete(result, isSocial);
 
 
-            if (result) {
-          //      Toast.makeText(context, "Download complete", Toast.LENGTH_SHORT).show();
-            } else {
-                // Toast.makeText(context, "Download failed", Toast.LENGTH_SHORT).show();
-            }
+            //      Toast.makeText(context, "Download complete", Toast.LENGTH_SHORT).show();
+            // Toast.makeText(context, "Download failed", Toast.LENGTH_SHORT).show();
+            ShareActivity._this.videoDownloadComplete(result, isSocial);
         }
     }
 }

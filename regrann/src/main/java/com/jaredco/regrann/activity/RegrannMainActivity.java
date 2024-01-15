@@ -792,16 +792,16 @@ public class RegrannMainActivity extends AppCompatActivity {
     }
 
 
-    private void checkPermissions() {
-        List<String> permissionsNeeded = new ArrayList<String>();
+        private void checkPermissions() {
+            List<String> permissionsNeeded = new ArrayList<String>();
 
-        final List<String> permissionsList = new ArrayList<String>();
-        if (!addPermission(permissionsList, Manifest.permission.WRITE_EXTERNAL_STORAGE)) {
-            permissionsNeeded.add("Read SMS");
-        }
+            final List<String> permissionsList = new ArrayList<String>();
+            if (!addPermission(permissionsList, Manifest.permission.WRITE_EXTERNAL_STORAGE)) {
+                permissionsNeeded.add("Read SMS");
+            }
 
 
-        //  boolean overlaySet = !isPRO() && ActivityCompat.checkSelfPermission(this, Manifest.permission.READ_PHONE_STATE) == PackageManager.PERMISSION_GRANTED;
+            //  boolean overlaySet = !isPRO() && ActivityCompat.checkSelfPermission(this, Manifest.permission.READ_PHONE_STATE) == PackageManager.PERMISSION_GRANTED;
 
         //    if (permissionsNeeded.size() > 0 || (overlaySet && !Settings.canDrawOverlays(this))) {
         if (permissionsNeeded.size() > 0) {
