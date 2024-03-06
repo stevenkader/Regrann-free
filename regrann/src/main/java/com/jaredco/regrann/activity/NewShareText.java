@@ -50,8 +50,9 @@ public class NewShareText extends Activity {
 
                                 Boolean really_subscribed = preferences.getBoolean("really_subscribed", false);
                                 Boolean subscribed = preferences.getBoolean("subscribed", false);
+                                Boolean manually_sub = preferences.getBoolean("manual_subscribed", false);
 
-                                if (really_subscribed) {
+                                if (really_subscribed || manually_sub) {
                                     subscribed = true;
 
                                 }

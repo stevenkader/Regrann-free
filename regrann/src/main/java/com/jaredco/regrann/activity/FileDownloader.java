@@ -37,7 +37,7 @@ public class FileDownloader {
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
-            Toast.makeText(context, "Downloading video...", Toast.LENGTH_SHORT).show();
+            Toast.makeText(context, "Downloading video...", Toast.LENGTH_LONG).show();
         }
 
         @Override
