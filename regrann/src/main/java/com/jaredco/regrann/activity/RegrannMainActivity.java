@@ -372,7 +372,7 @@ public class RegrannMainActivity extends AppCompatActivity {
         }
 
 
-        checkForInstagramURLinClipboard();
+            checkForInstagramURLinClipboard();
 
 
     }
@@ -423,8 +423,6 @@ public class RegrannMainActivity extends AppCompatActivity {
                     if (android.os.Build.VERSION.SDK_INT < Build.VERSION_CODES.R) {
                         // only for gingerbread and newer versions
                         checkPermissions();
-                    } else {
-                        checkForInstagramURLinClipboard();
                     }
 
                 }
@@ -815,7 +813,7 @@ public class RegrannMainActivity extends AppCompatActivity {
             startActivity(i);
 
 
-        } else checkForInstagramURLinClipboard();
+        }
 
     }
 
@@ -847,13 +845,11 @@ public class RegrannMainActivity extends AppCompatActivity {
 
     }
 
-    private boolean isPRO() {
-        Boolean really_subscribed = preferences.getBoolean("really_subscribed", false);
-        Boolean subscribed = preferences.getBoolean("subscribed", false);
+    public void onWindowFocusChanged(boolean hasFocus) {
+        super.onWindowFocusChanged(hasFocus);
+        if (hasFocus)
 
-        return really_subscribed || subscribed;
-
-
+            checkForInstagramURLinClipboard();
     }
 
     private void checkForInstagramURLinClipboard() {
@@ -869,7 +865,7 @@ public class RegrannMainActivity extends AppCompatActivity {
                 String text = item.coerceToText(RegrannMainActivity.this).toString();
 
 
-                Boolean subscribed = isPRO();
+                Boolean subscribed = Util.isPRO();
 
                 if (text.length() > 18) {
 
@@ -882,11 +878,7 @@ public class RegrannMainActivity extends AppCompatActivity {
 
                         Intent i;
                         i = new Intent(_this, ShareActivity.class);
-
-                        if (text.contains("vm.tiktok")) {
-                            //   i.putExtra("tiktok", true);
-                        } else text = text.substring(text.indexOf("https://www.instagram"));
-
+                        text = text.substring(text.indexOf("https://"));
 
                         i.putExtra("mediaUrl", text);
 
@@ -921,6 +913,7 @@ public class RegrannMainActivity extends AppCompatActivity {
 
 
             } catch (Exception e) {
+                int i = 1;
             }
         }
 

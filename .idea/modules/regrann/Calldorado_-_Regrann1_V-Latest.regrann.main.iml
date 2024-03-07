@@ -14,6 +14,7 @@
           <stringArguments>
             <stringArg name="classpath">
               <args>
+                <arg>$MODULE_DIR$/../../../regrann/build/intermediates/compile_and_runtime_not_namespaced_r_class_jar/debug/R.jar</arg>
                 <arg>$USER_HOME$/.gradle/caches/transforms-3/b5f0cd2221cce3bbc92c47752d42066f/transformed/databinding-runtime-7.4.0-rc03-api.jar</arg>
                 <arg>$USER_HOME$/.gradle/caches/transforms-3/ac227dd828a8353c9bbf4fe18f1b99e8/transformed/databinding-adapters-7.4.0-rc03-api.jar</arg>
                 <arg>$USER_HOME$/.gradle/caches/modules-2/files-2.1/androidx.databinding/databinding-common/7.4.0-rc03/84ed411631d2c4113f4ad992669fe3f50a83f072/databinding-common-7.4.0-rc03.jar</arg>
@@ -175,6 +176,7 @@
                 <arg>$USER_HOME$/.gradle/caches/transforms-3/7ccbfd801c4d2fb96df43577ad19f4bb/transformed/jetified-build-annotations-10.2.1.jar</arg>
                 <arg>/Applications/android-sdk-macosx/platforms/android-34/android.jar</arg>
                 <arg>/Applications/android-sdk-macosx/build-tools/30.0.3/core-lambda-stubs.jar</arg>
+                <arg>$MODULE_DIR$/../../../regrann/build/tmp/kapt3/classes/debug</arg>
               </args>
             </stringArg>
             <stringArg name="destination" arg="$MODULE_DIR$/../../../regrann/build/tmp/kotlin-classes/debug" />
