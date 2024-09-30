@@ -1,9 +1,9 @@
 <component name="libraryTable">
-  <library name="Gradle: androidx.privacysandbox.ads:ads-adservices:1.0.0-beta05@aar">
+  <library name="Gradle: androidx.privacysandbox.ads:ads-adservices:1.0.0-beta05@aar" external-system-id="GRADLE">
     <CLASSES>
-      <root url="file://$USER_HOME$/.gradle/caches/transforms-3/a94247ac540b50a54e0fa2f6f653fa5e/transformed/jetified-ads-adservices-1.0.0-beta05/AndroidManifest.xml" />
-      <root url="file://$USER_HOME$/.gradle/caches/transforms-3/a94247ac540b50a54e0fa2f6f653fa5e/transformed/jetified-ads-adservices-1.0.0-beta05/res" />
-      <root url="jar://$USER_HOME$/.gradle/caches/transforms-3/a94247ac540b50a54e0fa2f6f653fa5e/transformed/jetified-ads-adservices-1.0.0-beta05/jars/classes.jar!/" />
+      <root url="file://$USER_HOME$/.gradle/caches/transforms-3/1a6018961e1cb40dd170a304252bec74/transformed/jetified-ads-adservices-1.0.0-beta05/res" />
+      <root url="file://$USER_HOME$/.gradle/caches/transforms-3/1a6018961e1cb40dd170a304252bec74/transformed/jetified-ads-adservices-1.0.0-beta05/AndroidManifest.xml" />
+      <root url="jar://$USER_HOME$/.gradle/caches/transforms-3/1a6018961e1cb40dd170a304252bec74/transformed/jetified-ads-adservices-1.0.0-beta05/jars/classes.jar!/" />
     </CLASSES>
     <JAVADOC />
     <SOURCES>

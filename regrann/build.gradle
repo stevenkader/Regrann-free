@@ -46,9 +46,9 @@ android {
 
         applicationId "com.jaredco.regrann"
         minSdkVersion 26
-        targetSdkVersion 33
-        versionCode 9050
-        versionName "16.02"
+        targetSdkVersion 34
+        versionCode 9054
+        versionName "16.10"
 
         multiDexEnabled true
         resValue 'string', 'pesdk_version', "v$pesdk_version"
@@ -64,8 +64,8 @@ android {
 
     /* 2) Compile for Java 1.8 or greater */
     compileOptions {
-        sourceCompatibility JavaVersion.VERSION_1_8
-        targetCompatibility JavaVersion.VERSION_1_8
+        sourceCompatibility JavaVersion.VERSION_11 // or VERSION_17
+        targetCompatibility JavaVersion.VERSION_11 // or VERSION_17
     }
     packagingOptions {
         resources {
@@ -105,25 +105,16 @@ android {
 }
 
 
+
 repositories {
-
-
-    //  google()
-    // jcenter()
     mavenCentral()
-
     maven { url 'https://jitpack.io' }
     maven {
         url 'https://maven.google.com'
     }
-    maven {
-        url 'https://maven.ogury.co'
-    }
-    // maven { url 'https://maven.calldorado.com/nexus/content/repositories/releases' }
-    //  maven { url 'https://maven.calldorado.com/nexus/content/repositories/thirdparty/' }
-    //   maven { url 'https://artifact.bytedance.com/repository/pangle' }
 
 
+    jcenter()
 }
 
 
@@ -151,50 +142,52 @@ dependencies {
     //  implementation 'com.android.databinding:compiler:3.1.4'
 
 
-    /* Add the CSDK framework dependencies (Make sure these version numbers are correct) */
+    implementation 'com.google.android.gms:play-services-ads:23.3.0'
     implementation fileTree(include: ['*.*'], dir: 'libs')
-    implementation 'co.ogury:ogury-sdk:5.+'
-    // Ogury Adapter for AdMob mediation
-    implementation 'co.ogury:ogury-mediation-admob:5.+'
-    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:1.8.22"
-    //  implementation "androidx.coordinatorlayout.widget.CoordinatorLayout:1.1.0"
+    implementation "androidx.coordinatorlayout:coordinatorlayout:1.2.0"
+    implementation 'com.google.guava:guava:24.1-jre'
+    implementation 'com.google.guava:listenablefuture:9999.0-empty-to-avoid-conflict-with-guava'
+    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
+    implementation 'org.apache.commons:commons-text:1.9'
 
-    implementation 'androidx.appcompat:appcompat:1.6.1'
+    implementation 'androidx.appcompat:appcompat:1.6.0'
     implementation 'commons-io:commons-io:2.11.0'
     implementation 'com.github.HamidrezaAmz:AndroidImageSlider:v1.0.8'
-    implementation 'org.apache.commons:commons-text:1.10.0'
-    implementation 'com.squareup.picasso:picasso:2.5.2'
 
-    implementation platform('com.google.firebase:firebase-bom:30.1.0')
+    implementation 'com.squareup.picasso:picasso:2.5.2'
+    implementation 'com.google.android.material:material:1.12.0'
+
+    // Import the BoM for the Firebase platform
+    implementation platform('com.google.firebase:firebase-bom:33.3.0')
+
+    // Add the dependencies for the Crashlytics and Analytics libraries
+    // When using the BoM, you don't specify versions in Firebase library dependencies
+
+    implementation 'com.google.firebase:firebase-analytics'
+
+
     implementation 'com.nineoldandroids:library:2.4.0'
     implementation 'androidx.multidex:multidex:2.0.1'
-    implementation 'com.android.installreferrer:installreferrer:2.2'
 
-    implementation 'com.google.android.play:core:1.10.3'
+
 
     /* 4) Add the CSDK framework dependencies (Make sure these version numbers are correct) */
-    implementation 'org.jsoup:jsoup:1.15.3'
+    implementation 'org.jsoup:jsoup:1.18.1'
     implementation 'com.google.firebase:firebase-messaging'
-    implementation 'com.google.firebase:firebase-config:21.6.0'
-    implementation 'com.google.firebase:firebase-analytics'
-    implementation 'com.github.bumptech.glide:glide:4.14.2'
-    implementation 'com.google.code.gson:gson:2.10'
+    implementation 'com.google.firebase:firebase-config'
 
-    implementation 'com.google.ads.mediation:facebook:6.16.0.0'
-    //  implementation 'com.google.guava:guava:24.1-jre'
-    implementation 'com.android.billingclient:billing:6.1.0'
+    implementation 'com.github.bumptech.glide:glide:4.16.0'
+    implementation 'com.google.code.gson:gson:2.11.0'
 
-    //  implementation 'com.google.android.gms:play-services-ads-identifier:18.0.1'
+
+    implementation 'com.android.billingclient:billing:7.1.0'
+
+
     implementation 'com.android.volley:volley:1.2.1'
 
     implementation 'androidx.constraintlayout:constraintlayout:2.1.4'
 
-    implementation 'androidx.annotation:annotation:1.7.0'
-    //  implementation 'com.google.ads.mediation:applovin:10.3.4.0'
-    implementation "com.google.guava:guava:21.0"
-    implementation 'com.google.android.gms:play-services-ads:22.5.0'
-    implementation 'androidx.coordinatorlayout:coordinatorlayout:1.2.0'
-    implementation 'com.google.android.material:material:1.10.0'
+    implementation 'androidx.annotation:annotation:1.8.2'
 
 
 }

@@ -1,9 +1,9 @@
 <component name="libraryTable">
-  <library name="Gradle: ly.img.android:authorization:9.0.0.0@aar">
+  <library name="Gradle: ly.img.android:authorization:9.0.0.0@aar" external-system-id="GRADLE">
     <CLASSES>
-      <root url="file://$USER_HOME$/.gradle/caches/transforms-3/9100586cf4c2453bd57eae44a529e27c/transformed/jetified-authorization-9.0.0.0/res" />
-      <root url="file://$USER_HOME$/.gradle/caches/transforms-3/9100586cf4c2453bd57eae44a529e27c/transformed/jetified-authorization-9.0.0.0/AndroidManifest.xml" />
-      <root url="jar://$USER_HOME$/.gradle/caches/transforms-3/9100586cf4c2453bd57eae44a529e27c/transformed/jetified-authorization-9.0.0.0/jars/classes.jar!/" />
+      <root url="file://$USER_HOME$/.gradle/caches/transforms-3/f6698ea6dff592684d8375fbf41c2827/transformed/jetified-authorization-9.0.0.0/AndroidManifest.xml" />
+      <root url="jar://$USER_HOME$/.gradle/caches/transforms-3/f6698ea6dff592684d8375fbf41c2827/transformed/jetified-authorization-9.0.0.0/jars/classes.jar!/" />
+      <root url="file://$USER_HOME$/.gradle/caches/transforms-3/f6698ea6dff592684d8375fbf41c2827/transformed/jetified-authorization-9.0.0.0/res" />
     </CLASSES>
     <JAVADOC />
     <SOURCES />

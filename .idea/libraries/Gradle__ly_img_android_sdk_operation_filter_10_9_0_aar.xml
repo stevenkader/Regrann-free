@@ -1,0 +1,11 @@
+<component name="libraryTable">
+  <library name="Gradle: ly.img.android.sdk.operation:filter:10.9.0@aar" external-system-id="GRADLE">
+    <CLASSES>
+      <root url="jar://$USER_HOME$/.gradle/caches/transforms-3/77ed981955f58cde37bfbc6e6d1a7406/transformed/jetified-filter-10.9.0/jars/classes.jar!/" />
+      <root url="file://$USER_HOME$/.gradle/caches/transforms-3/77ed981955f58cde37bfbc6e6d1a7406/transformed/jetified-filter-10.9.0/res" />
+      <root url="file://$USER_HOME$/.gradle/caches/transforms-3/77ed981955f58cde37bfbc6e6d1a7406/transformed/jetified-filter-10.9.0/AndroidManifest.xml" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>

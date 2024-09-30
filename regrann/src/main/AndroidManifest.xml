@@ -104,9 +104,6 @@
             </intent-filter>
         </activity>
 
-        <service
-            android:name=".activity.FetchDownloadUrlService"
-            android:exported="true" />
 
         <activity
             android:name=".activity.ShareActivity"

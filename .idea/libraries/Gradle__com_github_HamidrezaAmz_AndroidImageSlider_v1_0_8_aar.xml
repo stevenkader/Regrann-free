@@ -1,9 +1,9 @@
 <component name="libraryTable">
-  <library name="Gradle: com.github.HamidrezaAmz:AndroidImageSlider:v1.0.8@aar">
+  <library name="Gradle: com.github.HamidrezaAmz:AndroidImageSlider:v1.0.8@aar" external-system-id="GRADLE">
     <CLASSES>
-      <root url="jar://$USER_HOME$/.gradle/caches/transforms-3/dfd8e10fc0b00769a6065bd2c0f5e9f9/transformed/jetified-AndroidImageSlider-v1.0.8/jars/classes.jar!/" />
-      <root url="file://$USER_HOME$/.gradle/caches/transforms-3/dfd8e10fc0b00769a6065bd2c0f5e9f9/transformed/jetified-AndroidImageSlider-v1.0.8/AndroidManifest.xml" />
-      <root url="file://$USER_HOME$/.gradle/caches/transforms-3/dfd8e10fc0b00769a6065bd2c0f5e9f9/transformed/jetified-AndroidImageSlider-v1.0.8/res" />
+      <root url="file://$USER_HOME$/.gradle/caches/transforms-3/215407f8df05eb377b0a810bb59aad40/transformed/jetified-AndroidImageSlider-v1.0.8/res" />
+      <root url="file://$USER_HOME$/.gradle/caches/transforms-3/215407f8df05eb377b0a810bb59aad40/transformed/jetified-AndroidImageSlider-v1.0.8/AndroidManifest.xml" />
+      <root url="jar://$USER_HOME$/.gradle/caches/transforms-3/215407f8df05eb377b0a810bb59aad40/transformed/jetified-AndroidImageSlider-v1.0.8/jars/classes.jar!/" />
     </CLASSES>
     <JAVADOC />
     <SOURCES>
