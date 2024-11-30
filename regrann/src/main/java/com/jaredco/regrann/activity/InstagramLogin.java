@@ -79,8 +79,8 @@ public class InstagramLogin extends AppCompatActivity {
         webview.setLayerType(View.LAYER_TYPE_HARDWARE, null);
         Log.d("app5", webview.getSettings().getUserAgentString());
         // remove wv from user agent
-
         webview.getSettings().setUserAgentString("Mozilla/5.0 (iPhone; CPU iPhone OS 16_0_3 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/15.6 Mobile/15E148 Safari/604.1");
+
         webview.setWebViewClient(new WebViewClient() {
 
 

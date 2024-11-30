@@ -5,6 +5,7 @@
 
     <uses-sdk tools:overrideLibrary="com.facebook, android.support.customtabs" />
 
+
     <uses-feature
         android:name="android.hardware.camera"
         android:required="false" />
@@ -23,15 +24,12 @@
     <uses-permission android:name="android.permission.CHANGE_NETWORK_STATE" />
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
-    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
     <uses-permission android:name="android.permission.DOWNLOAD_WITHOUT_NOTIFICATION" />
     <uses-permission android:name="com.android.vending.BILLING" />
-    <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
+
     <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
-    <uses-permission android:name="android.permission.CHANGE_WIFI_STATE" />
-    <uses-permission
-        android:name="android.permission.ACCESS_FINE_LOCATION"
-        tools:node="remove" />
+
+
     <uses-permission
         android:name="android.permission.READ_CALL_LOG"
         tools:node="remove" />
@@ -168,15 +166,7 @@
             android:name="com.calldorado.wsf"
             android:value="true" />
 
-        <receiver
-            android:name=".receiver.ServiceStarter"
-            android:exported="true">
-            <intent-filter>
-                <action android:name="android.intent.action.BOOT_COMPLETED" />
 
-                <category android:name="android.intent.category.DEFAULT" />
-            </intent-filter>
-        </receiver>
 
         <activity
             android:name=".activity.NoCropActivity"
@@ -190,18 +180,7 @@
                 <data android:mimeType="image/*" />
             </intent-filter>
         </activity>
-        <!--
-        <service
-            android:name=".service.ClipboardListenerService"
-            android:exported="true"
-            android:label="Regrann Service">
-            <intent-filter>
-                <action
-                    android:name="com.jaredco.regrann.service.ClipboardListenerService"
-                    android:process=":remote" />
-            </intent-filter>
-        </service>
-        -->
+
         <meta-data
             android:name="com.google.android.gms.version"
             android:value="@integer/google_play_services_version" />
@@ -212,12 +191,6 @@
             android:name="com.google.android.gms.ads.APPLICATION_ID"
             android:value="ca-app-pub-8534786486141147~4402306255"
             tools:replace="android:value" />
-        <meta-data
-            android:name="com.calldorado.apiToken"
-            android:value="c844b792-694d-4369-a59f-853f31ee6b47" />
-        <meta-data
-            android:name="com.calldorado.appKey"
-            android:value="515af176-e9f0-4f11-a5a2-6b0748255a03" />
 
     </application>
 
