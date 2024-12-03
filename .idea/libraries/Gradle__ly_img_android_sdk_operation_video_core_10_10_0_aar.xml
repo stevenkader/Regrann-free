@@ -1,0 +1,10 @@
+<component name="libraryTable">
+  <library name="Gradle: ly.img.android.sdk.operation:video-core:10.10.0@aar" external-system-id="GRADLE">
+    <CLASSES>
+      <root url="file://$USER_HOME$/.gradle/caches/transforms-4/85d27c73cce0346ae6578b99d3516522/transformed/jetified-video-core-10.10.0/AndroidManifest.xml" />
+      <root url="jar://$USER_HOME$/.gradle/caches/transforms-4/85d27c73cce0346ae6578b99d3516522/transformed/jetified-video-core-10.10.0/jars/classes.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>

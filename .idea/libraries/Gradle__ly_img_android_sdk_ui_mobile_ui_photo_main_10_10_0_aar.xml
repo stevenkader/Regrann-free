@@ -1,0 +1,10 @@
+<component name="libraryTable">
+  <library name="Gradle: ly.img.android.sdk.ui.mobile_ui:photo-main:10.10.0@aar" external-system-id="GRADLE">
+    <CLASSES>
+      <root url="file://$USER_HOME$/.gradle/caches/transforms-4/b9aed47d5499e96e0b479139cc9f2920/transformed/jetified-photo-main-10.10.0/AndroidManifest.xml" />
+      <root url="jar://$USER_HOME$/.gradle/caches/transforms-4/b9aed47d5499e96e0b479139cc9f2920/transformed/jetified-photo-main-10.10.0/jars/classes.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>

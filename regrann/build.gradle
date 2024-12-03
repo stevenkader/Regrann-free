@@ -47,8 +47,8 @@ android {
         applicationId "com.jaredco.regrann"
         minSdkVersion 26
         targetSdkVersion 34
-        versionCode 9080
-        versionName "16.72"
+        versionCode 9082
+        versionName "16.74"
 
         multiDexEnabled true
         resValue 'string', 'pesdk_version', "v$pesdk_version"
@@ -153,7 +153,7 @@ dependencies {
     //  implementation 'com.android.databinding:compiler:3.1.4'
 
 
-    implementation 'com.google.android.gms:play-services-ads:23.5.0'
+    // implementation 'com.google.android.gms:play-services-ads:23.5.0'
     implementation fileTree(include: ['*.*'], dir: 'libs')
     implementation "androidx.coordinatorlayout:coordinatorlayout:1.2.0"
     implementation 'com.google.guava:guava:24.1-jre'
@@ -169,12 +169,14 @@ dependencies {
     implementation 'com.google.android.material:material:1.12.0'
 
     // Import the BoM for the Firebase platform
-    implementation platform('com.google.firebase:firebase-bom:33.3.0')
-
+    implementation 'com.google.firebase:firebase-messaging:24.1.0'
+    implementation 'com.google.firebase:firebase-config:22.0.1'
     // Add the dependencies for the Crashlytics and Analytics libraries
     // When using the BoM, you don't specify versions in Firebase library dependencies
+    implementation 'com.google.firebase:firebase-bom:33.6.0'
+    implementation 'com.google.firebase:firebase-analytics:22.1.2'
 
-    implementation 'com.google.firebase:firebase-analytics'
+    implementation 'com.google.android.gms:play-services-ads:22.3.0' // AdMob
 
 
     implementation 'com.nineoldandroids:library:2.4.0'

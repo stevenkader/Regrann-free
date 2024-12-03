@@ -1,0 +1,10 @@
+<component name="libraryTable">
+  <library name="Gradle: ly.img.android.sdk:build-annotations:10.10.0" type="java-imported" external-system-id="GRADLE">
+    <properties groupId="ly.img.android.sdk" artifactId="build-annotations" version="10.10.0" />
+    <CLASSES>
+      <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/ly.img.android.sdk/build-annotations/10.10.0/95c9ff7f65ec47b4142db5501b1be7028073216c/build-annotations-10.10.0.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>

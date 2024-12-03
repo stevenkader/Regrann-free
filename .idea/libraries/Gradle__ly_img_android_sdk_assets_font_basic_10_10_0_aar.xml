@@ -1,0 +1,10 @@
+<component name="libraryTable">
+  <library name="Gradle: ly.img.android.sdk.assets:font-basic:10.10.0@aar" external-system-id="GRADLE">
+    <CLASSES>
+      <root url="jar://$USER_HOME$/.gradle/caches/transforms-4/e5bcf5d61a0f5446dd897845a1389e37/transformed/jetified-font-basic-10.10.0/jars/classes.jar!/" />
+      <root url="file://$USER_HOME$/.gradle/caches/transforms-4/e5bcf5d61a0f5446dd897845a1389e37/transformed/jetified-font-basic-10.10.0/AndroidManifest.xml" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>

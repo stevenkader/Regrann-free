@@ -1,7 +1,7 @@
 buildscript {
     // Define versions as variables for maintainability
     ext.kotlin_version = '1.8.10' // Compatible with AGP 7.4.2; consider updating if using AGP 8.x
-    ext.pesdk_version = '10.9.0'
+    ext.pesdk_version = '10.10.0'
     ext.ksp_version = '1.8.10-1.0.9'
 
     repositories {
@@ -13,7 +13,7 @@ buildscript {
 
     dependencies {
         // Android Gradle Plugin
-        classpath 'com.android.tools.build:gradle:8.1.1'
+        classpath 'com.android.tools.build:gradle:8.6.1'
 
         // Kotlin Gradle Plugin
         classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
