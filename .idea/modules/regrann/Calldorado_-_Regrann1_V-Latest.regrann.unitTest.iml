@@ -104,20 +104,23 @@
     <orderEntry type="library" scope="TEST" name="Gradle: androidx.cursoradapter:cursoradapter:1.0.0@aar" level="project" />
     <orderEntry type="library" scope="TEST" name="Gradle: androidx.drawerlayout:drawerlayout:1.1.1@aar" level="project" />
     <orderEntry type="library" scope="TEST" name="Gradle: androidx.recyclerview:recyclerview:1.2.1@aar" level="project" />
-    <orderEntry type="library" scope="TEST" name="Gradle: ly.img.android.sdk.ui.mobile_ui:photo-main:10.10.0@aar" level="project" />
+    <orderEntry type="library" scope="TEST" name="Gradle: ly.img.android.sdk.operation:video-core:10.10.0@aar" level="project" />
+    <orderEntry type="library" scope="TEST" name="Gradle: ly.img.android.sdk:serializer:10.10.0@aar" level="project" />
+    <orderEntry type="library" scope="TEST" name="Gradle: ly.img.android.sdk.ui.mobile_ui:filter:10.10.0@aar" level="project" />
+    <orderEntry type="library" scope="TEST" name="Gradle: ly.img.android.sdk.operation:filter:10.10.0@aar" level="project" />
     <orderEntry type="library" scope="TEST" name="Gradle: ly.img.android.sdk.operation:photo-core:10.10.0@aar" level="project" />
+    <orderEntry type="library" scope="TEST" name="Gradle: ly.img.android.sdk.assets:filter-basic:10.10.0@aar" level="project" />
+    <orderEntry type="library" scope="TEST" name="Gradle: ly.img.android.sdk.ui.mobile_ui:video-main:10.10.0@aar" level="project" />
+    <orderEntry type="library" scope="TEST" name="Gradle: ly.img.android.sdk.ui.mobile_ui:photo-main:10.10.0@aar" level="project" />
     <orderEntry type="library" scope="TEST" name="Gradle: ly.img.android.sdk.ui.mobile_ui:all:10.10.0@aar" level="project" />
     <orderEntry type="library" scope="TEST" name="Gradle: ly.img.android.sdk.assets:font-basic:10.10.0@aar" level="project" />
     <orderEntry type="library" scope="TEST" name="Gradle: ly.img.android.sdk.operation:text:10.10.0@aar" level="project" />
     <orderEntry type="library" scope="TEST" name="Gradle: ly.img.android.sdk.operation:abstract-sticker:10.10.0@aar" level="project" />
     <orderEntry type="library" scope="TEST" name="Gradle: ly.img.android.sdk.ui.mobile_ui:text:10.10.0@aar" level="project" />
     <orderEntry type="library" scope="TEST" name="Gradle: ly.img.android.sdk.ui.mobile_ui:sprite-duration:10.10.0@aar" level="project" />
-    <orderEntry type="library" scope="TEST" name="Gradle: ly.img.android.sdk.operation:video-core:10.10.0@aar" level="project" />
     <orderEntry type="library" scope="TEST" name="Gradle: ly.img.android.sdk.assets:font-shared:10.10.0@aar" level="project" />
-    <orderEntry type="library" scope="TEST" name="Gradle: ly.img.android.sdk:serializer:10.10.0@aar" level="project" />
-    <orderEntry type="library" scope="TEST" name="Gradle: ly.img.android.sdk.ui.mobile_ui:filter:10.10.0@aar" level="project" />
-    <orderEntry type="library" scope="TEST" name="Gradle: ly.img.android.sdk.operation:filter:10.10.0@aar" level="project" />
-    <orderEntry type="library" scope="TEST" name="Gradle: ly.img.android.sdk.assets:filter-basic:10.10.0@aar" level="project" />
+    <orderEntry type="library" scope="TEST" name="Gradle: ly.img.android.sdk.ui.mobile_ui:transform:10.10.0@aar" level="project" />
+    <orderEntry type="library" scope="TEST" name="Gradle: ly.img.android.sdk.ui.mobile_ui:video-trim:10.10.0@aar" level="project" />
     <orderEntry type="library" scope="TEST" name="Gradle: androidx.coordinatorlayout:coordinatorlayout:1.2.0@aar" level="project" />
     <orderEntry type="library" scope="TEST" name="Gradle: com.github.HamidrezaAmz:AndroidImageSlider:v1.0.8@aar" level="project" />
     <orderEntry type="library" scope="TEST" name="Gradle: com.squareup.picasso:picasso:2.71828@aar" level="project" />
