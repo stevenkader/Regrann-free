@@ -84,7 +84,7 @@
       <sourceFolder url="file://$MODULE_DIR$/../../../regrann/src/main/java" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/../../../regrann/src/main/res" type="java-resource" />
     </content>
-    <orderEntry type="jdk" jdkName="Android API 34, extension level 7 Platform" jdkType="Android SDK" />
+    <orderEntry type="jdk" jdkName="Android API 35, extension level 13 Platform" jdkType="Android SDK" />
     <orderEntry type="sourceFolder" forTests="false" />
     <orderEntry type="library" name="Gradle: androidx.databinding:databinding-runtime:8.6.1@aar" level="project" />
     <orderEntry type="library" name="Gradle: androidx.databinding:viewbinding:8.6.1@aar" level="project" />

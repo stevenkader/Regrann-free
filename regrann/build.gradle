@@ -6,7 +6,7 @@ apply plugin: 'ly.img.android.sdk'
 apply plugin: 'kotlin-android'
 
 // Configure the PESDKPlugin
-imglyConfig {
+IMGLY.configure {
 
     pesdk {
         enabled true
@@ -43,7 +43,7 @@ imglyConfig {
 android {
 
 
-    compileSdk 34
+    compileSdk 35
 
 
     defaultConfig {
@@ -51,8 +51,8 @@ android {
         applicationId "com.jaredco.regrann"
         minSdkVersion 26
         targetSdkVersion 34
-        versionCode 9100
-        versionName "16.92"
+        versionCode 9102
+        versionName "16.94"
 
         multiDexEnabled true
         resValue 'string', 'pesdk_version', "v$pesdk_version"
