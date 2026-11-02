@@ -29,6 +29,12 @@ public class NewShareText extends Activity {
         String action = intent.getAction();
 
 
+        // relaunched by the system (e.g. after an app update) without the original share extras
+        if (extras == null || !extras.containsKey(Intent.EXTRA_TEXT)) {
+            finish();
+            return;
+        }
+
         // if this is from the share menu
         if (Intent.ACTION_SEND.equals(action)) {
             if (extras.containsKey(Intent.EXTRA_TEXT)) {
