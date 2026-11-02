@@ -31,6 +31,8 @@ import androidx.core.app.ActivityCompat;
 import com.android.billingclient.api.AcknowledgePurchaseParams;
 import com.android.billingclient.api.AcknowledgePurchaseResponseListener;
 import com.android.billingclient.api.BillingClient;
+import com.android.billingclient.api.QueryPurchasesParams;
+import com.android.billingclient.api.PendingPurchasesParams;
 import com.android.billingclient.api.BillingClientStateListener;
 import com.android.billingclient.api.BillingResult;
 import com.android.billingclient.api.Purchase;
@@ -121,7 +123,7 @@ public class RegrannMainActivity extends AppCompatActivity {
 
         };
 
-        billingClient = BillingClient.newBuilder(this).enablePendingPurchases().setListener(new PurchasesUpdatedListener() {
+        billingClient = BillingClient.newBuilder(this).enablePendingPurchases(PendingPurchasesParams.newBuilder().enableOneTimeProducts().build()).setListener(new PurchasesUpdatedListener() {
             @Override
             public void onPurchasesUpdated(BillingResult responseCode, List<Purchase> purchases) {
 
@@ -171,7 +173,7 @@ public class RegrannMainActivity extends AppCompatActivity {
                     // The BillingClient is ready. You can query purchases here.
                     billingReady = true;
 
-                    billingClient.queryPurchasesAsync(BillingClient.SkuType.INAPP, new PurchasesResponseListener() {
+                    billingClient.queryPurchasesAsync(QueryPurchasesParams.newBuilder().setProductType(BillingClient.ProductType.INAPP).build(), new PurchasesResponseListener() {
                         @Override
                         public void onQueryPurchasesResponse(@NonNull BillingResult billingResult, @NonNull List<Purchase> list) {
                             if (billingResult.getResponseCode() == BillingClient.BillingResponseCode.OK) {
@@ -677,7 +679,7 @@ public class RegrannMainActivity extends AppCompatActivity {
             }
         };
 
-        billingClient = BillingClient.newBuilder(RegrannApp._this).setListener(b).enablePendingPurchases().build();
+        billingClient = BillingClient.newBuilder(RegrannApp._this).setListener(b).enablePendingPurchases(PendingPurchasesParams.newBuilder().enableOneTimeProducts().build()).build();
 
         billingClient.startConnection(new BillingClientStateListener() {
             @Override
@@ -701,7 +703,7 @@ public class RegrannMainActivity extends AppCompatActivity {
         SharedPreferences.Editor editor = preferences.edit();
 
         if (billingClient.isReady()) {
-            billingClient.queryPurchasesAsync(BillingClient.SkuType.SUBS, (billingResult, purchasesList) -> {
+            billingClient.queryPurchasesAsync(QueryPurchasesParams.newBuilder().setProductType(BillingClient.ProductType.SUBS).build(), (billingResult, purchasesList) -> {
                 if (billingResult.getResponseCode() == BillingClient.BillingResponseCode.OK && purchasesList != null) {
                     for (Purchase purchase : purchasesList) {
                         if (purchase.getProducts().get(0).equals("repost_professional")) {

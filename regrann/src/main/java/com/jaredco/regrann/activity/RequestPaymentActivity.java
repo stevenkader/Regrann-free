@@ -19,6 +19,8 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.android.billingclient.api.AcknowledgePurchaseParams;
 import com.android.billingclient.api.AcknowledgePurchaseResponseListener;
 import com.android.billingclient.api.BillingClient;
+import com.android.billingclient.api.QueryProductDetailsResult;
+import com.android.billingclient.api.PendingPurchasesParams;
 import com.android.billingclient.api.BillingClientStateListener;
 import com.android.billingclient.api.BillingFlowParams;
 import com.android.billingclient.api.BillingResult;
@@ -139,7 +141,7 @@ public class RequestPaymentActivity extends AppCompatActivity {
 
         };
 
-        billingClient = BillingClient.newBuilder(this).enablePendingPurchases().setListener(new PurchasesUpdatedListener() {
+        billingClient = BillingClient.newBuilder(this).enablePendingPurchases(PendingPurchasesParams.newBuilder().enableOneTimeProducts().build()).setListener(new PurchasesUpdatedListener() {
             @Override
             public void onPurchasesUpdated(BillingResult responseCode, List<Purchase> purchases) {
 
@@ -307,7 +309,8 @@ public class RequestPaymentActivity extends AppCompatActivity {
                             queryProductDetailsParams,
                             new ProductDetailsResponseListener() {
                                 public void onProductDetailsResponse(BillingResult billingResult,
-                                                                     List<ProductDetails> productDetailsList) {
+                                                                     QueryProductDetailsResult queryProductDetailsResult) {
+                                    List<ProductDetails> productDetailsList = queryProductDetailsResult.getProductDetailsList();
                                     // check billingResult
                                     // process returned productDetailsList
                                     if (productDetailsList.size() > 0) {

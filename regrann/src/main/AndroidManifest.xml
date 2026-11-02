@@ -50,6 +50,7 @@
     <application
         android:name=".activity.RegrannApp"
         android:allowBackup="true"
+        android:enableOnBackInvokedCallback="false"
         android:hardwareAccelerated="true"
         android:hasFragileUserData="true"
         android:icon="@mipmap/ic_launcher"

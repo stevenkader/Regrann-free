@@ -1,9 +1,18 @@
 package com.jaredco.regrann.activity;
 
+import android.app.Activity;
 import android.app.Application;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Build;
+import android.os.Bundle;
+import android.view.View;
+
+import androidx.core.graphics.Insets;
+import androidx.core.view.ViewCompat;
+import androidx.core.view.WindowCompat;
+import androidx.core.view.WindowInsetsCompat;
+import androidx.core.view.WindowInsetsControllerCompat;
 import android.os.StrictMode;
 import android.preference.PreferenceManager;
 import android.util.Log;
@@ -95,10 +104,68 @@ public class RegrannApp extends Application {
     }
 
 
+    // Targeting Android 16 (API 36) forces edge-to-edge on Android 15+ devices: layouts draw under the
+    // status/navigation bars. Pad the content of our own activities by the bar sizes so the old layouts
+    // keep working, instead of fixing every layout.
+    private void keepContentInsideSystemBars() {
+        if (Build.VERSION.SDK_INT < 35)
+            return;
+
+        registerActivityLifecycleCallbacks(new ActivityLifecycleCallbacks() {
+            @Override
+            public void onActivityPostCreated(Activity activity, Bundle savedInstanceState) {
+                if (!activity.getClass().getName().startsWith("com.jaredco."))
+                    return;
+
+                View content = activity.findViewById(android.R.id.content);
+                ViewCompat.setOnApplyWindowInsetsListener(content, (v, windowInsets) -> {
+                    Insets bars = windowInsets.getInsets(WindowInsetsCompat.Type.systemBars() | WindowInsetsCompat.Type.displayCutout());
+                    Insets ime = windowInsets.getInsets(WindowInsetsCompat.Type.ime());
+                    v.setPadding(bars.left, bars.top, bars.right, Math.max(bars.bottom, ime.bottom));
+                    return WindowInsetsCompat.CONSUMED;
+                });
+
+                // bars are transparent over the light window background - use dark icons
+                WindowInsetsControllerCompat controller = WindowCompat.getInsetsController(activity.getWindow(), activity.getWindow().getDecorView());
+                controller.setAppearanceLightStatusBars(true);
+                controller.setAppearanceLightNavigationBars(true);
+            }
+
+            @Override
+            public void onActivityCreated(Activity activity, Bundle savedInstanceState) {
+            }
+
+            @Override
+            public void onActivityStarted(Activity activity) {
+            }
+
+            @Override
+            public void onActivityResumed(Activity activity) {
+            }
+
+            @Override
+            public void onActivityPaused(Activity activity) {
+            }
+
+            @Override
+            public void onActivityStopped(Activity activity) {
+            }
+
+            @Override
+            public void onActivitySaveInstanceState(Activity activity, Bundle outState) {
+            }
+
+            @Override
+            public void onActivityDestroyed(Activity activity) {
+            }
+        });
+    }
+
     @Override
     public void onCreate() {
         super.onCreate();
 
+        keepContentInsideSystemBars();
 
         Log.d("app5", "In Regrann App - onCreate");
 /**
