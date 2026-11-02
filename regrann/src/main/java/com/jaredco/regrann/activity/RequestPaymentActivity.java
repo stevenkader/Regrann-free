@@ -135,7 +135,7 @@ public class RequestPaymentActivity extends AppCompatActivity {
         acknowledgePurchaseResponseListener = new AcknowledgePurchaseResponseListener() {
             @Override
             public void onAcknowledgePurchaseResponse(BillingResult billingResult) {
-
+                Log.d("app5", "acknowledge result: " + billingResult.getResponseCode());
 
             }
 

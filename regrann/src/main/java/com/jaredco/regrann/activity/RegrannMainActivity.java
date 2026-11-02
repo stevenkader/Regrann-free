@@ -708,7 +708,16 @@ public class RegrannMainActivity extends AppCompatActivity {
                     for (Purchase purchase : purchasesList) {
                         if (purchase.getProducts().get(0).equals("repost_professional")) {
                             // The SKU is already purchased
-                            Log.d("app5", "The SKU is already purchased");
+                            Log.d("app5", "The SKU is already purchased, acknowledged=" + purchase.isAcknowledged());
+
+                            // Retry the acknowledgement if it failed after purchase, otherwise Google refunds it after 3 days
+                            if (purchase.getPurchaseState() == Purchase.PurchaseState.PURCHASED && !purchase.isAcknowledged()) {
+                                AcknowledgePurchaseParams ackParams = AcknowledgePurchaseParams.newBuilder().setPurchaseToken(purchase.getPurchaseToken()).build();
+                                billingClient.acknowledgePurchase(ackParams, ackResult -> {
+                                    Log.d("app5", "late acknowledge result: " + ackResult.getResponseCode());
+                                    sendEvent(ackResult.getResponseCode() == BillingClient.BillingResponseCode.OK ? "ack_retry_ok" : "ack_retry_failed", "", "");
+                                });
+                            }
                             editor.putBoolean("subscribed", true);
                             editor.putBoolean("really_subscribed", true);
                             editor.commit();
